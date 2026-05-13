@@ -184,12 +184,20 @@ export default function Home() {
                     <span>{stay.hotel.detail}</span>
                     {stay.hotel.cancellation ? <span>{stay.hotel.cancellation}</span> : null}
                   </div>
-                  {stay.hotel.map ? (
-                    <a href={stay.hotel.map} rel="noreferrer" target="_blank" title={`Open map for ${stay.hotel.name}`}>
-                      <MapPin aria-hidden="true" size={18} />
-                      Map
-                    </a>
-                  ) : null}
+                  <div className="hotel-actions">
+                    {stay.hotel.map ? (
+                      <a href={stay.hotel.map} rel="noreferrer" target="_blank" title={`Open map for ${stay.hotel.name}`}>
+                        <MapPin aria-hidden="true" size={18} />
+                        Map
+                      </a>
+                    ) : null}
+                    {stay.hotel.links?.map((link) => (
+                      <a href={link.href} key={link.href} rel="noreferrer" target="_blank">
+                        <ExternalLink aria-hidden="true" size={16} />
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               ) : null}
 

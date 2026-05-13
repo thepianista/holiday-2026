@@ -30,6 +30,7 @@ export type Stay = {
     detail: string;
     cancellation?: string;
     map?: string;
+    links?: Link[];
   };
   summary: string;
   travelIn?: string;
@@ -142,6 +143,13 @@ export const stays: Stay[] = [
       detail: "Booked via Booking.com, including breakfast.",
       cancellation: "Free cancellation up to 26 July.",
       map: "https://maps.google.com/?q=Hotel+Trierer+Hof+Koblenz",
+      links: [
+        { label: "Booking.com", href: "https://www.booking.com/hotel/de/trierer-hof.de.html" },
+        {
+          label: "Tripadvisor",
+          href: "https://www.tripadvisor.co.uk/Hotel_Review-g187391-d632940-Reviews-Trierer_Hof-Koblenz_Rhineland_Palatinate.html",
+        },
+      ],
     },
     summary:
       "Koblenz is the gentle start: old town lanes, the Rhine and Moselle meeting at Deutsches Eck, a cable car over the water and an easy fortress afternoon.",
@@ -224,6 +232,16 @@ export const stays: Stay[] = [
       name: "Premier Inn Heidelberg City Centre",
       detail: "Booked via Booking.com, with cancellation.",
       map: "https://maps.google.com/?q=Premier+Inn+Heidelberg+City+Centre",
+      links: [
+        {
+          label: "Booking.com",
+          href: "https://www.booking.com/hotel/de/premier-inn-heidelberg-city-centre-heidelberg1.de.html",
+        },
+        {
+          label: "Tripadvisor",
+          href: "https://www.tripadvisor.co.uk/Hotel_Review-g187286-d4869776-Reviews-Premier_Inn_Heidelberg_City_Zentrum_hotel-Heidelberg_Baden_Wurttemberg.html",
+        },
+      ],
     },
     summary:
       "Heidelberg is the storybook middle: castle ruins above the old town, the Old Bridge across the Neckar and a walk with one of the best city views.",
@@ -311,6 +329,16 @@ export const stays: Stay[] = [
       detail: "Booked direct with Accor.",
       cancellation: "Free cancellation up to 1 August.",
       map: "https://maps.google.com/?q=Mercure+Hotel+Freiburg+am+M%C3%BCnster",
+      links: [
+        {
+          label: "Booking.com",
+          href: "https://www.booking.com/hotel/de/mercure-freiburg-am-munster.html",
+        },
+        {
+          label: "Tripadvisor",
+          href: "https://www.tripadvisor.co.uk/Hotel_Review-g187281-d199837-Reviews-Mercure_Hotel_Freiburg_am_Muenster-Freiburg_im_Breisgau_Baden_Wurttemberg.html",
+        },
+      ],
     },
     summary:
       "Freiburg is the sunny old town chapter: Münsterplatz, market food, little Bächle channels, Schlossberg views and an easy base for Gengenbach.",

@@ -454,6 +454,12 @@ main {
   line-height: 1.45;
 }
 
+.hotel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
 .hotel-card a {
   align-self: start;
   padding: 0 0.9rem;
