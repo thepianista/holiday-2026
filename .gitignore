@@ -25,6 +25,7 @@
 *.pem
 AGENTS.md
 CLAUDE.md
+Germany Holiday 2026 Notes.md
 
 # debug
 npm-debug.log*
