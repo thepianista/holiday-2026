@@ -2,7 +2,6 @@ import {
   BedDouble,
   BookOpen,
   Camera,
-  ClipboardList,
   CloudRain,
   Coffee,
   ExternalLink,
@@ -94,10 +93,6 @@ export default function Home() {
             <a href="#scrapbook">
               <Camera aria-hidden="true" size={18} />
               Photo diary
-            </a>
-            <a href="/itinerary">
-              <ClipboardList aria-hidden="true" size={18} />
-              Itinerary
             </a>
           </div>
         </div>
