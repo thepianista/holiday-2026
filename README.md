@@ -2,6 +2,11 @@
 
 Private family holiday microsite for the Germany 2026 trip. It is a static Next.js app with local editable trip data, a pre-trip itinerary, destination guide cards and placeholder photo diary slots.
 
+## Routes
+
+- `/` is the playful family field guide for places, day trip ideas and the photo diary.
+- `/itinerary` is the practical trip list with hotels, trains, costs, cancellation notes and booking status.
+
 ## Stack
 
 - Next.js 16 App Router
@@ -27,7 +32,7 @@ npm run build
 npm run verify:layout
 ```
 
-`verify:layout` expects the app to be running locally. Set `VERIFY_URL` if it is not on `http://localhost:3000`.
+`verify:layout` expects the app to be running locally. Set `VERIFY_URL` if it is not on `http://localhost:3000`. It checks `/` and `/itinerary` on desktop and mobile.
 
 ## Edit Trip Content
 

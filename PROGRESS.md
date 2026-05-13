@@ -14,6 +14,8 @@
 - Ran lint and fixed JSX text escaping.
 - Ran production build successfully.
 - Added `scripts/verify-layout.mjs` and `npm run verify:layout` for Chrome based desktop and mobile layout checks.
+- Added `/itinerary` as the practical route for hotels, trains, costs, cancellation notes and booking status.
+- Removed prices and points from the main field guide route.
 
 ## Validation Notes
 

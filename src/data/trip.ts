@@ -52,6 +52,19 @@ export type TrainLeg = {
   cost?: string;
 };
 
+export type ItineraryItem = {
+  date: string;
+  title: string;
+  place: string;
+  type: "train" | "hotel" | "decision" | "day trip";
+  status: "booked" | "candidate" | "preferred" | "to book" | "flexible";
+  time?: string;
+  bookedWith?: string;
+  cost?: string;
+  cancellation?: string;
+  note: string;
+};
+
 export const heroStats = [
   { label: "Trip window", value: "27 July to 6 August 2026" },
   { label: "Route", value: "London, Koblenz, Heidelberg, Freiburg and Cologne" },
@@ -126,7 +139,7 @@ export const stays: Stay[] = [
     stamp: "Rhein + Mosel",
     hotel: {
       name: "Hotel Trierer Hof",
-      detail: "Booking.com stay, £521 including breakfast.",
+      detail: "Booked via Booking.com, including breakfast.",
       cancellation: "Free cancellation up to 26 July.",
       map: "https://maps.google.com/?q=Hotel+Trierer+Hof+Koblenz",
     },
@@ -209,7 +222,7 @@ export const stays: Stay[] = [
     stamp: "Schloss + Neckar",
     hotel: {
       name: "Premier Inn Heidelberg City Centre",
-      detail: "Booking.com stay, £347.05 with cancellation.",
+      detail: "Booked via Booking.com, with cancellation.",
       map: "https://maps.google.com/?q=Premier+Inn+Heidelberg+City+Centre",
     },
     summary:
@@ -295,7 +308,7 @@ export const stays: Stay[] = [
     stamp: "Muenster + Baechle",
     hotel: {
       name: "Mercure Hotel Freiburg am Münster",
-      detail: "Direct Accor booking, €538.65, about £468.",
+      detail: "Booked direct with Accor.",
       cancellation: "Free cancellation up to 1 August.",
       map: "https://maps.google.com/?q=Mercure+Hotel+Freiburg+am+M%C3%BCnster",
     },
@@ -437,7 +450,7 @@ export const stays: Stay[] = [
     stamp: "Dom + Rhine",
     hotel: {
       name: "Hilton Cologne",
-      detail: "Booked with 83k Hilton points.",
+      detail: "Booked with Hilton.",
       cancellation: "Cancellation up to 4 August.",
       map: "https://maps.google.com/?q=Hilton+Cologne",
     },
@@ -514,4 +527,128 @@ export const futureOptions = [
   "Add Supabase if comments, sign ins or shared editing become useful.",
   "Add Vercel Blob if the main need is simple private photo storage.",
   "Add Sanity if the diary becomes a proper edited family travel journal.",
+];
+
+export const itineraryItems: ItineraryItem[] = [
+  {
+    date: "27 July 2026",
+    title: "Eurostar to Brussels",
+    place: "London St Pancras to Brussels Midi",
+    type: "train",
+    status: "booked",
+    time: "09:01 to 12:05",
+    bookedWith: "Eurostar",
+    note: "Outbound train. Keep tickets and sensitive booking details in email or phone wallet.",
+  },
+  {
+    date: "27 July 2026",
+    title: "Brussels to Koblenz",
+    place: "Bruxelles Midi to Koblenz Hbf via Cologne",
+    type: "train",
+    status: "candidate",
+    time: "12:25 to 15:46",
+    cost: "EUR 115.98",
+    note: "Candidate connection. Check platform buffer at Brussels and Cologne before booking.",
+  },
+  {
+    date: "27 to 30 July 2026",
+    title: "Hotel Trierer Hof",
+    place: "Koblenz",
+    type: "hotel",
+    status: "booked",
+    bookedWith: "Booking.com",
+    cost: "GBP 521 including breakfast",
+    cancellation: "Free cancellation up to 26 July",
+    note: "Sensitive booking details stay in email or phone only.",
+  },
+  {
+    date: "30 July 2026",
+    title: "Koblenz to Heidelberg",
+    place: "Koblenz Hbf to Heidelberg Hbf",
+    type: "train",
+    status: "candidate",
+    time: "09:48 to 11:34 or 11:48 to 13:34",
+    cost: "EUR 43.98",
+    note: "Direct options. Decide based on checkout, breakfast and how early everyone wants to move.",
+  },
+  {
+    date: "30 July to 2 August 2026",
+    title: "Premier Inn Heidelberg City Centre",
+    place: "Heidelberg",
+    type: "hotel",
+    status: "booked",
+    bookedWith: "Booking.com",
+    cost: "GBP 347.05",
+    cancellation: "Cancellation available",
+    note: "Booking details stay in email or phone only.",
+  },
+  {
+    date: "2 August 2026",
+    title: "Heidelberg to Freiburg",
+    place: "Heidelberg Hbf to Freiburg Hbf",
+    type: "train",
+    status: "candidate",
+    time: "10:43 to 12:31",
+    cost: "EUR 59.98",
+    note: "Likely train with one transfer. Check final connection before booking.",
+  },
+  {
+    date: "2 to 5 August 2026",
+    title: "Mercure Hotel Freiburg am Muenster",
+    place: "Freiburg im Breisgau",
+    type: "hotel",
+    status: "booked",
+    bookedWith: "Accor direct",
+    cost: "EUR 538.65, about GBP 468",
+    cancellation: "Free cancellation up to 1 August",
+    note: "Address: Auf der Zinnen 1, 79098 Freiburg. Booking details stay in email or phone only.",
+  },
+  {
+    date: "Flexible from Freiburg",
+    title: "Gengenbach day trip",
+    place: "Freiburg to Gengenbach return",
+    type: "day trip",
+    status: "flexible",
+    note: "Keep this movable around weather. It is a day trip, not an overnight stay.",
+  },
+  {
+    date: "5 August 2026",
+    title: "Freiburg to Cologne",
+    place: "Freiburg Hbf to Cologne Hbf",
+    type: "train",
+    status: "preferred",
+    time: "13:55 to 17:05",
+    cost: "EUR 107.98",
+    note: "Preferred direct train. Alternative is 11:55 to 15:05 at EUR 119.98.",
+  },
+  {
+    date: "5 to 6 August 2026",
+    title: "Hilton Cologne",
+    place: "Cologne",
+    type: "hotel",
+    status: "booked",
+    bookedWith: "Hilton",
+    cost: "83k Hilton points",
+    cancellation: "Cancellation up to 4 August",
+    note: "Final night close to the station and cathedral. Booking details stay in Hilton account, email or phone only.",
+  },
+  {
+    date: "6 August 2026",
+    title: "Cologne to Brussels",
+    place: "Cologne Hbf to Brussels Midi",
+    type: "train",
+    status: "candidate",
+    time: "09:43 to 11:35",
+    bookedWith: "ICE 316",
+    cost: "EUR 83.98",
+    note: "Direct ICE to Brussels, then Eurostar home.",
+  },
+  {
+    date: "6 August 2026",
+    title: "Eurostar home",
+    place: "Brussels Midi to London St Pancras",
+    type: "train",
+    status: "to book",
+    note: "Add final Eurostar details once booked. Keep sensitive booking details in email or phone only.",
+  },
 ];

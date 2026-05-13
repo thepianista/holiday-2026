@@ -2,6 +2,7 @@ import {
   BedDouble,
   BookOpen,
   Camera,
+  ClipboardList,
   CloudRain,
   Coffee,
   ExternalLink,
@@ -94,6 +95,10 @@ export default function Home() {
               <Camera aria-hidden="true" size={18} />
               Photo diary
             </a>
+            <a href="/itinerary">
+              <ClipboardList aria-hidden="true" size={18} />
+              Itinerary
+            </a>
           </div>
         </div>
         <div className="hero-panel" aria-label="Trip overview">
@@ -109,7 +114,7 @@ export default function Home() {
       <section className="security-strip">
         <LockKeyhole aria-hidden="true" size={20} />
         <p>
-          Built for private Vercel deployment. No booking references, booking access codes, emails, phone numbers or home addresses are stored here.
+          Built for private Vercel deployment. No booking details, access codes, emails, phone numbers or home addresses are stored here.
         </p>
       </section>
 
@@ -117,7 +122,7 @@ export default function Home() {
         <SectionTitle
           kicker="Train trail"
           title="The route at a glance"
-          copy="The booked and candidate legs are kept separate so the family can see what&apos;s fixed and what still needs checking."
+          copy={"The booked and candidate legs are kept separate so the family can see what's fixed and what still needs checking."}
         />
         <div className="train-grid">
           {trainLegs.map((leg) => (
@@ -133,7 +138,6 @@ export default function Home() {
               <p>{leg.detail}</p>
               <div className="card-footer">
                 <span className={`status ${leg.status}`}>{statusLabels[leg.status]}</span>
-                {leg.cost ? <strong>{leg.cost}</strong> : null}
               </div>
             </article>
           ))}
@@ -143,7 +147,7 @@ export default function Home() {
       <section className="chapters" id="chapters">
         <SectionTitle
           kicker="Passport chapters"
-          title="Where we&apos;re staying and what we might do"
+          title={"Where we're staying and what we might do"}
           copy="Each chapter has practical stay notes, a small shortlist and a journal area ready for photos and daily comments."
         />
         <div className="chapter-stack">

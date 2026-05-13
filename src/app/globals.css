@@ -612,6 +612,261 @@ main {
   color: #39784f;
 }
 
+.ops-page {
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.ops-hero,
+.ops-summary,
+.ops-actions,
+.ops-card {
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.9);
+  box-shadow: 0 24px 80px rgba(82, 62, 33, 0.12);
+}
+
+.ops-hero {
+  position: relative;
+  margin: 0 auto;
+  max-width: 74rem;
+  overflow: hidden;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.ops-hero::after {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  display: grid;
+  width: 5.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.18rem double rgba(44, 140, 153, 0.7);
+  border-radius: 50%;
+  color: rgba(44, 140, 153, 0.85);
+  content: "PLAN";
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 900;
+  transform: rotate(9deg);
+}
+
+.back-link {
+  display: inline-flex;
+  min-height: 2.55rem;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 999px;
+  background: #172018;
+  color: #fff9ed;
+  font-weight: 800;
+  padding: 0 0.85rem;
+}
+
+.ops-hero .eyebrow {
+  margin-top: 4rem;
+}
+
+.ops-hero h1 {
+  margin-top: 0.3rem;
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 0.9;
+}
+
+.ops-hero p:last-child {
+  max-width: 42rem;
+  color: #343d2f;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  line-height: 1.55;
+}
+
+.ops-summary {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem auto 0;
+  max-width: 74rem;
+  padding: 1rem;
+}
+
+.ops-summary div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #343d2f;
+  font-weight: 780;
+}
+
+.ops-summary svg {
+  flex: 0 0 auto;
+  color: #2c8c99;
+}
+
+.ops-layout {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem auto 2rem;
+  max-width: 74rem;
+}
+
+.ops-actions {
+  align-self: start;
+  padding: 1rem;
+}
+
+.ops-actions h2 {
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.ops-action-list {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.ops-action-list div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55rem;
+  color: #4f5948;
+  line-height: 1.4;
+}
+
+.ops-action-list svg {
+  margin-top: 0.12rem;
+  color: #bd6d42;
+}
+
+.ops-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.ops-card {
+  overflow: hidden;
+}
+
+.ops-date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(23, 32, 24, 0.12);
+  background: rgba(245, 236, 216, 0.58);
+  padding: 0.75rem 1rem;
+}
+
+.ops-date span,
+.ops-type {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ops-status {
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  padding: 0.32rem 0.58rem;
+  text-transform: uppercase;
+}
+
+.ops-status.booked {
+  background: rgba(57, 120, 79, 0.14);
+  color: #275d39;
+}
+
+.ops-status.candidate,
+.ops-status.to-book {
+  background: rgba(44, 140, 153, 0.13);
+  color: #1d6b76;
+}
+
+.ops-status.preferred {
+  background: rgba(214, 163, 63, 0.2);
+  color: #765216;
+}
+
+.ops-status.flexible {
+  background: rgba(51, 65, 92, 0.12);
+  color: #33415c;
+}
+
+.ops-card-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.ops-icon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(44, 140, 153, 0.12);
+  color: #2c8c99;
+}
+
+.ops-card h2 {
+  margin-top: 0.15rem;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 920;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+.ops-place,
+.ops-facts,
+.ops-facts span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ops-place {
+  margin-top: 0.55rem;
+  color: #343d2f;
+  font-weight: 760;
+}
+
+.ops-note {
+  margin-top: 0.7rem;
+  color: #4f5948;
+  line-height: 1.55;
+}
+
+.ops-facts {
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.ops-facts span {
+  border: 1px solid rgba(23, 32, 24, 0.13);
+  border-radius: 999px;
+  background: #fffdf7;
+  color: #172018;
+  font-size: 0.88rem;
+  font-weight: 760;
+  min-height: 2.1rem;
+  padding: 0 0.7rem;
+}
+
+.ops-facts svg {
+  color: #39784f;
+}
+
 @media (min-width: 720px) {
   .hero {
     grid-template-columns: minmax(0, 1fr) minmax(19rem, 26rem);
@@ -650,6 +905,15 @@ main {
 
   .hero-panel div {
     padding: 1.15rem;
+  }
+
+  .ops-layout {
+    grid-template-columns: 19rem minmax(0, 1fr);
+  }
+
+  .ops-actions {
+    position: sticky;
+    top: 1rem;
   }
 }
 

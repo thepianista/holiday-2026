@@ -10,6 +10,19 @@ const viewports = [
   { name: "mobile", width: 390, height: 1100 },
 ];
 
+const pages = [
+  {
+    path: "/",
+    name: "home",
+    checks: ["Germany", "2026", "Koblenz", "Photo diary"],
+  },
+  {
+    path: "/itinerary",
+    name: "itinerary",
+    checks: ["Itinerary", "Hotel Trierer Hof", "EUR 115.98", "No sensitive booking details"],
+  },
+];
+
 await mkdir(".next", { recursive: true });
 
 const browser = await chromium.launch({
@@ -18,36 +31,40 @@ const browser = await chromium.launch({
 });
 
 try {
-  for (const viewport of viewports) {
-    const page = await browser.newPage({ viewport });
-    await page.goto(url, { waitUntil: "networkidle" });
+  for (const target of pages) {
+    for (const viewport of viewports) {
+      const page = await browser.newPage({ viewport });
+      await page.goto(new URL(target.path, url).toString(), { waitUntil: "networkidle" });
 
-    const overflow = await page.evaluate(() => ({
-      innerWidth: window.innerWidth,
-      scrollWidth: document.documentElement.scrollWidth,
-      bodyScrollWidth: document.body.scrollWidth,
-      title: document.title,
-      hasGermany: document.body.innerText.includes("Germany") && document.body.innerText.includes("2026"),
-      hasKoblenz: document.body.innerText.includes("Koblenz"),
-      hasPhotoDiary: document.body.innerText.includes("Photo diary"),
-    }));
+      const result = await page.evaluate((checks) => {
+        const text = document.body.innerText;
 
-    await page.screenshot({
-      fullPage: false,
-      path: `.next/holiday-${viewport.name}-playwright.png`,
-    });
+        return {
+          innerWidth: window.innerWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          bodyScrollWidth: document.body.scrollWidth,
+          title: document.title,
+          checks: checks.map((check) => ({ check, found: text.includes(check) })),
+        };
+      }, target.checks);
 
-    console.log(`${viewport.name}:`, overflow);
+      await page.screenshot({
+        fullPage: false,
+        path: `.next/holiday-${target.name}-${viewport.name}-playwright.png`,
+      });
 
-    if (!overflow.hasGermany || !overflow.hasKoblenz || !overflow.hasPhotoDiary) {
-      throw new Error(`${viewport.name} content check failed`);
+      console.log(`${target.name} ${viewport.name}:`, result);
+
+      if (result.checks.some((check) => !check.found)) {
+        throw new Error(`${target.name} ${viewport.name} content check failed`);
+      }
+
+      if (result.scrollWidth > result.innerWidth || result.bodyScrollWidth > result.innerWidth) {
+        throw new Error(`${target.name} ${viewport.name} has horizontal overflow`);
+      }
+
+      await page.close();
     }
-
-    if (overflow.scrollWidth > overflow.innerWidth || overflow.bodyScrollWidth > overflow.innerWidth) {
-      throw new Error(`${viewport.name} has horizontal overflow`);
-    }
-
-    await page.close();
   }
 } finally {
   await browser.close();
