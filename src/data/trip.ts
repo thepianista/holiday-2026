@@ -159,6 +159,7 @@ export const stays: Stay[] = [
       { label: "Visit Koblenz", href: "https://www.visit-koblenz.de/" },
       { label: "Cable car", href: "https://www.seilbahn-koblenz.de/" },
       { label: "KD river cruises", href: "https://www.k-d.com/en/" },
+      { label: "Day trips from Koblenz", href: "https://www.visit-koblenz.de/en/region/day-trips" },
     ],
     thingsToDo: [
       {
@@ -180,7 +181,46 @@ export const stays: Stay[] = [
         title: "Rhine or Moselle boat loop",
         note: "Keep this as a flexible river day. KD and local operators list seasonal sightseeing trips from Koblenz.",
         pace: "half day",
-        links: [{ label: "KD cruises", href: "https://www.k-d.com/en/" }],
+        links: [
+          { label: "KD cruises", href: "https://www.k-d.com/en/" },
+          { label: "Koblenz boats", href: "https://www.schifffahrtkoblenz.de/" },
+        ],
+      },
+      {
+        title: "Burg Eltz day trip",
+        note: "The big fairytale castle, deep in the woods above the Moselle. Train from Koblenz to Moselkern (about 30 min), then a pretty 35 minute walk through the forest to the castle. Shuttle buses also run in summer.",
+        pace: "half day",
+        links: [
+          { label: "Eltz Castle", href: "https://www.visit-koblenz.de/en/region/eifel/eltz-castle" },
+          { label: "Burg Eltz official", href: "https://burg-eltz.de/en/" },
+        ],
+      },
+      {
+        title: "Marksburg Castle at Braubach",
+        note: "The only Middle Rhine hilltop castle that has never been destroyed. Quick regional train south from Koblenz to Braubach (around 15 min), then a steep but short walk up. Good guided tour and proper castle feel for the kids.",
+        pace: "half day",
+        links: [
+          { label: "Marksburg", href: "https://www.marksburg.de/en/" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Attraction_Review-g1180686-d275462-Reviews-Marksburg_Castle-Braubach_Rhineland_Palatinate.html" },
+        ],
+      },
+      {
+        title: "Stolzenfels Castle",
+        note: "Pretty Prussian summer palace just up the Rhine from Koblenz. Bus 650 from the city centre takes about 15 minutes to Schloss Stolzenfels, then a 20 minute walk up through the landscaped park with grottoes and waterfalls.",
+        pace: "half day",
+        links: [
+          { label: "Stolzenfels Castle", href: "https://www.visit-koblenz.de/en/sights/stolzenfels-castle" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Attraction_Review-g187391-d266028-Reviews-Stolzenfels_Castle-Koblenz_Rhineland_Palatinate.html" },
+        ],
+      },
+      {
+        title: "Cochem on the Moselle",
+        note: "Storybook Moselle town with the Reichsburg perched above it. Around 35 to 50 minutes by train from Koblenz, then a 20 minute walk up to the castle or a small shuttle bus. Good as a full day if the river day works for the weather.",
+        pace: "half day",
+        links: [
+          { label: "Cochem tourism", href: "https://www.cochem.de/en/" },
+          { label: "Reichsburg Cochem", href: "https://reichsburg-cochem.de/en/" },
+        ],
       },
     ],
     foodIdeas: [
@@ -217,6 +257,11 @@ export const stays: Stay[] = [
       "https://www.seilbahn-koblenz.de/",
       "https://www.tor-zum-welterbe.de/",
       "https://www.k-d.com/en/",
+      "https://www.visit-koblenz.de/en/region/day-trips",
+      "https://www.visit-koblenz.de/en/region/eifel/eltz-castle",
+      "https://www.marksburg.de/en/",
+      "https://www.visit-koblenz.de/en/sights/stolzenfels-castle",
+      "https://www.cochem.de/en/",
     ],
   },
   {
@@ -250,6 +295,8 @@ export const stays: Stay[] = [
     links: [
       { label: "Heidelberg tourism", href: "https://www.tourism-heidelberg.com/" },
       { label: "Heidelberg Castle", href: "https://www.schloss-heidelberg.de/en/" },
+      { label: "Bergbahn funicular", href: "https://www.bergbahn-heidelberg.de/en/" },
+      { label: "Weisse Flotte boats", href: "https://www.weisse-flotte-heidelberg.de/en/" },
       { label: "Speyer tourism", href: "https://www.speyer.de/en/" },
     ],
     thingsToDo: [
@@ -272,10 +319,31 @@ export const stays: Stay[] = [
         links: [{ label: "Philosopher's Walk", href: "https://www.tourism-heidelberg.com/explore/historical-sights/heiligenberg/philosophers-walk/index_eng.html" }],
       },
       {
-        title: "Possible Speyer day trip",
-        note: "Keep this as a maybe. Speyer works if everyone wants a change from Heidelberg and a cathedral day.",
+        title: "Königstuhl funicular to the top",
+        note: "Hop on Germany's oldest funicular from Kornmarkt up past the castle to Molkenkur, then change to the historic wooden upper section that climbs to Königstuhl at 568m. Wide views over Heidelberg and the Neckar valley, plus walking trails at the top.",
         pace: "half day",
-        links: [{ label: "Speyer", href: "https://www.speyer.de/en/" }],
+        links: [
+          { label: "Funicular railway", href: "https://www.tourism-heidelberg.com/explore/historical-sights/koenigstuhl/funicular-railway/index_eng.html" },
+          { label: "Bergbahn tickets", href: "https://www.bergbahn-heidelberg.de/en/" },
+        ],
+      },
+      {
+        title: "Neckar boat to Neckarsteinach",
+        note: "Easy half day on the water: the Weisse Flotte runs upstream past four castles to Neckarsteinach, the little 'four castles town'. Lovely if a Heidelberg day needs to slow down.",
+        pace: "half day",
+        links: [
+          { label: "Weisse Flotte Heidelberg", href: "https://www.weisse-flotte-heidelberg.de/en/" },
+          { label: "Boat info", href: "https://www.tourism-heidelberg.com/destination/getting-around/boat/index_eng.html" },
+        ],
+      },
+      {
+        title: "Possible Speyer day trip",
+        note: "Keep this as a maybe. Speyer works if everyone wants a change from Heidelberg and a cathedral day. About 30 minutes by train, with the UNESCO Imperial Cathedral and an easy walk to the Rhine.",
+        pace: "half day",
+        links: [
+          { label: "Speyer", href: "https://www.speyer.de/en/" },
+          { label: "Imperial Cathedral", href: "https://www.dom-zu-speyer.de/en/" },
+        ],
       },
     ],
     foodIdeas: [
@@ -312,7 +380,11 @@ export const stays: Stay[] = [
       "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/old-bridge/index_eng.html",
       "https://www.tourism-heidelberg.com/explore/historical-sights/heiligenberg/philosophers-walk/index_eng.html",
       "https://www.schloss-heidelberg.de/en/",
+      "https://www.tourism-heidelberg.com/explore/historical-sights/koenigstuhl/funicular-railway/index_eng.html",
+      "https://www.bergbahn-heidelberg.de/en/",
+      "https://www.weisse-flotte-heidelberg.de/en/",
       "https://www.speyer.de/en/",
+      "https://www.dom-zu-speyer.de/en/",
     ],
   },
   {
@@ -348,6 +420,9 @@ export const stays: Stay[] = [
       { label: "Visit Freiburg", href: "https://visit.freiburg.de/en" },
       { label: "Münstermarkt", href: "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg" },
       { label: "Schlossberg", href: "https://visit.freiburg.de/schlossberg" },
+      { label: "Schauinslandbahn", href: "https://www.bergwelt-schauinsland.de/en/" },
+      { label: "Kaiserstuhl", href: "https://visit.freiburg.de/en/discover/excursion-destinations-around-freiburg/kaiserstuhl-and-tuniberg" },
+      { label: "Titisee", href: "https://hochschwarzwald.de/en/locations/titisee" },
     ],
     thingsToDo: [
       {
@@ -366,6 +441,33 @@ export const stays: Stay[] = [
         note: "Walk or ride up from the Stadtgarten area for views over the old town, the Minster and towards the hills.",
         pace: "half day",
         links: [{ label: "Schlossberg", href: "https://visit.freiburg.de/schlossberg" }],
+      },
+      {
+        title: "Schauinslandbahn cable car",
+        note: "Germany's longest circulating cable car. Tram 2 from the centre to Günterstal, then bus 21 to Talstation Schauinslandbahn. The cabin climbs to 1,220m in about 20 minutes, with easy 2 to 3km walks and a tower viewpoint at the top.",
+        pace: "half day",
+        links: [
+          { label: "Schauinslandbahn", href: "https://www.bergwelt-schauinsland.de/en/" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Attraction_Review-g1124211-d5490327-Reviews-Schauinslandbahn-Horben_Baden_Wurttemberg.html" },
+        ],
+      },
+      {
+        title: "Kaiserstuhl wine country",
+        note: "The sunniest spot in Germany, ringed by vineyards and little wine villages. S-Bahn S1 from Freiburg out to Endingen or Breisach, then walk between vines. Easy to keep gentle: pick one village, a short loop and a long lunch.",
+        pace: "half day",
+        links: [
+          { label: "Kaiserstuhl and Tuniberg", href: "https://visit.freiburg.de/en/discover/excursion-destinations-around-freiburg/kaiserstuhl-and-tuniberg" },
+          { label: "Hiking the Kaiserstuhl", href: "https://visit.freiburg.de/en/discover/outdoor-activities/hiking/kaiserstuhl" },
+        ],
+      },
+      {
+        title: "Titisee in the Black Forest",
+        note: "Classic Black Forest lake town, about 40 minutes by direct regional train from Freiburg. Easy lakeside walk, paddle boats and pedalos, lots of cuckoo clocks and Black Forest gâteau in town. Good fallback if the family wants a slower water day.",
+        pace: "half day",
+        links: [
+          { label: "Titisee tourism", href: "https://hochschwarzwald.de/en/locations/titisee" },
+          { label: "Day trips guide", href: "https://www.hochschwarzwald.de/en/things-to-see/day-trips" },
+        ],
       },
     ],
     foodIdeas: [
@@ -402,6 +504,10 @@ export const stays: Stay[] = [
       "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg",
       "https://visit.freiburg.de/en/muensterplatz-freiburg",
       "https://visit.freiburg.de/schlossberg",
+      "https://www.bergwelt-schauinsland.de/en/",
+      "https://visit.freiburg.de/en/discover/excursion-destinations-around-freiburg/kaiserstuhl-and-tuniberg",
+      "https://hochschwarzwald.de/en/locations/titisee",
+      "https://www.hochschwarzwald.de/en/things-to-see/day-trips",
     ],
   },
   {
@@ -519,9 +625,40 @@ export const stays: Stay[] = [
         links: [{ label: "Hotel dining", href: "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/" }],
       },
       {
-        title: "Old town dinner",
-        note: "Choose somewhere close to the cathedral or old town so the morning train stays stress free.",
+        title: "Haxenhaus zum Rheingarten",
+        note: "Riverside classic on the Frankenwerft, about 10 minutes' walk from the Hilton. Terrace right on the Rhine in good weather and famous for pork knuckle (Haxe) in nine variations with Kölsch. Old timber building dating back to 1178.",
         pace: "food",
+        links: [
+          { label: "Haxenhaus", href: "https://www.haxenhaus.de/" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d715369-Reviews-Haxenhaus-Cologne_North_Rhine_Westphalia.html" },
+        ],
+      },
+      {
+        title: "Em Krützche",
+        note: "On the Rhine promenade just along from Haxenhaus, in a 16th century house. A slightly more refined take on classic German cooking: sauerbraten, herring, roast suckling pig and a small terrace facing the river.",
+        pace: "food",
+        links: [
+          { label: "Em Krützche", href: "https://www.em-kruetzche.de/" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d695643-Reviews-Em_Krutzche-Cologne_North_Rhine_Westphalia.html" },
+        ],
+      },
+      {
+        title: "Brauhaus FRÜH am Dom",
+        note: "The big classic Cologne brauhaus right behind the cathedral, a couple of minutes from the Hilton. Freshly tapped Früh Kölsch, hearty Rhenish food and proper Köbes waiters who keep refilling until you put the beermat on top.",
+        pace: "food",
+        links: [
+          { label: "Früh am Dom", href: "https://www.frueh-am-dom.de/" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d7235024-Reviews-Fruh_am_Dom-Cologne_North_Rhine_Westphalia.html" },
+        ],
+      },
+      {
+        title: "Peters Brauhaus",
+        note: "Historic Altstadt brauhaus on Mühlengasse, about 7 minutes from the Hilton. Beautiful stained glass ceiling, dark wood, Peters Kölsch and the usual schnitzel, sausages and Himmel un Ääd. Quintessential Cologne evening.",
+        pace: "food",
+        links: [
+          { label: "Peters Brauhaus", href: "https://peters-brauhaus.de/en/" },
+          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d718270-Reviews-Peters_Brauhaus-Cologne_North_Rhine_Westphalia.html" },
+        ],
       },
     ],
     rainyDayIdeas: [
@@ -546,6 +683,10 @@ export const stays: Stay[] = [
       "https://willkommen.koelntourismus.de/en/poi/rhine-boulevard",
       "https://www.koelner-dom.de/en",
       "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/",
+      "https://www.haxenhaus.de/",
+      "https://www.em-kruetzche.de/",
+      "https://www.frueh-am-dom.de/",
+      "https://peters-brauhaus.de/en/",
     ],
   },
 ];
