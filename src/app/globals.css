@@ -50,10 +50,19 @@ main {
   overflow: hidden;
 }
 
+.app-shell {
+  padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+}
+
+.tab-panel {
+  margin: 0 auto;
+  max-width: 74rem;
+}
+
 .hero {
   position: relative;
   display: grid;
-  min-height: 92vh;
+  min-height: 55vh;
   grid-template-columns: minmax(0, 1fr);
   align-items: end;
   gap: 1.5rem;
@@ -246,6 +255,14 @@ main {
   margin: 0 auto;
   max-width: 74rem;
   padding: 4rem 1.25rem;
+}
+
+.tab-section {
+  padding: 2rem 1rem 1.5rem;
+}
+
+.tab-section .section-heading {
+  margin-bottom: 1.25rem;
 }
 
 .section-heading {
@@ -923,8 +940,262 @@ main {
   }
 }
 
+.stays-list {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.stay-block {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.86);
+  box-shadow: 0 24px 80px rgba(82, 62, 33, 0.14);
+  padding: clamp(1rem, 3.5vw, 1.5rem);
+  padding-left: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.stay-block::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.45rem;
+  background: var(--accent);
+  content: "";
+}
+
+.stay-header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.stay-header h3 {
+  margin-top: 0.1rem;
+  font-size: clamp(1.7rem, 7vw, 2.8rem);
+  font-weight: 920;
+  letter-spacing: 0;
+  line-height: 0.94;
+}
+
+.stay-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+.stay-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px dashed rgba(23, 32, 24, 0.2);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  background: rgba(245, 236, 216, 0.6);
+  color: #343d2f;
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.stay-meta svg {
+  color: var(--accent);
+}
+
+.stay-block .hotel-card {
+  margin-top: 1rem;
+}
+
+.stay-block .travel-notes {
+  margin-top: 0.85rem;
+}
+
+.stay-block .chapter-links {
+  margin-top: 0.9rem;
+}
+
+.stay-block .activity-list {
+  margin-top: 1rem;
+}
+
+.idea-stack {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.idea-stack > div {
+  border-top: 1px solid rgba(23, 32, 24, 0.14);
+  padding-top: 1rem;
+}
+
+.idea-stack > div:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.idea-stack h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.idea-stack h4 svg {
+  color: var(--accent);
+}
+
+.photo-feed {
+  display: grid;
+  gap: 1rem;
+}
+
+.photo-day {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(255, 253, 247, 0.92), rgba(255, 253, 247, 0.92)),
+    repeating-linear-gradient(0deg, transparent 0 1.9rem, color-mix(in srgb, var(--accent) 22%, transparent) 1.9rem calc(1.9rem + 1px));
+  box-shadow: 0 20px 60px rgba(82, 62, 33, 0.12);
+  padding: 1rem 1rem 1rem 1.4rem;
+}
+
+.photo-day::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.45rem;
+  background: var(--accent);
+  content: "";
+}
+
+.photo-day-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.photo-day-header h4 {
+  margin-top: 0.15rem;
+  font-size: 1.4rem;
+  font-weight: 880;
+  line-height: 1;
+}
+
+.stamp-small {
+  display: grid;
+  width: 4rem;
+  flex: 0 0 auto;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.15rem double color-mix(in srgb, var(--accent) 82%, #172018);
+  border-radius: 50%;
+  padding: 0.2rem;
+  color: color-mix(in srgb, var(--accent) 72%, #172018);
+  font-family: var(--font-geist-mono);
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-7deg);
+}
+
+.photo-day > p {
+  margin-top: 0.7rem;
+  color: #4f5948;
+  line-height: 1.5;
+}
+
+.photo-day .photo-slots {
+  margin-top: 0.85rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.photos-footer {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+}
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  background: rgba(255, 249, 237, 0.94);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-top: 1px solid rgba(23, 32, 24, 0.14);
+  box-shadow: 0 -10px 30px rgba(82, 62, 33, 0.12);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-bar-btn {
+  position: relative;
+  display: flex;
+  min-height: 4.4rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  padding: 0.6rem 0.3rem 0.55rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.tab-bar-btn span {
+  line-height: 1.05;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.tab-bar-btn:hover {
+  color: #172018;
+}
+
+.tab-bar-btn::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2.4rem;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: #bd6d42;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 200ms ease;
+  content: "";
+}
+
+.tab-bar-btn.active {
+  color: #172018;
+}
+
+.tab-bar-btn.active::before {
+  opacity: 1;
+}
+
+.tab-bar-btn.active svg {
+  color: #bd6d42;
+}
+
 @media (max-width: 720px) {
   .hero {
+    min-height: auto;
     padding: 0.75rem;
   }
 
@@ -934,13 +1205,17 @@ main {
 
   .hero-content {
     max-width: 100%;
-    padding-top: 9rem;
+    padding-top: 7rem;
   }
 
   .hero h1 {
     max-width: 100%;
     font-size: 3rem;
     line-height: 0.9;
+  }
+
+  .hero-copy {
+    font-size: 1.05rem;
   }
 
   .hero-actions a {
@@ -954,5 +1229,30 @@ main {
   .activity-heading span {
     display: inline-block;
     margin-top: 0.25rem;
+  }
+
+  .tab-section {
+    padding: 1.5rem 0.85rem 1rem;
+  }
+
+  .train-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .train-card {
+    min-height: 0;
+  }
+
+  .stay-block {
+    padding: 1rem 1rem 1rem 1.25rem;
+  }
+
+  .photo-day .photo-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tab-bar-btn {
+    font-size: 0.6rem;
+    padding: 0.55rem 0.2rem 0.5rem;
   }
 }
