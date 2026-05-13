@@ -13,7 +13,7 @@ import {
   Sparkles,
   Train,
 } from "lucide-react";
-import { futureOptions, heroStats, stays, trainLegs, type Activity, type Stay } from "@/data/trip";
+import { futureOptions, stays, trainLegs, type Activity, type Stay } from "@/data/trip";
 
 const TABS = [
   { id: "travel", label: "Travel", icon: Train },
@@ -343,17 +343,22 @@ export default function Home() {
             <span>Germany</span>
             <span>2026</span>
           </h1>
-          <p className="hero-copy">
-            A playful trip book for trains, city chapters, rainy day saves and the photo diary we&apos;ll fill in as we go.
-          </p>
-        </div>
-        <div className="hero-panel" aria-label="Trip overview">
-          {heroStats.map((stat) => (
-            <div key={stat.label}>
-              <span>{stat.label}</span>
-              <strong>{stat.value}</strong>
-            </div>
-          ))}
+          <div className="hero-strip" aria-label="Trip summary">
+            <p className="hero-dates">27 July – 6 August 2026</p>
+            <p className="hero-route">
+              <span>London</span>
+              <span aria-hidden="true">→</span>
+              <span>Koblenz</span>
+              <span aria-hidden="true">→</span>
+              <span>Heidelberg</span>
+              <span aria-hidden="true">→</span>
+              <span>Freiburg</span>
+              <span aria-hidden="true">→</span>
+              <span>Cologne</span>
+              <span aria-hidden="true">→</span>
+              <span>London</span>
+            </p>
+          </div>
         </div>
       </section>
 
