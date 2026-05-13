@@ -1,0 +1,688 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5ecd8;
+  --foreground: #172018;
+  --paper: #fff9ed;
+  --paper-deep: #ead7b7;
+  --ink-soft: #5d624f;
+  --line: #d6bf95;
+  --chapter-rhine: #2c8c99;
+  --chapter-sandstone: #bd6d42;
+  --chapter-forest: #39784f;
+  --chapter-gold: #d6a33f;
+  --chapter-ink: #33415c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "Courier New", Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(44, 140, 153, 0.18), transparent 30rem),
+    radial-gradient(circle at top right, rgba(214, 163, 63, 0.18), transparent 24rem),
+    linear-gradient(135deg, #f7eedf 0%, #efe0c2 48%, #f7ead4 100%);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main {
+  overflow: hidden;
+}
+
+.hero {
+  position: relative;
+  display: grid;
+  min-height: 92vh;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+  gap: 1.5rem;
+  padding: 1.25rem;
+}
+
+.hero::before {
+  position: absolute;
+  inset: 1rem;
+  z-index: -1;
+  border: 1px solid rgba(23, 32, 24, 0.18);
+  background:
+    linear-gradient(rgba(255, 249, 237, 0.62), rgba(255, 249, 237, 0.8)),
+    repeating-linear-gradient(45deg, transparent 0 16px, rgba(23, 32, 24, 0.04) 16px 17px);
+  border-radius: 8px;
+  content: "";
+}
+
+.passport-mark {
+  position: absolute;
+  top: clamp(4rem, 12vw, 7rem);
+  right: clamp(1.4rem, 8vw, 8rem);
+  display: grid;
+  width: clamp(6rem, 24vw, 11rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0.28rem double rgba(189, 109, 66, 0.8);
+  border-radius: 50%;
+  color: rgba(189, 109, 66, 0.85);
+  font-family: var(--font-geist-mono);
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  transform: rotate(10deg);
+}
+
+.hero-content {
+  max-width: 58rem;
+  min-width: 0;
+  padding: clamp(6rem, 18vh, 13rem) clamp(0.5rem, 6vw, 5rem) 0;
+}
+
+.eyebrow,
+.section-heading p,
+.chapter-kicker,
+.hotel-card p,
+.diary-heading p {
+  color: #8b442c;
+  font-family: var(--font-geist-mono);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin-top: 0.35rem;
+  max-width: 8ch;
+  font-size: clamp(4.6rem, 15vw, 9rem);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 0.82;
+  overflow-wrap: normal;
+}
+
+.hero h1 span {
+  display: block;
+}
+
+.hero-copy {
+  margin-top: 1.25rem;
+  max-width: 42rem;
+  color: #343d2f;
+  font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+  line-height: 1.45;
+}
+
+.hero-actions,
+.chapter-links,
+.mini-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.hero-actions {
+  margin-top: 1.7rem;
+}
+
+.hero-actions a,
+.chapter-links a,
+.mini-links a,
+.hotel-card a {
+  display: inline-flex;
+  min-height: 2.7rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(23, 32, 24, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 249, 237, 0.85);
+  color: #172018;
+  font-size: 0.92rem;
+  font-weight: 750;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.hero-actions a {
+  padding: 0 1rem;
+}
+
+.chapter-links a,
+.mini-links a {
+  min-height: 2.35rem;
+  padding: 0 0.8rem;
+}
+
+.hero-actions a:first-child {
+  background: #172018;
+  color: #fff9ed;
+}
+
+.hero-actions a:hover,
+.chapter-links a:hover,
+.mini-links a:hover,
+.hotel-card a:hover {
+  transform: translateY(-2px);
+}
+
+.hero-panel {
+  display: grid;
+  min-width: 0;
+  gap: 0.75rem;
+  padding: 0 clamp(0.5rem, 6vw, 5rem) 1rem;
+}
+
+.hero-panel div,
+.security-strip,
+.train-card,
+.chapter,
+.future-section {
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.86);
+  box-shadow: 0 24px 80px rgba(82, 62, 33, 0.14);
+}
+
+.hero-panel div {
+  padding: 1rem;
+}
+
+.hero-panel span,
+.train-date,
+.card-footer,
+.activity-heading span,
+.diary-card span {
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.hero-panel strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1rem;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+.security-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 auto;
+  max-width: 72rem;
+  padding: 1rem;
+}
+
+.security-strip svg {
+  flex: 0 0 auto;
+  color: #39784f;
+}
+
+.timeline-section,
+.chapters,
+.future-section {
+  margin: 0 auto;
+  max-width: 74rem;
+  padding: 4rem 1.25rem;
+}
+
+.section-heading {
+  margin-bottom: 1.5rem;
+  max-width: 48rem;
+}
+
+.section-heading h2 {
+  margin-top: 0.25rem;
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  font-weight: 920;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.section-heading span {
+  display: block;
+  margin-top: 0.75rem;
+  color: #4f5948;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.train-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+
+.train-card {
+  display: flex;
+  min-height: 18rem;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.train-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.2rem;
+  color: #2c8c99;
+  font-weight: 850;
+}
+
+.train-card h3 {
+  margin-top: 0.7rem;
+  font-size: 1.4rem;
+  font-weight: 880;
+  line-height: 1.05;
+}
+
+.train-card h3 span {
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.train-card p {
+  margin-top: 0.75rem;
+  color: #4f5948;
+  line-height: 1.5;
+}
+
+.card-footer {
+  display: flex;
+  margin-top: auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+}
+
+.status.booked {
+  background: rgba(57, 120, 79, 0.14);
+  color: #275d39;
+}
+
+.status.candidate {
+  background: rgba(44, 140, 153, 0.13);
+  color: #1d6b76;
+}
+
+.status.preferred {
+  background: rgba(214, 163, 63, 0.2);
+  color: #765216;
+}
+
+.status.alternative {
+  background: rgba(51, 65, 92, 0.12);
+  color: #33415c;
+}
+
+.chapter-stack {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.chapter {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 1.6rem);
+}
+
+.chapter::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.45rem;
+  background: var(--accent);
+  content: "";
+}
+
+.chapter-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.chapter h3 {
+  margin-top: 0.15rem;
+  font-size: clamp(2.1rem, 7vw, 5rem);
+  font-weight: 920;
+  letter-spacing: 0;
+  line-height: 0.94;
+}
+
+.chapter-top p,
+.travel-notes p,
+.future-section p {
+  color: #4f5948;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.chapter-top p {
+  margin-top: 0.85rem;
+  max-width: 45rem;
+}
+
+.stamp {
+  display: grid;
+  width: 8rem;
+  aspect-ratio: 1;
+  place-items: center;
+  justify-self: start;
+  border: 0.2rem solid color-mix(in srgb, var(--accent) 82%, #172018);
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--accent) 72%, #172018);
+  font-family: var(--font-geist-mono);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-7deg);
+}
+
+.chapter-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.7rem;
+  margin-top: 1.25rem;
+}
+
+.chapter-meta div,
+.travel-notes p {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px dashed rgba(23, 32, 24, 0.2);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: rgba(245, 236, 216, 0.55);
+  font-weight: 750;
+}
+
+.chapter-meta svg {
+  color: var(--accent);
+}
+
+.hotel-card {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background: #fffdf7;
+  padding: 1rem;
+}
+
+.hotel-card h4 {
+  margin-top: 0.2rem;
+  font-size: 1.35rem;
+  font-weight: 870;
+}
+
+.hotel-card span {
+  display: block;
+  margin-top: 0.25rem;
+  color: #4f5948;
+  line-height: 1.45;
+}
+
+.hotel-card a {
+  align-self: start;
+  padding: 0 0.9rem;
+}
+
+.travel-notes {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.chapter-links {
+  margin-top: 1rem;
+}
+
+.idea-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.idea-grid > div {
+  border-top: 1px solid rgba(23, 32, 24, 0.14);
+  padding-top: 1rem;
+}
+
+.idea-grid h4,
+.diary-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.idea-grid h4 svg,
+.diary-heading svg {
+  color: var(--accent);
+}
+
+.activity-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.activity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+}
+
+.activity-icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, #fff9ed);
+  color: var(--accent);
+}
+
+.activity-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.activity-heading h4 {
+  display: block;
+  font-size: 1rem;
+}
+
+.activity p {
+  margin-top: 0.25rem;
+  color: #4f5948;
+  line-height: 1.5;
+}
+
+.mini-links {
+  margin-top: 0.65rem;
+}
+
+.diary-panel {
+  margin-top: 1.4rem;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(255, 253, 247, 0.88), rgba(255, 253, 247, 0.88)),
+    repeating-linear-gradient(0deg, transparent 0 2rem, rgba(44, 140, 153, 0.12) 2rem calc(2rem + 1px));
+  padding: 1rem;
+}
+
+.diary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.diary-card {
+  border: 1px solid rgba(23, 32, 24, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.9);
+  padding: 0.85rem;
+}
+
+.diary-card p {
+  margin-top: 0.5rem;
+  min-height: 4.5rem;
+  color: #4f5948;
+  line-height: 1.45;
+}
+
+.photo-slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.photo-slots div {
+  display: grid;
+  aspect-ratio: 1.25;
+  place-items: center;
+  border: 1px dashed color-mix(in srgb, var(--accent) 55%, #172018);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 8%, #fff9ed);
+  color: color-mix(in srgb, var(--accent) 80%, #172018);
+}
+
+.future-section {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.future-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.future-grid div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 8px;
+  background: rgba(245, 236, 216, 0.72);
+  padding: 0.85rem;
+  color: #343d2f;
+  font-weight: 720;
+}
+
+.future-grid svg {
+  color: #39784f;
+}
+
+@media (min-width: 720px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(19rem, 26rem);
+    align-items: end;
+    padding: 2rem;
+  }
+
+  .hero-panel {
+    padding: 0 clamp(1rem, 3vw, 2rem) 2rem 0;
+  }
+
+  .security-strip {
+    margin-top: 1rem;
+  }
+
+  .chapter-top,
+  .hotel-card,
+  .future-section {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .stamp {
+    justify-self: end;
+  }
+
+  .travel-notes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 980px) {
+  .idea-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hero-panel div {
+    padding: 1.15rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding: 0.75rem;
+  }
+
+  .hero::before {
+    inset: 0.55rem;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    padding-top: 9rem;
+  }
+
+  .hero h1 {
+    max-width: 100%;
+    font-size: 3rem;
+    line-height: 0.9;
+  }
+
+  .hero-actions a {
+    width: 100%;
+  }
+
+  .activity-heading {
+    display: block;
+  }
+
+  .activity-heading span {
+    display: inline-block;
+    margin-top: 0.25rem;
+  }
+}

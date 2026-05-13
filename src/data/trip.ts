@@ -1,0 +1,517 @@
+export type Link = {
+  label: string;
+  href: string;
+};
+
+export type Activity = {
+  title: string;
+  note: string;
+  pace: "easy" | "half day" | "rainy day" | "food";
+  links?: Link[];
+};
+
+export type DiarySlot = {
+  day: string;
+  prompt: string;
+  photoSlots: number;
+};
+
+export type Stay = {
+  id: string;
+  city: string;
+  chapter: string;
+  dates: string;
+  nights: number;
+  mood: string;
+  colour: string;
+  stamp: string;
+  hotel?: {
+    name: string;
+    detail: string;
+    cancellation?: string;
+    map?: string;
+  };
+  summary: string;
+  travelIn?: string;
+  travelOut?: string;
+  links: Link[];
+  thingsToDo: Activity[];
+  foodIdeas: Activity[];
+  rainyDayIdeas: Activity[];
+  diary: DiarySlot[];
+  sourceUrls: string[];
+};
+
+export type TrainLeg = {
+  date: string;
+  from: string;
+  to: string;
+  time: string;
+  detail: string;
+  status: "booked" | "candidate" | "preferred" | "alternative";
+  cost?: string;
+};
+
+export const heroStats = [
+  { label: "Trip window", value: "27 July to 6 August 2026" },
+  { label: "Route", value: "London, Koblenz, Heidelberg, Freiburg and Cologne" },
+  { label: "Style", value: "Trains, old towns, castles, markets and river views" },
+];
+
+export const trainLegs: TrainLeg[] = [
+  {
+    date: "27 July",
+    from: "London St Pancras",
+    to: "Brussels Midi",
+    time: "09:01 to 12:05",
+    detail: "Eurostar out. Leave buffer time at St Pancras for passports and snacks.",
+    status: "booked",
+  },
+  {
+    date: "27 July",
+    from: "Bruxelles Midi",
+    to: "Koblenz Hbf",
+    time: "12:25 to 15:46",
+    detail: "Candidate train via Cologne.",
+    status: "candidate",
+    cost: "€115.98",
+  },
+  {
+    date: "30 July",
+    from: "Koblenz Hbf",
+    to: "Heidelberg Hbf",
+    time: "09:48 to 11:34 or 11:48 to 13:34",
+    detail: "Direct options. Pick the one that fits checkout and breakfast.",
+    status: "candidate",
+    cost: "€43.98",
+  },
+  {
+    date: "2 August",
+    from: "Heidelberg Hbf",
+    to: "Freiburg Hbf",
+    time: "10:43 to 12:31",
+    detail: "Likely train with one transfer.",
+    status: "candidate",
+    cost: "€59.98",
+  },
+  {
+    date: "5 August",
+    from: "Freiburg Hbf",
+    to: "Cologne Hbf",
+    time: "13:55 to 17:05",
+    detail: "Preferred direct train. Alternative is 11:55 to 15:05.",
+    status: "preferred",
+    cost: "€107.98",
+  },
+  {
+    date: "6 August",
+    from: "Cologne Hbf",
+    to: "Brussels Midi",
+    time: "09:43 to 11:35",
+    detail: "Direct ICE 316, then Eurostar home.",
+    status: "candidate",
+    cost: "€83.98",
+  },
+];
+
+export const stays: Stay[] = [
+  {
+    id: "koblenz",
+    city: "Koblenz",
+    chapter: "Chapter 1",
+    dates: "27 to 30 July",
+    nights: 3,
+    mood: "River junctions and fortress views",
+    colour: "var(--chapter-rhine)",
+    stamp: "Rhein + Mosel",
+    hotel: {
+      name: "Hotel Trierer Hof",
+      detail: "Booking.com stay, £521 including breakfast.",
+      cancellation: "Free cancellation up to 26 July.",
+      map: "https://maps.google.com/?q=Hotel+Trierer+Hof+Koblenz",
+    },
+    summary:
+      "Koblenz is the gentle start: old town lanes, the Rhine and Moselle meeting at Deutsches Eck, a cable car over the water and an easy fortress afternoon.",
+    travelIn: "Arrive by train from Brussels on 27 July.",
+    travelOut: "Train to Heidelberg on 30 July.",
+    links: [
+      { label: "Visit Koblenz", href: "https://www.visit-koblenz.de/" },
+      { label: "Cable car", href: "https://www.seilbahn-koblenz.de/" },
+      { label: "KD river cruises", href: "https://www.k-d.com/en/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Deutsches Eck and the riverside",
+        note: "Start with the big confluence view where the Moselle meets the Rhine, then wander the promenade towards St Castor and the old town.",
+        pace: "easy",
+        links: [{ label: "Deutsches Eck", href: "https://www.visit-koblenz.de/en/sights/deutsches-eck" }],
+      },
+      {
+        title: "Cable car to Ehrenbreitstein Fortress",
+        note: "Take the panoramic cabins over the Rhine. The fortress has wide views, exhibitions and space to roam if the weather is kind.",
+        pace: "half day",
+        links: [
+          { label: "Cable car info", href: "https://www.seilbahn-koblenz.de/" },
+          { label: "Fortress", href: "https://www.tor-zum-welterbe.de/" },
+        ],
+      },
+      {
+        title: "Rhine or Moselle boat loop",
+        note: "Keep this as a flexible river day. KD and local operators list seasonal sightseeing trips from Koblenz.",
+        pace: "half day",
+        links: [{ label: "KD cruises", href: "https://www.k-d.com/en/" }],
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Old town dinner stroll",
+        note: "Pick somewhere near the old town or riverfront once everyone has found their bearings.",
+        pace: "food",
+      },
+      {
+        title: "Fortress terrace pause",
+        note: "If the cable car day works, use the fortress views as the built-in drink stop.",
+        pace: "food",
+      },
+    ],
+    rainyDayIdeas: [
+      {
+        title: "Forum Confluentes and museums",
+        note: "A simple fallback near the centre if the river plans look wet.",
+        pace: "rainy day",
+      },
+      {
+        title: "Fortress exhibitions",
+        note: "Still useful in patchy weather, especially if the cable car is running and visibility is decent.",
+        pace: "rainy day",
+      },
+    ],
+    diary: [
+      { day: "27 July", prompt: "Arrival day: first German snack, first river photo, first favourite street.", photoSlots: 3 },
+      { day: "28 July", prompt: "Fortress or river day notes, best view and funniest travel moment.", photoSlots: 4 },
+      { day: "29 July", prompt: "Slow Koblenz day: what would we recommend to another family?", photoSlots: 4 },
+    ],
+    sourceUrls: [
+      "https://www.visit-koblenz.de/en/sights/deutsches-eck",
+      "https://www.seilbahn-koblenz.de/",
+      "https://www.tor-zum-welterbe.de/",
+      "https://www.k-d.com/en/",
+    ],
+  },
+  {
+    id: "heidelberg",
+    city: "Heidelberg",
+    chapter: "Chapter 2",
+    dates: "30 July to 2 August",
+    nights: 3,
+    mood: "Castle, bridge and river town wandering",
+    colour: "var(--chapter-sandstone)",
+    stamp: "Schloss + Neckar",
+    hotel: {
+      name: "Premier Inn Heidelberg City Centre",
+      detail: "Booking.com stay, £347.05 with cancellation.",
+      map: "https://maps.google.com/?q=Premier+Inn+Heidelberg+City+Centre",
+    },
+    summary:
+      "Heidelberg is the storybook middle: castle ruins above the old town, the Old Bridge across the Neckar and a walk with one of the best city views.",
+    travelIn: "Direct train from Koblenz on 30 July.",
+    travelOut: "Train to Freiburg on 2 August.",
+    links: [
+      { label: "Heidelberg tourism", href: "https://www.tourism-heidelberg.com/" },
+      { label: "Heidelberg Castle", href: "https://www.schloss-heidelberg.de/en/" },
+      { label: "Speyer tourism", href: "https://www.speyer.de/en/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Castle and old town",
+        note: "Use the castle as the big anchor, then drift down through Kornmarkt, Marktplatz and the Hauptstrasse.",
+        pace: "half day",
+        links: [{ label: "Castle", href: "https://www.schloss-heidelberg.de/en/" }],
+      },
+      {
+        title: "Old Bridge and bridge monkey",
+        note: "Good for an early evening loop over the Neckar and back into the old town.",
+        pace: "easy",
+        links: [{ label: "Old Bridge", href: "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/old-bridge/index_eng.html" }],
+      },
+      {
+        title: "Philosopher's Walk",
+        note: "A climb, but the reward is the classic city, river and castle view. Save it for a clear, cooler spell.",
+        pace: "half day",
+        links: [{ label: "Philosopher's Walk", href: "https://www.tourism-heidelberg.com/explore/historical-sights/heiligenberg/philosophers-walk/index_eng.html" }],
+      },
+      {
+        title: "Possible Speyer day trip",
+        note: "Keep this as a maybe. Speyer works if everyone wants a change from Heidelberg and a cathedral day.",
+        pace: "half day",
+        links: [{ label: "Speyer", href: "https://www.speyer.de/en/" }],
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Market square dinner",
+        note: "Look around Marktplatz or side streets after the castle. It keeps the evening simple.",
+        pace: "food",
+      },
+      {
+        title: "River picnic option",
+        note: "Grab easy food and use the Neckar as the view if the weather is warm.",
+        pace: "food",
+      },
+    ],
+    rainyDayIdeas: [
+      {
+        title: "Palatinate Museum",
+        note: "A central old town option if rain makes the castle less appealing.",
+        pace: "rainy day",
+      },
+      {
+        title: "Castle interiors and cafe pause",
+        note: "Still feels like Heidelberg even if the paths are damp.",
+        pace: "rainy day",
+      },
+    ],
+    diary: [
+      { day: "30 July", prompt: "First Heidelberg impressions: castle spotted, best lane and dinner verdict.", photoSlots: 3 },
+      { day: "31 July", prompt: "Bridge, castle or walk day: collect one postcard view and one tiny detail.", photoSlots: 5 },
+      { day: "1 August", prompt: "Free choice day: Heidelberg again or Speyer side quest notes.", photoSlots: 5 },
+    ],
+    sourceUrls: [
+      "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/index_eng.html",
+      "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/old-bridge/index_eng.html",
+      "https://www.tourism-heidelberg.com/explore/historical-sights/heiligenberg/philosophers-walk/index_eng.html",
+      "https://www.schloss-heidelberg.de/en/",
+      "https://www.speyer.de/en/",
+    ],
+  },
+  {
+    id: "freiburg",
+    city: "Freiburg im Breisgau",
+    chapter: "Chapter 3",
+    dates: "2 to 5 August",
+    nights: 3,
+    mood: "Market mornings and Black Forest edges",
+    colour: "var(--chapter-forest)",
+    stamp: "Muenster + Baechle",
+    hotel: {
+      name: "Mercure Hotel Freiburg am Münster",
+      detail: "Direct Accor booking, €538.65, about £468.",
+      cancellation: "Free cancellation up to 1 August.",
+      map: "https://maps.google.com/?q=Mercure+Hotel+Freiburg+am+M%C3%BCnster",
+    },
+    summary:
+      "Freiburg is the sunny old town chapter: Münsterplatz, market food, little Bächle channels, Schlossberg views and an easy base for Gengenbach.",
+    travelIn: "Train from Heidelberg on 2 August.",
+    travelOut: "Preferred direct train to Cologne on 5 August.",
+    links: [
+      { label: "Visit Freiburg", href: "https://visit.freiburg.de/en" },
+      { label: "Münstermarkt", href: "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg" },
+      { label: "Schlossberg", href: "https://visit.freiburg.de/schlossberg" },
+    ],
+    thingsToDo: [
+      {
+        title: "Münsterplatz and the morning market",
+        note: "Go early enough for the bustle around the Minster. The market is the obvious breakfast, snack and photo target.",
+        pace: "easy",
+        links: [{ label: "Münstermarkt", href: "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg" }],
+      },
+      {
+        title: "Bächle and old town wander",
+        note: "Follow the little water channels through the old town and give everyone a small mission to spot details.",
+        pace: "easy",
+      },
+      {
+        title: "Schlossberg sunset",
+        note: "Walk or ride up from the Stadtgarten area for views over the old town, the Minster and towards the hills.",
+        pace: "half day",
+        links: [{ label: "Schlossberg", href: "https://visit.freiburg.de/schlossberg" }],
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Lange Rote at the market",
+        note: "The classic Freiburg sausage stop. There are also fruit, bread, cheese and sweet options around the stalls.",
+        pace: "food",
+      },
+      {
+        title: "Münsterplatz cafe pause",
+        note: "Good low effort choice near the hotel if energy dips.",
+        pace: "food",
+      },
+    ],
+    rainyDayIdeas: [
+      {
+        title: "Museum für Neue Kunst or Augustinermuseum",
+        note: "Central museum options for a wet afternoon close to the old town.",
+        pace: "rainy day",
+      },
+      {
+        title: "Covered cafe and tram loop",
+        note: "Keep it gentle: market if it clears, cafe if it doesn't.",
+        pace: "rainy day",
+      },
+    ],
+    diary: [
+      { day: "2 August", prompt: "Arrival and Münsterplatz: first market snack to remember.", photoSlots: 3 },
+      { day: "3 August", prompt: "Freiburg old town day: best Bächle moment and best view.", photoSlots: 5 },
+      { day: "4 August", prompt: "Day trip or slow day: what felt most Black Forest?", photoSlots: 5 },
+    ],
+    sourceUrls: [
+      "https://visit.freiburg.de/en",
+      "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg",
+      "https://visit.freiburg.de/en/muensterplatz-freiburg",
+      "https://visit.freiburg.de/schlossberg",
+    ],
+  },
+  {
+    id: "gengenbach",
+    city: "Gengenbach day trip",
+    chapter: "Side quest",
+    dates: "From Freiburg",
+    nights: 0,
+    mood: "Black Forest old town in one easy outing",
+    colour: "var(--chapter-gold)",
+    stamp: "Black Forest",
+    summary:
+      "Gengenbach stays as a day trip, not an overnight stop. It gives the trip a smaller Black Forest town: gates, towers, half timbered streets and a slower pace.",
+    travelIn: "Use Freiburg as the base and check train times closer to travel.",
+    travelOut: "Return to Freiburg for the night.",
+    links: [
+      { label: "Gengenbach tourism", href: "https://www.stadt-gengenbach.de/rathaus/kultur-tourismus-gmbh" },
+      { label: "Train planning", href: "https://int.bahn.de/en" },
+    ],
+    thingsToDo: [
+      {
+        title: "Old town loop",
+        note: "Aim for the market square, timber framed streets, towers and gates without over planning it.",
+        pace: "easy",
+      },
+      {
+        title: "Photo walk",
+        note: "Make this the scrapbook day: doors, signs, rooftops, fountains and a family photo in the square.",
+        pace: "easy",
+      },
+      {
+        title: "Black Forest feeling",
+        note: "Use the trip as a contrast to Freiburg: smaller scale, slower streets and a greener backdrop.",
+        pace: "half day",
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Cake stop",
+        note: "Leave space for a cafe stop. This is the right day for something sweet.",
+        pace: "food",
+      },
+      {
+        title: "Simple lunch near the square",
+        note: "Keep the plan loose and choose once you're there.",
+        pace: "food",
+      },
+    ],
+    rainyDayIdeas: [
+      {
+        title: "Shortened old town visit",
+        note: "If it rains, make it a quick train outing with cafe time rather than a full walking day.",
+        pace: "rainy day",
+      },
+      {
+        title: "Swap with Freiburg museum time",
+        note: "Keep the Gengenbach day movable until the forecast is clearer.",
+        pace: "rainy day",
+      },
+    ],
+    diary: [
+      { day: "Flexible", prompt: "Side quest notes: best sign, best cake and best little street.", photoSlots: 6 },
+    ],
+    sourceUrls: ["https://www.stadt-gengenbach.de/rathaus/kultur-tourismus-gmbh", "https://int.bahn.de/en"],
+  },
+  {
+    id: "cologne",
+    city: "Cologne",
+    chapter: "Final night",
+    dates: "5 to 6 August",
+    nights: 1,
+    mood: "Cathedral, river and easy final dinner",
+    colour: "var(--chapter-ink)",
+    stamp: "Dom + Rhine",
+    hotel: {
+      name: "Hilton Cologne",
+      detail: "Booked with 83k Hilton points.",
+      cancellation: "Cancellation up to 4 August.",
+      map: "https://maps.google.com/?q=Hilton+Cologne",
+    },
+    summary:
+      "Cologne is deliberately low effort: arrive, check in, see the cathedral, wander the old town or river and choose dinner without making the final night complicated.",
+    travelIn: "Direct train from Freiburg on 5 August if the preferred option is booked.",
+    travelOut: "Direct ICE to Brussels on 6 August, then Eurostar home.",
+    links: [
+      { label: "Cologne tourism", href: "https://www.koelntourismus.de/en" },
+      { label: "Cologne Cathedral", href: "https://www.koelner-dom.de/en" },
+      { label: "Hilton Cologne dining", href: "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Cologne Cathedral",
+        note: "The hotel is close enough to keep this simple. Go for the outside drama, then decide whether anyone has energy to go in.",
+        pace: "easy",
+        links: [{ label: "Cathedral", href: "https://www.koelner-dom.de/en" }],
+      },
+      {
+        title: "Old town and Rhine loop",
+        note: "A gentle last evening: old town lanes, river edge and maybe the Hohenzollern Bridge view.",
+        pace: "easy",
+        links: [{ label: "Old Town", href: "https://willkommen.koelntourismus.de/en/poi/cologne-old-town" }],
+      },
+      {
+        title: "Rheinboulevard view",
+        note: "If everyone is up for a bridge walk, the Deutz side gives a strong skyline view back to the old town.",
+        pace: "easy",
+        links: [{ label: "Rhine Boulevard", href: "https://willkommen.koelntourismus.de/en/poi/rhine-boulevard" }],
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Hotel fallback",
+        note: "Hilton Cologne has Pigeon Post Bar & Eatery, useful if the travel day wins.",
+        pace: "food",
+        links: [{ label: "Hotel dining", href: "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/" }],
+      },
+      {
+        title: "Old town dinner",
+        note: "Choose somewhere close to the cathedral or old town so the morning train stays stress free.",
+        pace: "food",
+      },
+    ],
+    rainyDayIdeas: [
+      {
+        title: "Cathedral plus hotel dinner",
+        note: "The simplest wet weather plan, with very little walking.",
+        pace: "rainy day",
+      },
+      {
+        title: "Museum Ludwig",
+        note: "Close to the cathedral and main station if you want one cultural stop before dinner.",
+        pace: "rainy day",
+      },
+    ],
+    diary: [
+      { day: "5 August", prompt: "Last German evening: cathedral photo, final dinner and trip highlights.", photoSlots: 5 },
+      { day: "6 August", prompt: "Home journey: best train snack and one thing we'd do again.", photoSlots: 3 },
+    ],
+    sourceUrls: [
+      "https://www.koelntourismus.de/en",
+      "https://willkommen.koelntourismus.de/en/poi/cologne-old-town",
+      "https://willkommen.koelntourismus.de/en/poi/rhine-boulevard",
+      "https://www.koelner-dom.de/en",
+      "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/",
+    ],
+  },
+];
+
+export const futureOptions = [
+  "Keep using local data and commit diary updates through GitHub.",
+  "Add Supabase if comments, sign ins or shared editing become useful.",
+  "Add Vercel Blob if the main need is simple private photo storage.",
+  "Add Sanity if the diary becomes a proper edited family travel journal.",
+];
