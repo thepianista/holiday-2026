@@ -174,17 +174,17 @@ export const flights: FlightLeg[] = [
   {
     id: "manu-lto-sjd-connector",
     passenger: "Manuela",
-    date: "26 or 27 Jun 2026",
+    date: "Fri 26 Jun 2026 (afternoon — recommended)",
     from: "Loreto",
     fromCode: "LTO",
-    to: "San José del Cabo",
+    to: "San José del Cabo (overnight at airport hotel)",
     toCode: "SJD",
-    airline: "TODO — Calafia / Aeromar / Volaris connector",
+    airline: "Option A: Calafia LTO → LAP + Calafia LAP → SJD same day  ·  Option B: Aeroméxico Connect LTO → MEX → SJD",
     flightNumber: "TODO",
     departure: "TBD",
     arrival: "TBD",
     status: "to book",
-    note: "Needed because the ABC bus arrives SJD ~13:00 — too late for the 11:52 ORD departure. Cheapest is usually Calafia LTO → LAP → SJD same-day; check Aeromar direct if it exists.",
+    note: "Bus is out (arrives SJD ~13:00, after the 11:52 ORD departure). Recommended: fly out of Loreto on the afternoon of 26 Jun, overnight at a SJD airport hotel, then catch the 11:52 ORD flight on 27 Jun. Manu has the morning of 26 Jun free in Loreto (dive day is for the divers).",
   },
   {
     id: "manu-sjd-ord-return",
@@ -199,7 +199,7 @@ export const flights: FlightLeg[] = [
     departure: "11:52",
     arrival: "TBD",
     status: "booked",
-    note: "Manu's home leg. Confirm she's at SJD by ~10:00 via the LTO connector above.",
+    note: "Manu's home leg. She should be at SJD by ~10:00 — the recommended path is overnighting at a SJD airport hotel on 26 Jun.",
   },
   {
     id: "ret-1-sjd-atl",
@@ -214,7 +214,7 @@ export const flights: FlightLeg[] = [
     departure: "13:30",
     arrival: "20:35",
     status: "booked",
-    note: "Be at SJD by 11:30 — Payless rental return is at 11:00 same morning. ⚠ Confirm wife is on the KLM ticket back (she flew in via ORD — she may have a separate return).",
+    note: "Be at SJD by 11:30 — Payless rental return is at 11:00 same morning. Wife is on this KLM ticket with Julian (only her outbound was via ORD).",
   },
   {
     id: "ret-2-atl-ams",
@@ -1230,10 +1230,58 @@ export const itineraryItems: ItineraryItem[] = [
   },
 ];
 
+export type ExtraStay = {
+  id: string;
+  for: string;
+  city: string;
+  dates: string;
+  nights: number;
+  reason: string;
+  hotels: HotelOption[];
+};
+
+export const extraStays: ExtraStay[] = [
+  {
+    id: "manu-sjd-overnight",
+    for: "Manuela (solo)",
+    city: "SJD Airport area",
+    dates: "Fri 26 Jun (1 night)",
+    nights: 1,
+    reason:
+      "Bridge between the LTO afternoon flight and the 27 Jun 11:52 SJD → ORD departure. Lets Manu drop bags, sleep and walk to the terminal.",
+    hotels: [
+      {
+        name: "Hampton by Hilton Los Cabos",
+        detail: "Closest brand-name option to SJD — ~5 min by hotel shuttle. Free breakfast, reliable.",
+        status: "candidate",
+        map: "https://maps.google.com/?q=Hampton+by+Hilton+Los+Cabos",
+        links: [
+          {
+            label: "Hilton",
+            href: "https://www.hilton.com/en/hotels/sjdcohx-hampton-los-cabos/",
+          },
+        ],
+      },
+      {
+        name: "Holiday Inn Express Los Cabos",
+        detail: "Same plaza as the Hampton, similar pricing. Solid IHG points option.",
+        status: "candidate",
+        map: "https://maps.google.com/?q=Holiday+Inn+Express+Los+Cabos+San+Jose",
+      },
+      {
+        name: "City Express by Marriott San José del Cabo",
+        detail: "Cheapest reliable option near the airport. Basic but clean.",
+        status: "candidate",
+        map: "https://maps.google.com/?q=City+Express+San+Jose+del+Cabo",
+      },
+    ],
+  },
+];
+
 export const reservationPriority = [
+  "Manu's LTO → SJD connector (26 Jun afternoon) + SJD-airport overnight — bus won't make the 11:52 ORD",
   "Cabo Pulmo dive operator (Dive Cabo Pulmo) — small slots, fills fast",
   "Espíritu Santo boat tour (Punta Baja, Alonso Tours, Mar y Aventuras)",
-  "Manu's LTO → SJD connector + SJD overnight hotel for 26/27 Jun (bus won't make the 11:52 ORD)",
   "Hotels Pescadero + La Paz + Loreto",
   "Cabo Pulmo accommodation (Beach Resort or Bungalows)",
   "Bahía Concepción — can usually be decided on the day",

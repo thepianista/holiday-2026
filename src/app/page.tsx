@@ -19,6 +19,7 @@ import {
 import {
   carRental,
   diveOperators,
+  extraStays,
   flights,
   groundLegs,
   itineraryItems,
@@ -318,13 +319,45 @@ function PlanTab() {
   );
 }
 
+function HotelOptionCard({ hotel }: { hotel: { name: string; detail: string; status?: string; cancellation?: string; map?: string; links?: { label: string; href: string }[] } }) {
+  return (
+    <div className="hotel-card">
+      <div>
+        <p>Option</p>
+        <h4>{hotel.name}</h4>
+        <span>{hotel.detail}</span>
+        {hotel.cancellation ? <span>{hotel.cancellation}</span> : null}
+        {hotel.status ? (
+          <span className={`status ${hotel.status.replace(" ", "-")}`}>
+            {statusLabels[hotel.status]}
+          </span>
+        ) : null}
+      </div>
+      <div className="hotel-actions">
+        {hotel.map ? (
+          <a href={hotel.map} rel="noreferrer" target="_blank" title={`Map for ${hotel.name}`}>
+            <MapPin aria-hidden="true" size={16} />
+            Map
+          </a>
+        ) : null}
+        {hotel.links?.map((link) => (
+          <a href={link.href} key={link.href} rel="noreferrer" target="_blank">
+            <ExternalLink aria-hidden="true" size={14} />
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function StaysTab() {
   return (
     <section className="tab-section">
       <SectionTitle
         kicker="Base camps"
         title="Where we are sleeping"
-        copy="Hotel candidates per stop. None of these are booked yet — pick one per stay and confirm."
+        copy="Hotel candidates per stop. The Mexico City Airbnb is booked; the rest are still to pick."
       />
       <div className="stays-list">
         {stays.map((stay) => (
@@ -334,39 +367,48 @@ function StaysTab() {
             {stay.hotels?.length ? (
               <div className="hotel-grid">
                 {stay.hotels.map((hotel) => (
-                  <div className="hotel-card" key={hotel.name}>
-                    <div>
-                      <p>Option</p>
-                      <h4>{hotel.name}</h4>
-                      <span>{hotel.detail}</span>
-                      {hotel.cancellation ? <span>{hotel.cancellation}</span> : null}
-                      {hotel.status ? (
-                        <span className={`status ${hotel.status.replace(" ", "-")}`}>
-                          {statusLabels[hotel.status]}
-                        </span>
-                      ) : null}
-                    </div>
-                    <div className="hotel-actions">
-                      {hotel.map ? (
-                        <a href={hotel.map} rel="noreferrer" target="_blank" title={`Map for ${hotel.name}`}>
-                          <MapPin aria-hidden="true" size={16} />
-                          Map
-                        </a>
-                      ) : null}
-                      {hotel.links?.map((link) => (
-                        <a href={link.href} key={link.href} rel="noreferrer" target="_blank">
-                          <ExternalLink aria-hidden="true" size={14} />
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
+                  <HotelOptionCard hotel={hotel} key={hotel.name} />
                 ))}
               </div>
             ) : null}
             <div className="travel-notes">
               {stay.travelIn ? <p>{stay.travelIn}</p> : null}
               {stay.travelOut ? <p>{stay.travelOut}</p> : null}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <SectionTitle
+        kicker="One-off overnights"
+        title="Solo stays outside the main loop"
+        copy="Connection nights for travellers leaving on their own schedule."
+      />
+      <div className="stays-list">
+        {extraStays.map((extra) => (
+          <article
+            className="stay-block"
+            key={extra.id}
+            style={{ "--accent": "var(--chapter-ink)" } as React.CSSProperties}
+          >
+            <header className="stay-header">
+              <span className="chapter-kicker">{extra.for}</span>
+              <h3>{extra.city}</h3>
+              <div className="stay-meta">
+                <span>
+                  <MapPin aria-hidden="true" size={14} />
+                  {extra.dates}
+                </span>
+                <span>
+                  <Sparkles aria-hidden="true" size={14} />
+                  {extra.reason}
+                </span>
+              </div>
+            </header>
+            <div className="hotel-grid">
+              {extra.hotels.map((hotel) => (
+                <HotelOptionCard hotel={hotel} key={hotel.name} />
+              ))}
             </div>
           </article>
         ))}
