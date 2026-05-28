@@ -1,5 +1,5 @@
 {
-  "name": "holiday-2026",
+  "name": "mexico-2026",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "verify:layout": "node scripts/verify-layout.mjs"
+    "verify:layout": "node scripts/verify-layout.mjs",
+    "import:places": "node scripts/import-places.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.14.0",

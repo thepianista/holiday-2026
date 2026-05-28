@@ -1,11 +1,11 @@
-# Germany 2026 Family Field Guide
+# Mexico 2026 Field Guide
 
-Private family holiday microsite for the Germany 2026 trip. It is a static Next.js app with local editable trip data, a pre-trip itinerary, destination guide cards and placeholder photo diary slots.
+Private microsite for the Mexico trip in June–July 2026 (Mexico City + Baja California Sur). Static Next.js app with local editable trip data, a Google Maps KML importer for saved places and a password-gated deploy on Vercel.
 
 ## Routes
 
-- `/` is the playful family field guide for places, day trip ideas and the photo diary.
-- `/itinerary` is the practical trip list with hotels, trains, costs, cancellation notes and booking status.
+- `/` — playful field guide: day-by-day plan, flights, stays, things to do, dive/snorkel notes, food and the saved Google Maps places.
+- `/itinerary` — operational view: chronological list with statuses, costs and reservation order.
 
 ## Stack
 
@@ -15,26 +15,25 @@ Private family holiday microsite for the Germany 2026 trip. It is a static Next.
 - ESLint
 - lucide-react icons
 
-## Run Locally
+## Run locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open http://localhost:3000.
 
-## Useful Commands
+## Useful commands
 
 ```bash
 npm run lint
 npm run build
-npm run verify:layout
+npm run import:places # sync your Google Maps places (see below)
+npm run verify:layout # mobile + desktop layout check (needs the dev server running)
 ```
 
-`verify:layout` expects the app to be running locally. Set `VERIFY_URL` if it is not on `http://localhost:3000`. It checks `/` and `/itinerary` on desktop and mobile.
-
-## Edit Trip Content
+## Edit trip content
 
 Most trip content lives in:
 
@@ -42,51 +41,61 @@ Most trip content lives in:
 src/data/trip.ts
 ```
 
-Edit city chapters, train legs, hotel notes, activity ideas, source URLs and diary prompts there. Source URLs are kept in the data for maintenance and research traceability, but they are not shown as a public source list in the app.
+Edit stays, flights, ground legs (drives + bus), dive operators, snorkel spots and the day-by-day itinerary array.
+
+## Sync Google Maps saved places
+
+We do not call the Google Maps API — instead we import a snapshot of your saved places and turn it into typed data. Two source formats are supported and the importer reads whichever you provide:
+
+**Option A — Google Takeout GeoJSON (best for your personal "Saved" lists)**
+
+1. Open [takeout.google.com](https://takeout.google.com), deselect everything, then tick only **Maps (your places)** → download the ZIP.
+2. Unzip. Each saved list becomes its own JSON file under `Takeout/Maps (your places)/<List name>.json`.
+3. Drop the JSON files for the lists you want into `data/places/`. The filename (without `.json`) becomes the folder name on the Map tab.
+
+**Option B — Google Takeout 'Saved' CSV (per-list export)**
+
+1. takeout.google.com → tick only **Saved** → download.
+2. Each list becomes `<List name>.csv` (German headers Titel / Notiz / URL / Tags / Kommentar are auto-detected).
+3. Drop the CSV(s) into `data/places/`. The importer keeps the place URL even though coordinates aren't included in this format.
+
+**Option C — Google My Maps KML (best for curated trip maps)**
+
+1. Open [google.com/maps/d](https://www.google.com/maps/d/) and open the map.
+2. Three-dot menu → **Export to KML/KMZ** → tick "Keep as KML" → download.
+3. Save the file as `data/places.kml`.
+
+Then:
+
+```bash
+npm run import:places
+```
+
+The script writes `src/data/places.ts` with a typed `Place[]` array grouped by folder. The `/data` paths are gitignored so the export never leaves your machine. Re-run the script whenever you change a list.
+
+## Flights
+
+Flights live in `src/data/trip.ts` under the `flights` array. They start as placeholders — fill in airline, flight number, departure/arrival, PNR and seat once each leg is booked. Keep PNRs in your wallet or email; treat the public field as a sanity check only.
 
 ## Privacy
 
-Do not commit booking confirmation numbers, booking access codes, private email details, phone numbers, home addresses or passport details.
-
-The app includes:
-
 - `robots` metadata with `noindex`
-- `src/app/robots.ts` blocking crawlers
-- optional basic auth middleware via `HOLIDAY_SITE_PASSWORD`
+- `src/app/robots.ts` blocks crawlers
+- Basic-auth middleware via `HOLIDAY_SITE_PASSWORD` env var
 
-For Vercel, set an environment variable:
+For Vercel set:
 
 ```text
 HOLIDAY_SITE_PASSWORD=choose-a-private-password
 ```
 
-When the variable is set, the site prompts for basic authentication. Any username works. The password must match the environment variable.
+Any username works; the password must match. For extra protection, enable Vercel Deployment Protection or Vercel Authentication in the project dashboard.
 
-For stronger protection, also enable Vercel Deployment Protection or Vercel Authentication in the project settings before sharing the URL.
+Do not commit booking confirmations, PNRs, passport details or private contact info. The `.gitignore` already excludes `data/places.kml` and `Mexico Holiday 2026 Notes.md`.
 
 ## Deployment
 
-1. Push the repository to GitHub.
-2. Import `web3at50/holiday-2026` into Vercel.
-3. Keep the default Next.js build settings.
-4. Add `HOLIDAY_SITE_PASSWORD` in Vercel environment variables.
-5. Deploy and check the live URL on mobile.
-
-## Future Diary Options
-
-Version one uses local data only. Later options:
-
-- keep editing diary entries through GitHub commits
-- Supabase for comments, accounts or shared editing
-- Vercel Blob for private photo storage
-- Sanity for a more polished edited travel journal
-
-## Research Sources
-
-The destination shortlists were built from official tourism, attraction and operator pages where practical:
-
-- Koblenz tourism, Koblenz cable car, Ehrenbreitstein Fortress and KD cruises
-- Heidelberg tourism, Heidelberg Castle and Speyer tourism
-- Freiburg tourism, Münstermarkt and Schlossberg
-- Gengenbach city tourism and Deutsche Bahn journey planning
-- Cologne tourism, Cologne Cathedral, Rheinboulevard and Hilton Cologne dining
+1. Push to GitHub.
+2. Import the repo into Vercel (default Next.js settings).
+3. Add `HOLIDAY_SITE_PASSWORD` in Vercel env vars.
+4. Deploy and open the live URL on a phone to spot-check the mobile bottom nav.

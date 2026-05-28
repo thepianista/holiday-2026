@@ -6,7 +6,7 @@ export type Link = {
 export type Activity = {
   title: string;
   note: string;
-  pace: "easy" | "half day" | "rainy day" | "food";
+  pace: "easy" | "half day" | "rainy day" | "food" | "snorkel" | "dive";
   links?: Link[];
 };
 
@@ -14,6 +14,15 @@ export type DiarySlot = {
   day: string;
   prompt: string;
   photoSlots: number;
+};
+
+export type HotelOption = {
+  name: string;
+  detail: string;
+  status?: "booked" | "preferred" | "candidate" | "to book";
+  map?: string;
+  cancellation?: string;
+  links?: Link[];
 };
 
 export type Stay = {
@@ -25,40 +34,68 @@ export type Stay = {
   mood: string;
   colour: string;
   stamp: string;
-  hotel?: {
-    name: string;
-    detail: string;
-    cancellation?: string;
-    map?: string;
-    links?: Link[];
-  };
+  hotels?: HotelOption[];
   summary: string;
   travelIn?: string;
   travelOut?: string;
   links: Link[];
   thingsToDo: Activity[];
   foodIdeas: Activity[];
-  rainyDayIdeas: Activity[];
-  diary: DiarySlot[];
-  sourceUrls: string[];
+  rainyDayIdeas?: Activity[];
+  snorkelSpots?: Activity[];
+  diveSites?: Activity[];
+  practical?: string[];
+  diary?: DiarySlot[];
+  sourceUrls?: string[];
 };
 
-export type TrainLeg = {
+export type Passenger = "Julian" | "Wife" | "Both" | "Third";
+
+export type FlightLeg = {
+  id: string;
+  passenger: Passenger;
   date: string;
   from: string;
+  fromCode: string;
   to: string;
-  time: string;
-  detail: string;
-  status: "booked" | "candidate" | "preferred" | "alternative";
-  cost?: string;
+  toCode: string;
+  airline: string;
+  flightNumber: string;
+  departure: string;
+  arrival: string;
+  pnr?: string;
+  seat?: string;
+  status: "booked" | "candidate" | "to book";
+  note?: string;
+};
+
+export type GroundLeg = {
+  id: string;
+  date: string;
+  mode: "drive" | "bus" | "boat";
+  from: string;
+  to: string;
+  duration: string;
+  passenger?: Passenger;
+  note?: string;
+  status: "planned" | "booked" | "to book";
+};
+
+export type DiveOperator = {
+  region: "La Paz" | "Loreto" | "Cabo Pulmo";
+  name: string;
+  contact?: string;
+  highlights: string;
+  links?: Link[];
 };
 
 export type ItineraryItem = {
   date: string;
+  day: string;
   title: string;
   place: string;
-  type: "train" | "hotel" | "decision" | "day trip";
-  status: "booked" | "candidate" | "preferred" | "to book" | "flexible";
+  type: "flight" | "drive" | "bus" | "hotel" | "activity" | "decision";
+  status: "booked" | "candidate" | "preferred" | "to book" | "flexible" | "planned";
   time?: string;
   bookedWith?: string;
   cost?: string;
@@ -67,757 +104,1125 @@ export type ItineraryItem = {
 };
 
 export const heroStats = [
-  { label: "Trip window", value: "27 July to 6 August 2026" },
-  { label: "Route", value: "London, Koblenz, Heidelberg, Freiburg and Cologne" },
-  { label: "Style", value: "Trains, old towns, castles, markets and river views" },
+  { label: "Trip window", value: "16 June to 4 July 2026" },
+  { label: "Route", value: "Mexico City, Pescadero, La Paz, Loreto, Bahía Concepción, Cabo Pulmo" },
+  { label: "Style", value: "City food crawl, Baja road trip, diving and snorkelling" },
 ];
 
-export const trainLegs: TrainLeg[] = [
+export const flights: FlightLeg[] = [
   {
-    date: "27 July",
-    from: "London St Pancras",
-    to: "Brussels Midi",
-    time: "09:01 to 12:05",
-    detail: "Eurostar out. Leave buffer time at St Pancras for passports and snacks.",
+    id: "out-1-ber-ams",
+    passenger: "Both",
+    date: "Tue 16 Jun 2026",
+    from: "Berlin Brandenburg",
+    fromCode: "BER",
+    to: "Amsterdam Schiphol",
+    toCode: "AMS",
+    airline: "KLM",
+    flightNumber: "KL1782",
+    departure: "19:15",
+    arrival: "20:40",
     status: "booked",
+    note: "Boeing 737-800, Economy. Connect at AMS (1h20 layover).",
   },
   {
-    date: "27 July",
-    from: "Bruxelles Midi",
-    to: "Koblenz Hbf",
-    time: "12:25 to 15:46",
-    detail: "Candidate train via Cologne.",
-    status: "candidate",
-    cost: "€115.98",
+    id: "out-2-ams-mex",
+    passenger: "Both",
+    date: "Tue 16 Jun 2026 → Wed 17 Jun",
+    from: "Amsterdam Schiphol",
+    fromCode: "AMS",
+    to: "Mexico City Benito Juárez",
+    toCode: "MEX",
+    airline: "KL8990 (operated by Aeroméxico)",
+    flightNumber: "KL8990",
+    departure: "22:00",
+    arrival: "01:55 (+1)",
+    status: "booked",
+    note: "Boeing 787-9. Long haul. Lands ~02:00 local — taxi/Uber straight to the Airbnb.",
   },
   {
-    date: "30 July",
-    from: "Koblenz Hbf",
-    to: "Heidelberg Hbf",
-    time: "09:48 to 11:34 or 11:48 to 13:34",
-    detail: "Direct options. Pick the one that fits checkout and breakfast.",
-    status: "candidate",
-    cost: "€43.98",
+    id: "dom-mex-sjd-julian",
+    passenger: "Julian",
+    date: "Fri 19 Jun 2026",
+    from: "Mexico City (Terminal 1)",
+    fromCode: "MEX",
+    to: "San José del Cabo",
+    toCode: "SJD",
+    airline: "VivaAerobus",
+    flightNumber: "VB1212",
+    departure: "06:10",
+    arrival: "07:15",
+    seat: "10F",
+    status: "booked",
+    note: "Smart fare: 25 kg checked + 15 kg cabin + 1 personal item. Web check-in opens 10 days before.",
   },
   {
-    date: "2 August",
-    from: "Heidelberg Hbf",
-    to: "Freiburg Hbf",
-    time: "10:43 to 12:31",
-    detail: "Likely train with one transfer.",
-    status: "candidate",
-    cost: "€59.98",
+    id: "dom-mex-sjd-wife",
+    passenger: "Wife",
+    date: "Fri 19 Jun 2026",
+    from: "Mexico City",
+    fromCode: "MEX",
+    to: "San José del Cabo",
+    toCode: "SJD",
+    airline: "TODO — booked separately, paste details",
+    flightNumber: "TODO",
+    departure: "TBD",
+    arrival: "TBD",
+    status: "to book",
+    note: "Wife is on a different MEX → SJD ticket. Fill in once confirmed.",
   },
   {
-    date: "5 August",
-    from: "Freiburg Hbf",
-    to: "Cologne Hbf",
-    time: "13:55 to 17:05",
-    detail: "Preferred direct train. Alternative is 11:55 to 15:05.",
-    status: "preferred",
-    cost: "€107.98",
+    id: "dom-lto-sjd-third",
+    passenger: "Third",
+    date: "Sat 27 Jun 2026 (after ABC bus from Loreto)",
+    from: "San José del Cabo",
+    fromCode: "SJD",
+    to: "TODO home airport",
+    toCode: "—",
+    airline: "TODO — paste once booked",
+    flightNumber: "TODO",
+    departure: "TBD",
+    arrival: "TBD",
+    status: "to book",
+    note: "Third traveller flies home from SJD on 27 Jun after the Loreto → SJD overnight-ish bus.",
   },
   {
-    date: "6 August",
-    from: "Cologne Hbf",
-    to: "Brussels Midi",
-    time: "09:43 to 11:35",
-    detail: "Direct ICE 316, then Eurostar home.",
-    status: "candidate",
-    cost: "€83.98",
+    id: "ret-1-sjd-atl",
+    passenger: "Both",
+    date: "Sat 4 Jul 2026",
+    from: "San José del Cabo",
+    fromCode: "SJD",
+    to: "Atlanta Hartsfield-Jackson",
+    toCode: "ATL",
+    airline: "KL5375 (operated by Delta Air Lines)",
+    flightNumber: "KL5375",
+    departure: "13:30",
+    arrival: "20:35",
+    status: "booked",
+    note: "Be at SJD by 11:30 — Payless rental return is at 11:00 same morning.",
+  },
+  {
+    id: "ret-2-atl-ams",
+    passenger: "Both",
+    date: "Sat 4 Jul 2026 → Sun 5 Jul",
+    from: "Atlanta Hartsfield-Jackson",
+    fromCode: "ATL",
+    to: "Amsterdam Schiphol",
+    toCode: "AMS",
+    airline: "KLM",
+    flightNumber: "KL0622",
+    departure: "22:40",
+    arrival: "13:10 (+1)",
+    status: "booked",
+    note: "Boeing 777-300ER, Economy. 2h05 layover at ATL is tight but fine for SkyTeam.",
+  },
+  {
+    id: "ret-3-ams-ber",
+    passenger: "Both",
+    date: "Sun 5 Jul 2026",
+    from: "Amsterdam Schiphol",
+    fromCode: "AMS",
+    to: "Berlin Brandenburg",
+    toCode: "BER",
+    airline: "KLM",
+    flightNumber: "KL1779",
+    departure: "15:10",
+    arrival: "16:30",
+    status: "booked",
+    note: "Boeing 737-800, Economy. Home by ~17:30 with luggage.",
+  },
+];
+
+export type CarRental = {
+  operator: string;
+  broker?: string;
+  category: string;
+  pickup: { date: string; time: string; location: string };
+  dropoff: { date: string; time: string; location: string };
+  inclusions: string[];
+  notes: string[];
+};
+
+export const carRental: CarRental = {
+  operator: "Payless",
+  broker: "GotRentalCars.com (booked via Check24)",
+  category: "VW Tiguan or similar (SFAR — 4 doors, 5 seats, automatic, A/C)",
+  pickup: {
+    date: "Fri 19 Jun 2026",
+    time: "07:30",
+    location: "SJD Airport (Carretera Entronque al APO, Col Las Veredas)",
+  },
+  dropoff: {
+    date: "Sat 4 Jul 2026",
+    time: "11:00",
+    location: "SJD Airport",
+  },
+  inclusions: [
+    "Liability cover up to EUR 1.1M",
+    "Full collision & theft, zero deductible (paid back via the broker)",
+    "Glass / tyres / underbody / roof included",
+    "Unlimited kilometres",
+    "1 additional driver",
+  ],
+  notes: [
+    "Allow ~30 min for the airport-to-counter shuttle on arrival.",
+    "Bring a credit card in the main driver's name — deposit ~EUR 1,000 + fuel deposit.",
+    "Mexican mandatory insurance is included via the broker — confirm at the counter before signing.",
+  ],
+};
+
+export const groundLegs: GroundLeg[] = [
+  {
+    id: "sjd-pescadero",
+    date: "19 Jun",
+    mode: "drive",
+    from: "SJD airport",
+    to: "Pescadero",
+    duration: "1h30",
+    note: "Pick up the Payless VW Tiguan at SJD 07:30 — confirm Mexican mandatory insurance + glass/tyres cover at the counter.",
+    status: "planned",
+  },
+  {
+    id: "pescadero-lapaz",
+    date: "21 Jun",
+    mode: "drive",
+    from: "Pescadero",
+    to: "La Paz",
+    duration: "1h30",
+    status: "planned",
+  },
+  {
+    id: "lapaz-loreto",
+    date: "24 Jun",
+    mode: "drive",
+    from: "La Paz",
+    to: "Loreto",
+    duration: "4h30",
+    note: "Sierra de la Giganta scenic drive. Fuel up in Ciudad Constitución.",
+    status: "planned",
+  },
+  {
+    id: "third-bus-sjd",
+    date: "27 Jun",
+    mode: "bus",
+    from: "Loreto",
+    to: "San José del Cabo",
+    duration: "8–9h",
+    passenger: "Third",
+    note: "ABC/Águila bus — book in advance at aguila.com.mx (~$50, one early morning departure).",
+    status: "to book",
+  },
+  {
+    id: "loreto-bahia",
+    date: "27 Jun",
+    mode: "drive",
+    from: "Loreto",
+    to: "Bahía Concepción",
+    duration: "1h30",
+    note: "Drop the third traveller at the bus first, then continue north.",
+    status: "planned",
+  },
+  {
+    id: "bahia-lapaz",
+    date: "30 Jun",
+    mode: "drive",
+    from: "Bahía Concepción",
+    to: "La Paz",
+    duration: "6h",
+    note: "Long leg — leave at dawn, fuel break in Loreto.",
+    status: "planned",
+  },
+  {
+    id: "lapaz-cabopulmo",
+    date: "1 Jul",
+    mode: "drive",
+    from: "La Paz",
+    to: "Cabo Pulmo",
+    duration: "3h",
+    note: "Last 10 km is unpaved. Top up cash before leaving La Paz — no ATM in Cabo Pulmo.",
+    status: "planned",
+  },
+  {
+    id: "cabopulmo-sjd",
+    date: "4 Jul",
+    mode: "drive",
+    from: "Cabo Pulmo",
+    to: "SJD airport",
+    duration: "2h30",
+    note: "Leave by 07:30 — Payless return slot is 11:00, KLM SJD→ATL departs 13:30.",
+    status: "planned",
+  },
+];
+
+export const diveOperators: DiveOperator[] = [
+  {
+    region: "La Paz",
+    name: "Dive in La Paz (Alexia)",
+    highlights: "Boutique operator. Fang Ming wreck, Swanee Reef, day trips to La Reina for mantas (Apr–Jul).",
+    links: [{ label: "Website", href: "https://www.diveinlapaz.com/" }],
+  },
+  {
+    region: "La Paz",
+    name: "Sea Lions Dive Center",
+    highlights: "Reliable Espíritu Santo day boats. Good for mixed levels.",
+    links: [{ label: "Website", href: "https://www.sealionsdivecenter.com/" }],
+  },
+  {
+    region: "La Paz",
+    name: "Divewithus (Gael)",
+    highlights: "Small-group operator, French-speaking. El Bajo trips when conditions align.",
+  },
+  {
+    region: "Loreto",
+    name: "Blue Nation Diving (Yago)",
+    highlights: "Marine Park specialists: Coronado, Danzante, Punta Lobos, Las Tijeras.",
+    links: [{ label: "Website", href: "https://www.bluenation-loreto.com/" }],
+  },
+  {
+    region: "Loreto",
+    name: "Dolphin Dive Baja",
+    highlights: "Long-running Loreto operator. Good for Las Tijeras and family-style boats.",
+  },
+  {
+    region: "Cabo Pulmo",
+    name: "Dive Cabo Pulmo (César)",
+    highlights: "El Bajo, El Vencedor wreck, Cantil del Tiburón. Bull shark aggregation in summer.",
+    links: [{ label: "Website", href: "https://www.divecabopulmo.com/" }],
+  },
+  {
+    region: "Cabo Pulmo",
+    name: "Cabo Pulmo Divers (Mario)",
+    highlights: "Reef-focused dives, easy access from the village.",
+  },
+];
+
+export const snorkelSpots: Activity[] = [
+  {
+    title: "Los Arbolitos · Cabo Pulmo (shore)",
+    note: "Best shore snorkel of the trip. Reef starts a few metres out, ~$5 entry. Bring your own gear.",
+    pace: "snorkel",
+  },
+  {
+    title: "Los Frailes · Cabo Pulmo (shore)",
+    note: "South end of the bay, northern rocky tip. Sheltered when the wind comes from the north.",
+    pace: "snorkel",
+  },
+  {
+    title: "Playa el Coyote · Bahía Concepción (shore)",
+    note: "Rocky tips of the bay: pufferfish and sergeant majors. Kayak across for variety.",
+    pace: "snorkel",
+  },
+  {
+    title: "Playa Santispac · Bahía Concepción (shore)",
+    note: "North end has a small hot spring and decent reef edges.",
+    pace: "snorkel",
+  },
+  {
+    title: "Playa Balandra · La Paz (shore)",
+    note: "Shallow and landscape-led rather than fish-rich, but the mushroom rock is unmissable.",
+    pace: "snorkel",
+  },
+  {
+    title: "Cabo Pulmo reef tour (boat)",
+    note: "Boat tour to the main reef. Bull sharks and turtles likely; sea lions only outside protected zones.",
+    pace: "snorkel",
+  },
+  {
+    title: "Isla Coronado / Danzante · Loreto (boat)",
+    note: "Sheltered coves, clear water, classic Marine Park snorkel circuit.",
+    pace: "snorkel",
+  },
+  {
+    title: "Espíritu Santo · La Paz (boat)",
+    note: "Ensenada Grande and Playa Bonanza reefs. Note: Los Islotes sea lion site is closed 1 Jun – 1 Sep (breeding).",
+    pace: "snorkel",
+  },
+  {
+    title: "Playa el Burro inlet · Bahía Concepción (kayak)",
+    note: "Kayak out to the small island and snorkel around it.",
+    pace: "snorkel",
   },
 ];
 
 export const stays: Stay[] = [
   {
-    id: "koblenz",
-    city: "Koblenz",
+    id: "mexico-city",
+    city: "Mexico City",
     chapter: "Chapter 1",
-    dates: "27 to 30 July",
+    dates: "16 to 19 June",
     nights: 3,
-    mood: "River junctions and fortress views",
-    colour: "var(--chapter-rhine)",
-    stamp: "Rhein + Mosel",
-    hotel: {
-      name: "Hotel Trierer Hof",
-      detail: "Booked via Booking.com, including breakfast.",
-      cancellation: "Free cancellation up to 26 July.",
-      map: "https://maps.google.com/?q=Hotel+Trierer+Hof+Koblenz",
-      links: [
-        { label: "Booking.com", href: "https://www.booking.com/hotel/de/trierer-hof.de.html" },
-        {
-          label: "Tripadvisor",
-          href: "https://www.tripadvisor.co.uk/Hotel_Review-g187391-d632940-Reviews-Trierer_Hof-Koblenz_Rhineland_Palatinate.html",
-        },
-      ],
-    },
-    summary:
-      "Koblenz is the gentle start: old town lanes, the Rhine and Moselle meeting at Deutsches Eck, a cable car over the water and an easy fortress afternoon.",
-    travelIn: "Arrive by train from Brussels on 27 July.",
-    travelOut: "Train to Heidelberg on 30 July.",
-    links: [
-      { label: "Visit Koblenz", href: "https://www.visit-koblenz.de/" },
-      { label: "Cable car", href: "https://www.seilbahn-koblenz.de/" },
-      { label: "KD river cruises", href: "https://www.k-d.com/en/" },
-      { label: "Day trips from Koblenz", href: "https://www.visit-koblenz.de/en/region/day-trips" },
-    ],
-    thingsToDo: [
-      {
-        title: "Deutsches Eck and the riverside",
-        note: "Start with the big confluence view where the Moselle meets the Rhine, then wander the promenade towards St Castor and the old town.",
-        pace: "easy",
-        links: [{ label: "Deutsches Eck", href: "https://www.visit-koblenz.de/en/sights/deutsches-eck" }],
-      },
-      {
-        title: "Cable car to Ehrenbreitstein Fortress",
-        note: "Take the panoramic cabins over the Rhine. The fortress has wide views, exhibitions and space to roam if the weather is kind.",
-        pace: "half day",
-        links: [
-          { label: "Cable car info", href: "https://www.seilbahn-koblenz.de/" },
-          { label: "Fortress", href: "https://www.tor-zum-welterbe.de/" },
-        ],
-      },
-      {
-        title: "Rhine or Moselle boat loop",
-        note: "Keep this as a flexible river day. KD and local operators list seasonal sightseeing trips from Koblenz.",
-        pace: "half day",
-        links: [
-          { label: "KD cruises", href: "https://www.k-d.com/en/" },
-          { label: "Koblenz boats", href: "https://www.schifffahrtkoblenz.de/" },
-        ],
-      },
-      {
-        title: "Burg Eltz day trip",
-        note: "The big fairytale castle, deep in the woods above the Moselle. Train from Koblenz to Moselkern (about 30 min), then a pretty 35 minute walk through the forest to the castle. Shuttle buses also run in summer.",
-        pace: "half day",
-        links: [
-          { label: "Eltz Castle", href: "https://www.visit-koblenz.de/en/region/eifel/eltz-castle" },
-          { label: "Burg Eltz official", href: "https://burg-eltz.de/en/" },
-        ],
-      },
-      {
-        title: "Marksburg Castle at Braubach",
-        note: "The only Middle Rhine hilltop castle that has never been destroyed. Quick regional train south from Koblenz to Braubach (around 15 min), then a steep but short walk up. Good guided tour and proper castle feel for the kids.",
-        pace: "half day",
-        links: [
-          { label: "Marksburg", href: "https://www.marksburg.de/en/" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Attraction_Review-g1180686-d275462-Reviews-Marksburg_Castle-Braubach_Rhineland_Palatinate.html" },
-        ],
-      },
-      {
-        title: "Stolzenfels Castle",
-        note: "Pretty Prussian summer palace just up the Rhine from Koblenz. Bus 650 from the city centre takes about 15 minutes to Schloss Stolzenfels, then a 20 minute walk up through the landscaped park with grottoes and waterfalls.",
-        pace: "half day",
-        links: [
-          { label: "Stolzenfels Castle", href: "https://www.visit-koblenz.de/en/sights/stolzenfels-castle" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Attraction_Review-g187391-d266028-Reviews-Stolzenfels_Castle-Koblenz_Rhineland_Palatinate.html" },
-        ],
-      },
-      {
-        title: "Cochem on the Moselle",
-        note: "Storybook Moselle town with the Reichsburg perched above it. Around 35 to 50 minutes by train from Koblenz, then a 20 minute walk up to the castle or a small shuttle bus. Good as a full day if the river day works for the weather.",
-        pace: "half day",
-        links: [
-          { label: "Cochem tourism", href: "https://www.cochem.de/en/" },
-          { label: "Reichsburg Cochem", href: "https://reichsburg-cochem.de/en/" },
-        ],
-      },
-    ],
-    foodIdeas: [
-      {
-        title: "Old town dinner stroll",
-        note: "Pick somewhere near the old town or riverfront once everyone has found their bearings.",
-        pace: "food",
-      },
-      {
-        title: "Fortress terrace pause",
-        note: "If the cable car day works, use the fortress views as the built-in drink stop.",
-        pace: "food",
-      },
-    ],
-    rainyDayIdeas: [
-      {
-        title: "Forum Confluentes and museums",
-        note: "A simple fallback near the centre if the river plans look wet.",
-        pace: "rainy day",
-      },
-      {
-        title: "Fortress exhibitions",
-        note: "Still useful in patchy weather, especially if the cable car is running and visibility is decent.",
-        pace: "rainy day",
-      },
-    ],
-    diary: [
-      { day: "27 July", prompt: "Arrival day: first German snack, first river photo, first favourite street.", photoSlots: 3 },
-      { day: "28 July", prompt: "Fortress or river day notes, best view and funniest travel moment.", photoSlots: 4 },
-      { day: "29 July", prompt: "Slow Koblenz day: what would we recommend to another family?", photoSlots: 4 },
-    ],
-    sourceUrls: [
-      "https://www.visit-koblenz.de/en/sights/deutsches-eck",
-      "https://www.seilbahn-koblenz.de/",
-      "https://www.tor-zum-welterbe.de/",
-      "https://www.k-d.com/en/",
-      "https://www.visit-koblenz.de/en/region/day-trips",
-      "https://www.visit-koblenz.de/en/region/eifel/eltz-castle",
-      "https://www.marksburg.de/en/",
-      "https://www.visit-koblenz.de/en/sights/stolzenfels-castle",
-      "https://www.cochem.de/en/",
-    ],
-  },
-  {
-    id: "heidelberg",
-    city: "Heidelberg",
-    chapter: "Chapter 2",
-    dates: "30 July to 2 August",
-    nights: 3,
-    mood: "Castle, bridge and river town wandering",
-    colour: "var(--chapter-sandstone)",
-    stamp: "Schloss + Neckar",
-    hotel: {
-      name: "Premier Inn Heidelberg City Centre",
-      detail: "Booked via Booking.com, with cancellation.",
-      map: "https://maps.google.com/?q=Premier+Inn+Heidelberg+City+Centre",
-      links: [
-        {
-          label: "Booking.com",
-          href: "https://www.booking.com/hotel/de/premier-inn-heidelberg-city-centre-heidelberg1.de.html",
-        },
-        {
-          label: "Tripadvisor",
-          href: "https://www.tripadvisor.co.uk/Hotel_Review-g187286-d4869776-Reviews-Premier_Inn_Heidelberg_City_Zentrum_hotel-Heidelberg_Baden_Wurttemberg.html",
-        },
-      ],
-    },
-    summary:
-      "Heidelberg is the storybook middle: castle ruins above the old town, the Old Bridge across the Neckar and a walk with one of the best city views.",
-    travelIn: "Direct train from Koblenz on 30 July.",
-    travelOut: "Train to Freiburg on 2 August.",
-    links: [
-      { label: "Heidelberg tourism", href: "https://www.tourism-heidelberg.com/" },
-      { label: "Heidelberg Castle", href: "https://www.schloss-heidelberg.de/en/" },
-      { label: "Bergbahn funicular", href: "https://www.bergbahn-heidelberg.de/en/" },
-      { label: "Weisse Flotte boats", href: "https://www.weisse-flotte-heidelberg.de/en/" },
-      { label: "Speyer tourism", href: "https://www.speyer.de/en/" },
-    ],
-    thingsToDo: [
-      {
-        title: "Castle and old town",
-        note: "Use the castle as the big anchor, then drift down through Kornmarkt, Marktplatz and the Hauptstrasse.",
-        pace: "half day",
-        links: [{ label: "Castle", href: "https://www.schloss-heidelberg.de/en/" }],
-      },
-      {
-        title: "Old Bridge and bridge monkey",
-        note: "Good for an early evening loop over the Neckar and back into the old town.",
-        pace: "easy",
-        links: [{ label: "Old Bridge", href: "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/old-bridge/index_eng.html" }],
-      },
-      {
-        title: "Philosopher's Walk",
-        note: "A climb, but the reward is the classic city, river and castle view. Save it for a clear, cooler spell.",
-        pace: "half day",
-        links: [{ label: "Philosopher's Walk", href: "https://www.tourism-heidelberg.com/explore/historical-sights/heiligenberg/philosophers-walk/index_eng.html" }],
-      },
-      {
-        title: "Königstuhl funicular to the top",
-        note: "Hop on Germany's oldest funicular from Kornmarkt up past the castle to Molkenkur, then change to the historic wooden upper section that climbs to Königstuhl at 568m. Wide views over Heidelberg and the Neckar valley, plus walking trails at the top.",
-        pace: "half day",
-        links: [
-          { label: "Funicular railway", href: "https://www.tourism-heidelberg.com/explore/historical-sights/koenigstuhl/funicular-railway/index_eng.html" },
-          { label: "Bergbahn tickets", href: "https://www.bergbahn-heidelberg.de/en/" },
-        ],
-      },
-      {
-        title: "Neckar boat to Neckarsteinach",
-        note: "Easy half day on the water: the Weisse Flotte runs upstream past four castles to Neckarsteinach, the little 'four castles town'. Lovely if a Heidelberg day needs to slow down.",
-        pace: "half day",
-        links: [
-          { label: "Weisse Flotte Heidelberg", href: "https://www.weisse-flotte-heidelberg.de/en/" },
-          { label: "Boat info", href: "https://www.tourism-heidelberg.com/destination/getting-around/boat/index_eng.html" },
-        ],
-      },
-      {
-        title: "Possible Speyer day trip",
-        note: "Keep this as a maybe. Speyer works if everyone wants a change from Heidelberg and a cathedral day. About 30 minutes by train, with the UNESCO Imperial Cathedral and an easy walk to the Rhine.",
-        pace: "half day",
-        links: [
-          { label: "Speyer", href: "https://www.speyer.de/en/" },
-          { label: "Imperial Cathedral", href: "https://www.dom-zu-speyer.de/en/" },
-        ],
-      },
-    ],
-    foodIdeas: [
-      {
-        title: "Market square dinner",
-        note: "Look around Marktplatz or side streets after the castle. It keeps the evening simple.",
-        pace: "food",
-      },
-      {
-        title: "River picnic option",
-        note: "Grab easy food and use the Neckar as the view if the weather is warm.",
-        pace: "food",
-      },
-    ],
-    rainyDayIdeas: [
-      {
-        title: "Palatinate Museum",
-        note: "A central old town option if rain makes the castle less appealing.",
-        pace: "rainy day",
-      },
-      {
-        title: "Castle interiors and cafe pause",
-        note: "Still feels like Heidelberg even if the paths are damp.",
-        pace: "rainy day",
-      },
-    ],
-    diary: [
-      { day: "30 July", prompt: "First Heidelberg impressions: castle spotted, best lane and dinner verdict.", photoSlots: 3 },
-      { day: "31 July", prompt: "Bridge, castle or walk day: collect one postcard view and one tiny detail.", photoSlots: 5 },
-      { day: "1 August", prompt: "Free choice day: Heidelberg again or Speyer side quest notes.", photoSlots: 5 },
-    ],
-    sourceUrls: [
-      "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/index_eng.html",
-      "https://www.tourism-heidelberg.com/explore/historical-sights/altstadt/old-bridge/index_eng.html",
-      "https://www.tourism-heidelberg.com/explore/historical-sights/heiligenberg/philosophers-walk/index_eng.html",
-      "https://www.schloss-heidelberg.de/en/",
-      "https://www.tourism-heidelberg.com/explore/historical-sights/koenigstuhl/funicular-railway/index_eng.html",
-      "https://www.bergbahn-heidelberg.de/en/",
-      "https://www.weisse-flotte-heidelberg.de/en/",
-      "https://www.speyer.de/en/",
-      "https://www.dom-zu-speyer.de/en/",
-    ],
-  },
-  {
-    id: "freiburg",
-    city: "Freiburg im Breisgau",
-    chapter: "Chapter 3",
-    dates: "2 to 5 August",
-    nights: 3,
-    mood: "Market mornings and Black Forest edges",
-    colour: "var(--chapter-forest)",
-    stamp: "Muenster + Baechle",
-    hotel: {
-      name: "Mercure Hotel Freiburg am Münster",
-      detail: "Booked direct with Accor.",
-      cancellation: "Free cancellation up to 1 August.",
-      map: "https://maps.google.com/?q=Mercure+Hotel+Freiburg+am+M%C3%BCnster",
-      links: [
-        {
-          label: "Booking.com",
-          href: "https://www.booking.com/hotel/de/mercure-freiburg-am-munster.html",
-        },
-        {
-          label: "Tripadvisor",
-          href: "https://www.tripadvisor.co.uk/Hotel_Review-g187281-d199837-Reviews-Mercure_Hotel_Freiburg_am_Muenster-Freiburg_im_Breisgau_Baden_Wurttemberg.html",
-        },
-      ],
-    },
-    summary:
-      "Freiburg is the sunny old town chapter: Münsterplatz, market food, little Bächle channels, Schlossberg views and an easy base for Gengenbach.",
-    travelIn: "Train from Heidelberg on 2 August.",
-    travelOut: "Preferred direct train to Cologne on 5 August.",
-    links: [
-      { label: "Visit Freiburg", href: "https://visit.freiburg.de/en" },
-      { label: "Münstermarkt", href: "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg" },
-      { label: "Schlossberg", href: "https://visit.freiburg.de/schlossberg" },
-      { label: "Schauinslandbahn", href: "https://www.bergwelt-schauinsland.de/en/" },
-      { label: "Kaiserstuhl", href: "https://visit.freiburg.de/en/discover/excursion-destinations-around-freiburg/kaiserstuhl-and-tuniberg" },
-      { label: "Titisee", href: "https://hochschwarzwald.de/en/locations/titisee" },
-    ],
-    thingsToDo: [
-      {
-        title: "Münsterplatz and the morning market",
-        note: "Go early enough for the bustle around the Minster. The market is the obvious breakfast, snack and photo target.",
-        pace: "easy",
-        links: [{ label: "Münstermarkt", href: "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg" }],
-      },
-      {
-        title: "Bächle and old town wander",
-        note: "Follow the little water channels through the old town and give everyone a small mission to spot details.",
-        pace: "easy",
-      },
-      {
-        title: "Schlossberg sunset",
-        note: "Walk or ride up from the Stadtgarten area for views over the old town, the Minster and towards the hills.",
-        pace: "half day",
-        links: [{ label: "Schlossberg", href: "https://visit.freiburg.de/schlossberg" }],
-      },
-      {
-        title: "Schauinslandbahn cable car",
-        note: "Germany's longest circulating cable car. Tram 2 from the centre to Günterstal, then bus 21 to Talstation Schauinslandbahn. The cabin climbs to 1,220m in about 20 minutes, with easy 2 to 3km walks and a tower viewpoint at the top.",
-        pace: "half day",
-        links: [
-          { label: "Schauinslandbahn", href: "https://www.bergwelt-schauinsland.de/en/" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Attraction_Review-g1124211-d5490327-Reviews-Schauinslandbahn-Horben_Baden_Wurttemberg.html" },
-        ],
-      },
-      {
-        title: "Kaiserstuhl wine country",
-        note: "The sunniest spot in Germany, ringed by vineyards and little wine villages. S-Bahn S1 from Freiburg out to Endingen or Breisach, then walk between vines. Easy to keep gentle: pick one village, a short loop and a long lunch.",
-        pace: "half day",
-        links: [
-          { label: "Kaiserstuhl and Tuniberg", href: "https://visit.freiburg.de/en/discover/excursion-destinations-around-freiburg/kaiserstuhl-and-tuniberg" },
-          { label: "Hiking the Kaiserstuhl", href: "https://visit.freiburg.de/en/discover/outdoor-activities/hiking/kaiserstuhl" },
-        ],
-      },
-      {
-        title: "Titisee in the Black Forest",
-        note: "Classic Black Forest lake town, about 40 minutes by direct regional train from Freiburg. Easy lakeside walk, paddle boats and pedalos, lots of cuckoo clocks and Black Forest gâteau in town. Good fallback if the family wants a slower water day.",
-        pace: "half day",
-        links: [
-          { label: "Titisee tourism", href: "https://hochschwarzwald.de/en/locations/titisee" },
-          { label: "Day trips guide", href: "https://www.hochschwarzwald.de/en/things-to-see/day-trips" },
-        ],
-      },
-    ],
-    foodIdeas: [
-      {
-        title: "Lange Rote at the market",
-        note: "The classic Freiburg sausage stop. There are also fruit, bread, cheese and sweet options around the stalls.",
-        pace: "food",
-      },
-      {
-        title: "Münsterplatz cafe pause",
-        note: "Good low effort choice near the hotel if energy dips.",
-        pace: "food",
-      },
-    ],
-    rainyDayIdeas: [
-      {
-        title: "Museum für Neue Kunst or Augustinermuseum",
-        note: "Central museum options for a wet afternoon close to the old town.",
-        pace: "rainy day",
-      },
-      {
-        title: "Covered cafe and tram loop",
-        note: "Keep it gentle: market if it clears, cafe if it doesn't.",
-        pace: "rainy day",
-      },
-    ],
-    diary: [
-      { day: "2 August", prompt: "Arrival and Münsterplatz: first market snack to remember.", photoSlots: 3 },
-      { day: "3 August", prompt: "Freiburg old town day: best Bächle moment and best view.", photoSlots: 5 },
-      { day: "4 August", prompt: "Day trip or slow day: what felt most Black Forest?", photoSlots: 5 },
-    ],
-    sourceUrls: [
-      "https://visit.freiburg.de/en",
-      "https://visit.freiburg.de/en/attractions/muenstermarkt-freiburg",
-      "https://visit.freiburg.de/en/muensterplatz-freiburg",
-      "https://visit.freiburg.de/schlossberg",
-      "https://www.bergwelt-schauinsland.de/en/",
-      "https://visit.freiburg.de/en/discover/excursion-destinations-around-freiburg/kaiserstuhl-and-tuniberg",
-      "https://hochschwarzwald.de/en/locations/titisee",
-      "https://www.hochschwarzwald.de/en/things-to-see/day-trips",
-    ],
-  },
-  {
-    id: "gengenbach",
-    city: "Gengenbach day trip",
-    chapter: "Side quest",
-    dates: "From Freiburg",
-    nights: 0,
-    mood: "Black Forest old town in one easy outing",
-    colour: "var(--chapter-gold)",
-    stamp: "Black Forest",
-    summary:
-      "Gengenbach stays as a day trip, not an overnight stop. It gives the trip a smaller Black Forest town: gates, towers, half timbered streets and a slower pace.",
-    travelIn: "Use Freiburg as the base and check train times closer to travel.",
-    travelOut: "Return to Freiburg for the night.",
-    links: [
-      { label: "Gengenbach tourism", href: "https://www.stadt-gengenbach.de/rathaus/kultur-tourismus-gmbh" },
-      { label: "Train planning", href: "https://int.bahn.de/en" },
-    ],
-    thingsToDo: [
-      {
-        title: "Old town loop",
-        note: "Aim for the market square, timber framed streets, towers and gates without over planning it.",
-        pace: "easy",
-      },
-      {
-        title: "Photo walk",
-        note: "Make this the scrapbook day: doors, signs, rooftops, fountains and a family photo in the square.",
-        pace: "easy",
-      },
-      {
-        title: "Black Forest feeling",
-        note: "Use the trip as a contrast to Freiburg: smaller scale, slower streets and a greener backdrop.",
-        pace: "half day",
-      },
-    ],
-    foodIdeas: [
-      {
-        title: "Cake stop",
-        note: "Leave space for a cafe stop. This is the right day for something sweet.",
-        pace: "food",
-      },
-      {
-        title: "Simple lunch near the square",
-        note: "Keep the plan loose and choose once you're there.",
-        pace: "food",
-      },
-    ],
-    rainyDayIdeas: [
-      {
-        title: "Shortened old town visit",
-        note: "If it rains, make it a quick train outing with cafe time rather than a full walking day.",
-        pace: "rainy day",
-      },
-      {
-        title: "Swap with Freiburg museum time",
-        note: "Keep the Gengenbach day movable until the forecast is clearer.",
-        pace: "rainy day",
-      },
-    ],
-    diary: [
-      { day: "Flexible", prompt: "Side quest notes: best sign, best cake and best little street.", photoSlots: 6 },
-    ],
-    sourceUrls: ["https://www.stadt-gengenbach.de/rathaus/kultur-tourismus-gmbh", "https://int.bahn.de/en"],
-  },
-  {
-    id: "cologne",
-    city: "Cologne",
-    chapter: "Final night",
-    dates: "5 to 6 August",
-    nights: 1,
-    mood: "Cathedral, river and easy final dinner",
+    mood: "Tacos, Roma walks and a slow start to the trip",
     colour: "var(--chapter-ink)",
-    stamp: "Dom + Rhine",
-    hotel: {
-      name: "Hilton Cologne",
-      detail: "Booked with Hilton.",
-      cancellation: "Cancellation up to 4 August.",
-      map: "https://maps.google.com/?q=Hilton+Cologne",
-    },
+    stamp: "CDMX · Roma + Condesa",
+    hotels: [
+      {
+        name: "Independent Small Rooftop Studio (Airbnb)",
+        detail:
+          "Roma Norte — 39 Calle Cuernavaca, 06140. Hosts: Lorenza & Mercedes. Check-in from 11:00 on 16 Jun, check-out by 11:00 on 19 Jun.",
+        status: "booked",
+        map: "https://maps.google.com/?q=39+Calle+Cuernavaca,+06140+Ciudad+de+M%C3%A9xico",
+      },
+    ],
     summary:
-      "Cologne is deliberately low effort: arrive, check in, see the cathedral, wander the old town or river and choose dinner without making the final night complicated.",
-    travelIn: "Direct train from Freiburg on 5 August if the preferred option is booked.",
-    travelOut: "Direct ICE to Brussels on 6 August, then Eurostar home.",
+      "Three nights to land softly: altitude, language, big lunches and walking neighbourhoods. Roma Norte and Condesa are the calmest, food-densest bases.",
+    travelIn: "Arrive into MEX on the evening of 16 June. Uber/Cabify into Roma Norte — about 45 min depending on traffic.",
+    travelOut: "Short flight MEX → SJD on the morning of 19 June, then 1h30 drive to Pescadero.",
     links: [
-      { label: "Cologne tourism", href: "https://www.koelntourismus.de/en" },
-      { label: "Cologne Cathedral", href: "https://www.koelner-dom.de/en" },
-      { label: "Hilton Cologne dining", href: "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/" },
+      { label: "CDMX tourism", href: "https://www.cdmx.gob.mx/turismo" },
+      { label: "Roma Norte guide", href: "https://eatingaround.com.mx/" },
+      { label: "MEX airport", href: "https://www.aicm.com.mx/" },
     ],
     thingsToDo: [
       {
-        title: "Cologne Cathedral",
-        note: "The hotel is close enough to keep this simple. Go for the outside drama, then decide whether anyone has energy to go in.",
-        pace: "easy",
-        links: [{ label: "Cathedral", href: "https://www.koelner-dom.de/en" }],
+        title: "Centro Histórico half-day",
+        note: "Zócalo, Catedral Metropolitana, Templo Mayor and the Diego Rivera murals at Palacio Nacional (book online).",
+        pace: "half day",
+        links: [{ label: "Templo Mayor", href: "https://www.templomayor.inah.gob.mx/" }],
       },
       {
-        title: "Old town and Rhine loop",
-        note: "A gentle last evening: old town lanes, river edge and maybe the Hohenzollern Bridge view.",
-        pace: "easy",
-        links: [{ label: "Old Town", href: "https://willkommen.koelntourismus.de/en/poi/cologne-old-town" }],
+        title: "Museo Nacional de Antropología",
+        note: "World-class. Easily a half day. Combine with a walk in Bosque de Chapultepec.",
+        pace: "half day",
+        links: [{ label: "Museum", href: "https://www.mna.inah.gob.mx/" }],
       },
       {
-        title: "Rheinboulevard view",
-        note: "If everyone is up for a bridge walk, the Deutz side gives a strong skyline view back to the old town.",
+        title: "Coyoacán + Casa Azul (Frida Kahlo)",
+        note: "Pre-book the Casa Azul slot. Wander Coyoacán market for churros and cafés afterwards.",
+        pace: "half day",
+        links: [{ label: "Casa Azul", href: "https://www.museofridakahlo.org.mx/" }],
+      },
+      {
+        title: "Xochimilco + Museo Dolores Olmedo",
+        note: "Half day on the trajineras. Less touristy on weekdays. Bring snacks and a small group is more fun.",
+        pace: "half day",
+      },
+      {
+        title: "Roma + Condesa walking loop",
+        note: "Parque México → Parque España → Avenida Amsterdam → Plaza Río de Janeiro. Café stops every 30 min.",
         pace: "easy",
-        links: [{ label: "Rhine Boulevard", href: "https://willkommen.koelntourismus.de/en/poi/rhine-boulevard" }],
+      },
+      {
+        title: "Teotihuacán day trip",
+        note: "Pyramids of the Sun and Moon. Best very early to beat heat. Driver/guide combo simpler than DIY.",
+        pace: "half day",
+        links: [{ label: "INAH info", href: "https://www.inah.gob.mx/zonas/82-zona-arqueologica-de-teotihuacan" }],
       },
     ],
     foodIdeas: [
       {
-        title: "Hotel fallback",
-        note: "Hilton Cologne has Pigeon Post Bar & Eatery, useful if the travel day wins.",
+        title: "Contramar",
+        note: "Lunch only. Pescado a la talla and tuna tostadas. Book ahead.",
         pace: "food",
-        links: [{ label: "Hotel dining", href: "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/" }],
+        links: [{ label: "Contramar", href: "https://contramar.com.mx/" }],
       },
       {
-        title: "Haxenhaus zum Rheingarten",
-        note: "Riverside classic on the Frankenwerft, about 10 minutes' walk from the Hilton. Terrace right on the Rhine in good weather and famous for pork knuckle (Haxe) in nine variations with Kölsch. Old timber building dating back to 1178.",
+        title: "Pujol",
+        note: "Tasting menu, Enrique Olvera. Book 6+ weeks ahead.",
         pace: "food",
-        links: [
-          { label: "Haxenhaus", href: "https://www.haxenhaus.de/" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d715369-Reviews-Haxenhaus-Cologne_North_Rhine_Westphalia.html" },
-        ],
+        links: [{ label: "Pujol", href: "https://pujol.com.mx/" }],
       },
       {
-        title: "Em Krützche",
-        note: "On the Rhine promenade just along from Haxenhaus, in a 16th century house. A slightly more refined take on classic German cooking: sauerbraten, herring, roast suckling pig and a small terrace facing the river.",
+        title: "El Califa de León / El Califa",
+        note: "Classic late-night tacos al pastor. Stand-up counter or sit-down branches in Condesa.",
         pace: "food",
-        links: [
-          { label: "Em Krützche", href: "https://www.em-kruetzche.de/" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d695643-Reviews-Em_Krutzche-Cologne_North_Rhine_Westphalia.html" },
-        ],
       },
       {
-        title: "Brauhaus FRÜH am Dom",
-        note: "The big classic Cologne brauhaus right behind the cathedral, a couple of minutes from the Hilton. Freshly tapped Früh Kölsch, hearty Rhenish food and proper Köbes waiters who keep refilling until you put the beermat on top.",
+        title: "Lardo · Condesa",
+        note: "Brunch and pizza from Elena Reygadas. Walk-in friendly mid-week.",
         pace: "food",
-        links: [
-          { label: "Früh am Dom", href: "https://www.frueh-am-dom.de/" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d7235024-Reviews-Fruh_am_Dom-Cologne_North_Rhine_Westphalia.html" },
-        ],
       },
       {
-        title: "Peters Brauhaus",
-        note: "Historic Altstadt brauhaus on Mühlengasse, about 7 minutes from the Hilton. Beautiful stained glass ceiling, dark wood, Peters Kölsch and the usual schnitzel, sausages and Himmel un Ääd. Quintessential Cologne evening.",
+        title: "Maximo Bistrot",
+        note: "Roma Norte staple. Seasonal, low-key elegant. Reservation recommended.",
         pace: "food",
-        links: [
-          { label: "Peters Brauhaus", href: "https://peters-brauhaus.de/en/" },
-          { label: "Tripadvisor", href: "https://www.tripadvisor.co.uk/Restaurant_Review-g187371-d718270-Reviews-Peters_Brauhaus-Cologne_North_Rhine_Westphalia.html" },
-        ],
+        links: [{ label: "Maximo", href: "https://maximobistrot.com.mx/" }],
+      },
+      {
+        title: "Mercado Roma",
+        note: "Stalls for a quick taco, mezcal flight or oysters. Good for a low-effort lunch.",
+        pace: "food",
       },
     ],
-    rainyDayIdeas: [
-      {
-        title: "Cathedral plus hotel dinner",
-        note: "The simplest wet weather plan, with very little walking.",
-        pace: "rainy day",
-      },
-      {
-        title: "Museum Ludwig",
-        note: "Close to the cathedral and main station if you want one cultural stop before dinner.",
-        pace: "rainy day",
-      },
-    ],
-    diary: [
-      { day: "5 August", prompt: "Last German evening: cathedral photo, final dinner and trip highlights.", photoSlots: 5 },
-      { day: "6 August", prompt: "Home journey: best train snack and one thing we'd do again.", photoSlots: 3 },
-    ],
-    sourceUrls: [
-      "https://www.koelntourismus.de/en",
-      "https://willkommen.koelntourismus.de/en/poi/cologne-old-town",
-      "https://willkommen.koelntourismus.de/en/poi/rhine-boulevard",
-      "https://www.koelner-dom.de/en",
-      "https://www.hilton.com/en/hotels/cgnhihi-hilton-cologne/dining/",
-      "https://www.haxenhaus.de/",
-      "https://www.em-kruetzche.de/",
-      "https://www.frueh-am-dom.de/",
-      "https://peters-brauhaus.de/en/",
+    practical: [
+      "Altitude 2,240 m — go easy on alcohol the first night.",
+      "Uber and Cabify both work well. Avoid street taxis at night.",
+      "Tipping: ~10–15% in restaurants, 10 pesos per bag for porters.",
+      "Tap water no, bottled or filtered yes. Ice in established restaurants is fine.",
     ],
   },
-];
-
-export const futureOptions = [
-  "Keep using local data and commit diary updates through GitHub.",
-  "Add Supabase if comments, sign ins or shared editing become useful.",
-  "Add Vercel Blob if the main need is simple private photo storage.",
-  "Add Sanity if the diary becomes a proper edited family travel journal.",
+  {
+    id: "pescadero",
+    city: "Pescadero / Todos Santos",
+    chapter: "Chapter 2",
+    dates: "19 to 21 June",
+    nights: 2,
+    mood: "Pacific surf beach + a slow Baja arrival",
+    colour: "var(--chapter-gold)",
+    stamp: "Pacific · Sunsets",
+    hotels: [
+      {
+        name: "Cerritos Beach Inn",
+        detail: "Small boutique right on Playa Cerritos. Good food, casual.",
+        status: "candidate",
+      },
+      {
+        name: "Hotel San Cristóbal",
+        detail: "Quieter, adults-only, design-led. Higher price point.",
+        status: "candidate",
+        links: [{ label: "San Cristóbal", href: "https://sancristobalbaja.com/" }],
+      },
+      {
+        name: "Todos Santos Boutique Hotel",
+        detail: "Central Todos Santos pueblo, walkable to cafés and galleries.",
+        status: "candidate",
+      },
+      {
+        name: "La Poza Boutique",
+        detail: "Isolated on the lagoon beach, very quiet. Car needed.",
+        status: "candidate",
+      },
+    ],
+    summary:
+      "Two nights to land after the flight. Pacific-side surf beaches, the Todos Santos pueblo and a first proper Baja sunset.",
+    travelIn: "Drive SJD → Pescadero (~1h30) after the morning flight from MEX.",
+    travelOut: "Drive Pescadero → La Paz (~1h30) on 21 June.",
+    links: [
+      { label: "Todos Santos guide", href: "https://www.todossantos.cc/" },
+      { label: "Playa Cerritos info", href: "https://www.discoverbaja.com/cerritos-beach/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Playa Las Pocitas / San Pedrito",
+        note: "Best swimmable beaches near Pescadero. Cerritos itself has surf and rip currents.",
+        pace: "easy",
+      },
+      {
+        title: "Todos Santos pueblo wander",
+        note: "Hotel California, galleries, cafés, the old mission. Half-day pace.",
+        pace: "half day",
+      },
+      {
+        title: "Sunset at Playa Cerritos",
+        note: "Best with a cold beer at one of the beach palapas.",
+        pace: "easy",
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Las Tunas Villas & Grill",
+        note: "Family-run, grilled fish, the real deal.",
+        pace: "food",
+      },
+      {
+        title: "Mejibó",
+        note: "Modern Mexican, catch of the day. Reserve.",
+        pace: "food",
+      },
+      {
+        title: "La Generala",
+        note: "Garden-set Mexican breakfast buffet — solid value.",
+        pace: "food",
+      },
+      {
+        title: "Oystera",
+        note: "Oyster bar inside an old sugar mill in Todos Santos.",
+        pace: "food",
+      },
+      {
+        title: "DŪM",
+        note: "Fine dining, menu changes with the moon. Reservation a must.",
+        pace: "food",
+      },
+    ],
+  },
+  {
+    id: "la-paz",
+    city: "La Paz",
+    chapter: "Chapter 3",
+    dates: "21 to 24 June",
+    nights: 3,
+    mood: "Bay city, Espíritu Santo and the first dive day",
+    colour: "var(--chapter-rhine)",
+    stamp: "La Paz · Sea of Cortez",
+    hotels: [
+      {
+        name: "Hotel Catedral La Paz",
+        detail: "Best mid-range bet. Rooftop pool, quieter than the Malecón hotels.",
+        status: "candidate",
+        links: [{ label: "Hotel Catedral", href: "https://hotelcatedrallapaz.com/" }],
+      },
+      {
+        name: "Casa al Mar",
+        detail: "Boutique directly on the Malecón. Loud on weekends.",
+        status: "candidate",
+      },
+      {
+        name: "Malecón 1680",
+        detail: "Modern apartments with kitchens. Useful for longer stays.",
+        status: "candidate",
+      },
+      {
+        name: "HBlue Malecón",
+        detail: "Rooftop bar, eastern Malecón end, slightly quieter.",
+        status: "candidate",
+      },
+    ],
+    summary:
+      "Three nights with a boat day to Espíritu Santo, the first dive day with Mantas possible at La Reina, and Balandra for an afternoon.",
+    travelIn: "Drive from Pescadero on 21 June (~1h30).",
+    travelOut: "Drive to Loreto on 24 June (~4h30) via the Sierra de la Giganta.",
+    links: [
+      { label: "La Paz tourism", href: "https://www.golapaz.com/" },
+      { label: "Balandra info", href: "https://www.gob.mx/conanp/articulos/playa-balandra" },
+      { label: "Punta Baja tours", href: "https://www.puntabajatours.com/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Playa Balandra (afternoon)",
+        note: "Reservation slots are 8:00 and 12:00 — be there early. The mushroom rock and shallow lagoon.",
+        pace: "half day",
+        links: [{ label: "Balandra reservation", href: "https://www.gob.mx/conanp/articulos/playa-balandra" }],
+      },
+      {
+        title: "Espíritu Santo boat tour",
+        note: "Ensenada Grande, Playa Bonanza. **Los Islotes is closed 1 Jun – 1 Sep** for the sea lion breeding season.",
+        pace: "half day",
+        links: [
+          { label: "Punta Baja", href: "https://www.puntabajatours.com/" },
+          { label: "Mar y Aventuras", href: "https://www.kayakbaja.com/" },
+          { label: "Alonso Tours", href: "https://alonsotours.com/" },
+        ],
+      },
+      {
+        title: "Malecón sunset walk",
+        note: "The 5 km waterfront promenade with bronze sculptures. Best from 18:00 onwards.",
+        pace: "easy",
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "El Pez Baja",
+        note: "Small new marisco spot — the freshest in town.",
+        pace: "food",
+      },
+      {
+        title: "Anzuelo Cocina del Mar",
+        note: "Harbour-side, sashimi tostadas, ceviches.",
+        pace: "food",
+      },
+      {
+        title: "Tatanka Baja",
+        note: "Hidden-alley steak + seafood, often live music.",
+        pace: "food",
+      },
+      {
+        title: "Oyster House",
+        note: "Oysters and sashimi, properly local.",
+        pace: "food",
+      },
+      {
+        title: "Casamarte Oyster Bar",
+        note: "Right on the Malecón with sea view.",
+        pace: "food",
+      },
+    ],
+    diveSites: [
+      {
+        title: "Fang Ming Wreck",
+        note: "Sunken ship at ~25 m. Good visibility, easy navigation, lots of life.",
+        pace: "dive",
+      },
+      {
+        title: "Swanee Reef",
+        note: "Easy reef site, often combined with Fang Ming as a two-tank morning.",
+        pace: "dive",
+      },
+      {
+        title: "La Reina (Manta season Apr–Jul)",
+        note: "Long boat ride, but the best chance for giant mantas. Worth booking the dedicated day trip.",
+        pace: "dive",
+      },
+    ],
+  },
+  {
+    id: "loreto",
+    city: "Loreto",
+    chapter: "Chapter 4",
+    dates: "24 to 27 June",
+    nights: 3,
+    mood: "Marine Park, mission town and dive day two",
+    colour: "var(--chapter-forest)",
+    stamp: "Loreto · Marine Park",
+    hotels: [
+      {
+        name: "Loreto Playa Boutique Hotel",
+        detail: "Five rooms, very personal service, on the Malecón, small pool.",
+        status: "preferred",
+      },
+    ],
+    summary:
+      "Three nights based in the old mission town. One boat day in the Marine Park (Coronado / Danzante), one dive day and an evening in the pueblo.",
+    travelIn: "Drive from La Paz on 24 June (~4h30) via Ciudad Constitución.",
+    travelOut: "27 June split: drop the third traveller at the ABC bus → SJD, then Julian + wife drive to Bahía Concepción.",
+    links: [
+      { label: "Loreto tourism", href: "https://www.gotoloreto.com/" },
+      { label: "Marine Park info", href: "https://www.gob.mx/conanp/acciones-y-programas/parque-nacional-bahia-de-loreto" },
+      { label: "Aguila bus", href: "https://aguila.com.mx/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Marine Park boat day",
+        note: "Snorkel circuit Coronado + Danzante. Pack water, sunscreen and a hat.",
+        pace: "half day",
+      },
+      {
+        title: "Loreto pueblo evening",
+        note: "Plaza, mission church, ice cream at Ágata. Easy 90-minute loop.",
+        pace: "easy",
+      },
+      {
+        title: "Mirador Sierra de la Giganta (sunrise)",
+        note: "Quick drive out of town for a viewpoint over the bay. Worth setting an alarm.",
+        pace: "easy",
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Romanita Baja Kitchen",
+        note: "Modern courtyard restaurant — best dinner in town.",
+        pace: "food",
+      },
+      {
+        title: "Orlando's",
+        note: "Classic Mexican, Local favourite.",
+        pace: "food",
+      },
+      {
+        title: "Mi Loreto",
+        note: "Elevated comida casera. Good for a slower lunch.",
+        pace: "food",
+      },
+      {
+        title: "La Picazón",
+        note: "15 min on dirt road north of town, seaside, fish from their own boat. Lunch only, closed Mondays.",
+        pace: "food",
+      },
+    ],
+    diveSites: [
+      {
+        title: "Coronado wall",
+        note: "Drop-off wall on the north side. Reef fish, occasional rays.",
+        pace: "dive",
+      },
+      {
+        title: "Punta Lobos",
+        note: "Sea lion colony (outside breeding closure). Playful encounters.",
+        pace: "dive",
+      },
+      {
+        title: "Las Tijeras",
+        note: "Two pinnacles south of town. Larger schools, good visibility.",
+        pace: "dive",
+      },
+    ],
+  },
+  {
+    id: "bahia-concepcion",
+    city: "Bahía Concepción",
+    chapter: "Chapter 5",
+    dates: "27 to 30 June",
+    nights: 3,
+    mood: "Empty turquoise bays + kayak days (wife only)",
+    colour: "var(--chapter-sandstone)",
+    stamp: "Bahía · Kayak + Palapa",
+    hotels: [
+      {
+        name: "Mulege Beach Glamping (Playa La Escondida)",
+        detail: "Simple, pit toilets, direct beach access.",
+        status: "candidate",
+      },
+      {
+        name: "Beach palapas · Playa el Burro",
+        detail: "~$12/night, very basic huts. Cash only.",
+        status: "candidate",
+      },
+      {
+        name: "Beach palapas · Playa Santispac",
+        detail: "Same vibe — choose between Burro and Santispac on arrival.",
+        status: "candidate",
+      },
+      {
+        name: "Hotel Las Casitas · Mulegé",
+        detail: "Hotel fallback in Mulegé pueblo, garden setting.",
+        status: "candidate",
+      },
+    ],
+    summary:
+      "Three slow days in the bays north of Loreto. Kayak, snorkel, swim, JC's tacos. Just the two of us from here.",
+    travelIn: "Drive Loreto → Bahía Concepción on 27 June (~1h30).",
+    travelOut: "Long drive south to La Paz on 30 June (~6h). Early start.",
+    links: [
+      { label: "Bahía Concepción overview", href: "https://www.bajabound.com/before/aboutbaja/baja-bays.php" },
+      { label: "Mulegé tourism", href: "https://mulege.gob.mx/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Kayak Playa el Burro",
+        note: "Calm bay, paddle to the small island and snorkel around it.",
+        pace: "half day",
+      },
+      {
+        title: "Playa Santispac swim + hot spring",
+        note: "The north end has a small thermal spring near the rocks at low tide.",
+        pace: "easy",
+      },
+      {
+        title: "Mulegé pueblo half-day",
+        note: "Old mission, river walk, small market. Easy lunch stop.",
+        pace: "half day",
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "Los Equipales · Mulegé",
+        note: "Best breakfast and seafood soup in the area.",
+        pace: "food",
+      },
+      {
+        title: "Las Casitas · Mulegé",
+        note: "Atmospheric, garden setting — good for one nice dinner.",
+        pace: "food",
+      },
+      {
+        title: "JC's · Playa el Burro",
+        note: "Beach restaurant, al pastor tacos, Thursday live music. Cash only.",
+        pace: "food",
+      },
+      {
+        title: "Armando's · Playa Santispac",
+        note: "Beachfront, simple Mexican plates.",
+        pace: "food",
+      },
+    ],
+    practical: [
+      "Cash only at most beach palapas and JC's.",
+      "Cell service is patchy — download offline maps.",
+      "Fuel up in Mulegé; the next big station is Loreto or Guerrero Negro.",
+    ],
+  },
+  {
+    id: "cabo-pulmo",
+    city: "Cabo Pulmo",
+    chapter: "Chapter 6",
+    dates: "1 to 4 July",
+    nights: 3,
+    mood: "Reef village, two dive days, the trip's grand finale",
+    colour: "var(--chapter-coral)",
+    stamp: "Pulmo · Reef + Bull sharks",
+    hotels: [
+      {
+        name: "Cabo Pulmo Beach Resort",
+        detail: "Bungalows with attached dive shop. The obvious diver pick.",
+        status: "preferred",
+        links: [{ label: "Resort", href: "https://www.cabopulmobeachresort.com/" }],
+      },
+      {
+        name: "Bungalows Cabo Pulmo",
+        detail: "Well-equipped bungalows ~50 m from the beach.",
+        status: "candidate",
+      },
+      {
+        name: "Costa Coral Cabo Pulmo",
+        detail: "Newer apartments slightly outside the village. Dive packages available.",
+        status: "candidate",
+      },
+    ],
+    summary:
+      "Three final nights in the small protected village. Two dive days on the reef, snorkelling at Los Arbolitos, and one nice farewell dinner.",
+    travelIn: "Drive from La Paz on 1 July (~3h). Last 10 km unpaved.",
+    travelOut: "Drive to SJD on 4 July (~2h30) for the flight home.",
+    links: [
+      { label: "Marine Park", href: "https://www.gob.mx/conanp/acciones-y-programas/parque-nacional-cabo-pulmo" },
+      { label: "Dive Cabo Pulmo", href: "https://www.divecabopulmo.com/" },
+    ],
+    thingsToDo: [
+      {
+        title: "Snorkel Los Arbolitos",
+        note: "Best shore snorkel of the trip. Reef ~5 m from shore, ~$5 entry. Go mid-morning.",
+        pace: "snorkel",
+      },
+      {
+        title: "Sunset Bar 1",
+        note: "The one bar in the village. Cold beer, palapa, sunset.",
+        pace: "easy",
+      },
+      {
+        title: "Drive south to Los Frailes",
+        note: "Half-hour drive, near-empty beach and a secondary snorkel spot.",
+        pace: "half day",
+      },
+    ],
+    foodIdeas: [
+      {
+        title: "El Caballero",
+        note: "Best in the village. Burgers and shrimp tacos. Romantic at night.",
+        pace: "food",
+      },
+      {
+        title: "Los Tornados",
+        note: "Family-run breakfast spot — chilaquiles done well.",
+        pace: "food",
+      },
+      {
+        title: "La Palapa",
+        note: "Right on the sand, basic and cheap. Cash only.",
+        pace: "food",
+      },
+    ],
+    diveSites: [
+      {
+        title: "El Bajo",
+        note: "Big pinnacle, schools of jack and snapper, bull sharks in summer.",
+        pace: "dive",
+      },
+      {
+        title: "El Vencedor (wreck)",
+        note: "Tuna boat wreck at ~12–17 m. Goliath grouper and turtles common.",
+        pace: "dive",
+      },
+      {
+        title: "Cantil del Tiburón",
+        note: "'Shark wall'. Reef sharks, occasionally bull sharks. Drift conditions possible.",
+        pace: "dive",
+      },
+      {
+        title: "Los Morros",
+        note: "Pinnacle dive, big schools. Sometimes combined with El Bajo.",
+        pace: "dive",
+      },
+    ],
+    practical: [
+      "No ATM in Cabo Pulmo. Bring cash for dives, food and tips.",
+      "Phone signal is poor — download offline maps and dive plans.",
+      "Water temp 24–27 °C — 3 mm suit is plenty for June/July.",
+    ],
+  },
 ];
 
 export const itineraryItems: ItineraryItem[] = [
   {
-    date: "27 July 2026",
-    title: "Eurostar to Brussels",
-    place: "London St Pancras to Brussels Midi",
-    type: "train",
+    date: "16 Jun 2026",
+    day: "Tue",
+    title: "BER → AMS → MEX (KLM)",
+    place: "Berlin → Mexico City",
+    type: "flight",
     status: "booked",
-    time: "09:01 to 12:05",
-    bookedWith: "Eurostar",
-    note: "Outbound train. Keep tickets and sensitive booking details in email or phone wallet.",
+    time: "BER 19:15 → MEX 01:55 (+1)",
+    bookedWith: "KLM (KL1782 + KL8990)",
+    note: "Lands MEX ~02:00 local on 17 Jun. Taxi/Uber straight to the Roma Norte Airbnb.",
   },
   {
-    date: "27 July 2026",
-    title: "Brussels to Koblenz",
-    place: "Bruxelles Midi to Koblenz Hbf via Cologne",
-    type: "train",
-    status: "candidate",
-    time: "12:25 to 15:46",
-    cost: "EUR 115.98",
-    note: "Candidate connection. Check platform buffer at Brussels and Cologne before booking.",
-  },
-  {
-    date: "27 to 30 July 2026",
-    title: "Hotel Trierer Hof",
-    place: "Koblenz",
+    date: "16–19 Jun 2026",
+    day: "Tue–Fri",
+    title: "Roma Norte Airbnb",
+    place: "Mexico City",
     type: "hotel",
     status: "booked",
-    bookedWith: "Booking.com",
-    cost: "GBP 521 including breakfast",
-    cancellation: "Free cancellation up to 26 July",
-    note: "Sensitive booking details stay in email or phone only.",
+    bookedWith: "Airbnb (Lorenza & Mercedes)",
+    note: "Independent Small Rooftop Studio, 39 Calle Cuernavaca. 3 nights.",
   },
   {
-    date: "30 July 2026",
-    title: "Koblenz to Heidelberg",
-    place: "Koblenz Hbf to Heidelberg Hbf",
-    type: "train",
-    status: "candidate",
-    time: "09:48 to 11:34 or 11:48 to 13:34",
-    cost: "EUR 43.98",
-    note: "Direct options. Decide based on checkout, breakfast and how early everyone wants to move.",
-  },
-  {
-    date: "30 July to 2 August 2026",
-    title: "Premier Inn Heidelberg City Centre",
-    place: "Heidelberg",
-    type: "hotel",
+    date: "19 Jun 2026",
+    day: "Fri",
+    title: "MEX → SJD (VivaAerobus VB1212) + drive Pescadero",
+    place: "Mexico City → Pescadero",
+    type: "flight",
     status: "booked",
-    bookedWith: "Booking.com",
-    cost: "GBP 347.05",
-    cancellation: "Cancellation available",
-    note: "Booking details stay in email or phone only.",
+    time: "MEX 06:10 → SJD 07:15",
+    bookedWith: "VivaAerobus (Julian) — wife's leg TBD",
+    note: "Pick up Payless rental at SJD 07:30, drive ~1h30 to Pescadero.",
   },
   {
-    date: "2 August 2026",
-    title: "Heidelberg to Freiburg",
-    place: "Heidelberg Hbf to Freiburg Hbf",
-    type: "train",
-    status: "candidate",
-    time: "10:43 to 12:31",
-    cost: "EUR 59.98",
-    note: "Likely train with one transfer. Check final connection before booking.",
-  },
-  {
-    date: "2 to 5 August 2026",
-    title: "Mercure Hotel Freiburg am Muenster",
-    place: "Freiburg im Breisgau",
+    date: "19–21 Jun 2026",
+    day: "Fri–Sun",
+    title: "Pescadero — Pacific arrival",
+    place: "Pescadero / Todos Santos",
     type: "hotel",
-    status: "booked",
-    bookedWith: "Accor direct",
-    cost: "EUR 538.65, about GBP 468",
-    cancellation: "Free cancellation up to 1 August",
-    note: "Address: Auf der Zinnen 1, 79098 Freiburg. Booking details stay in email or phone only.",
-  },
-  {
-    date: "Flexible from Freiburg",
-    title: "Gengenbach day trip",
-    place: "Freiburg to Gengenbach return",
-    type: "day trip",
-    status: "flexible",
-    note: "Keep this movable around weather. It is a day trip, not an overnight stay.",
-  },
-  {
-    date: "5 August 2026",
-    title: "Freiburg to Cologne",
-    place: "Freiburg Hbf to Cologne Hbf",
-    type: "train",
-    status: "preferred",
-    time: "13:55 to 17:05",
-    cost: "EUR 107.98",
-    note: "Preferred direct train. Alternative is 11:55 to 15:05 at EUR 119.98.",
-  },
-  {
-    date: "5 to 6 August 2026",
-    title: "Hilton Cologne",
-    place: "Cologne",
-    type: "hotel",
-    status: "booked",
-    bookedWith: "Hilton",
-    cost: "83k Hilton points",
-    cancellation: "Cancellation up to 4 August",
-    note: "Final night close to the station and cathedral. Booking details stay in Hilton account, email or phone only.",
-  },
-  {
-    date: "6 August 2026",
-    title: "Cologne to Brussels",
-    place: "Cologne Hbf to Brussels Midi",
-    type: "train",
-    status: "candidate",
-    time: "09:43 to 11:35",
-    bookedWith: "ICE 316",
-    cost: "EUR 83.98",
-    note: "Direct ICE to Brussels, then Eurostar home.",
-  },
-  {
-    date: "6 August 2026",
-    title: "Eurostar home",
-    place: "Brussels Midi to London St Pancras",
-    type: "train",
     status: "to book",
-    note: "Add final Eurostar details once booked. Keep sensitive booking details in email or phone only.",
+    cancellation: "Hold a refundable option until 7 days out.",
+    note: "2 nights. Strand and pueblo only — keep this slow.",
   },
+  {
+    date: "21 Jun 2026",
+    day: "Sun",
+    title: "Drive Pescadero → La Paz",
+    place: "La Paz",
+    type: "drive",
+    status: "planned",
+    time: "~1h30",
+    note: "Arrive midday so the afternoon Balandra slot is possible.",
+  },
+  {
+    date: "21–24 Jun 2026",
+    day: "Sun–Wed",
+    title: "La Paz — bay + Espíritu Santo + dive day 1",
+    place: "La Paz",
+    type: "hotel",
+    status: "to book",
+    note: "3 nights. Espíritu Santo boat, Balandra slot, first dive day (Fang Ming + Swanee).",
+  },
+  {
+    date: "22 Jun 2026",
+    day: "Mon",
+    title: "Espíritu Santo boat tour",
+    place: "La Paz",
+    type: "activity",
+    status: "to book",
+    note: "Book Punta Baja or Mar y Aventuras. Los Islotes is closed for the season — Ensenada Grande and Bonanza instead.",
+  },
+  {
+    date: "23 Jun 2026",
+    day: "Tue",
+    title: "Dive day 1",
+    place: "La Paz",
+    type: "activity",
+    status: "to book",
+    note: "Fang Ming wreck + Swanee Reef. La Reina mantas if a third tank is doable.",
+  },
+  {
+    date: "24 Jun 2026",
+    day: "Wed",
+    title: "Drive La Paz → Loreto",
+    place: "Loreto",
+    type: "drive",
+    status: "planned",
+    time: "~4h30",
+    note: "Sierra de la Giganta scenic drive. Lunch in Ciudad Constitución or Ligüí.",
+  },
+  {
+    date: "24–27 Jun 2026",
+    day: "Wed–Sat",
+    title: "Loreto — Marine Park + dive day 2",
+    place: "Loreto",
+    type: "hotel",
+    status: "to book",
+    note: "Likely Loreto Playa Boutique — only 5 rooms, book ASAP.",
+  },
+  {
+    date: "25 Jun 2026",
+    day: "Thu",
+    title: "Marine Park boat day",
+    place: "Loreto",
+    type: "activity",
+    status: "to book",
+    note: "Coronado + Danzante snorkel circuit.",
+  },
+  {
+    date: "26 Jun 2026",
+    day: "Fri",
+    title: "Dive day 2",
+    place: "Loreto",
+    type: "activity",
+    status: "to book",
+    note: "Coronado wall or Punta Lobos depending on conditions.",
+  },
+  {
+    date: "27 Jun 2026",
+    day: "Sat",
+    title: "Third traveller: bus Loreto → SJD + flight home",
+    place: "Loreto → SJD",
+    type: "bus",
+    status: "to book",
+    time: "Early AM bus, 8–9h",
+    bookedWith: "Aguila / ABC (aguila.com.mx)",
+    cost: "~USD 50",
+    note: "Third person leaves the group here. Book the bus ticket early — one departure per day.",
+  },
+  {
+    date: "27 Jun 2026",
+    day: "Sat",
+    title: "Julian + wife: drive Loreto → Bahía Concepción",
+    place: "Bahía Concepción",
+    type: "drive",
+    status: "planned",
+    time: "~1h30",
+    note: "We continue north after dropping the third person at the bus.",
+  },
+  {
+    date: "27–30 Jun 2026",
+    day: "Sat–Tue",
+    title: "Bahía Concepción — bays + kayak",
+    place: "Bahía Concepción",
+    type: "hotel",
+    status: "flexible",
+    note: "3 nights. Can decide between glamping and palapas on arrival.",
+  },
+  {
+    date: "30 Jun 2026",
+    day: "Tue",
+    title: "Drive Bahía Concepción → La Paz",
+    place: "La Paz",
+    type: "drive",
+    status: "planned",
+    time: "~6h",
+    note: "Long drive — dawn start, fuel break in Loreto.",
+  },
+  {
+    date: "1 Jul 2026",
+    day: "Wed",
+    title: "Drive La Paz → Cabo Pulmo",
+    place: "Cabo Pulmo",
+    type: "drive",
+    status: "planned",
+    time: "~3h",
+    note: "Top up cash and food before leaving La Paz.",
+  },
+  {
+    date: "1–4 Jul 2026",
+    day: "Wed–Sat",
+    title: "Cabo Pulmo — reef + dive days 3 & 4",
+    place: "Cabo Pulmo",
+    type: "hotel",
+    status: "to book",
+    note: "3 nights. Cabo Pulmo Beach Resort is the obvious choice for divers.",
+  },
+  {
+    date: "2 Jul 2026",
+    day: "Thu",
+    title: "Dive day 3",
+    place: "Cabo Pulmo",
+    type: "activity",
+    status: "to book",
+    note: "El Bajo + Cantil del Tiburón. Bull shark aggregation possible in summer.",
+  },
+  {
+    date: "3 Jul 2026",
+    day: "Fri",
+    title: "Dive day 4 + Los Arbolitos snorkel",
+    place: "Cabo Pulmo",
+    type: "activity",
+    status: "to book",
+    note: "El Vencedor wreck in the morning, Los Arbolitos in the afternoon.",
+  },
+  {
+    date: "4 Jul 2026",
+    day: "Sat",
+    title: "Drive Cabo Pulmo → SJD + KLM home",
+    place: "Cabo Pulmo → BER",
+    type: "flight",
+    status: "booked",
+    time: "Drive ~2h30, return car 11:00, fly SJD 13:30",
+    bookedWith: "KLM (KL5375 ATL + KL0622 AMS + KL1779 BER)",
+    note: "Leave Cabo Pulmo by 07:30. Lands BER Sun 5 Jul 16:30.",
+  },
+];
+
+export const reservationPriority = [
+  "Cabo Pulmo dive operator (Dive Cabo Pulmo) — small slots, fills fast",
+  "Espíritu Santo boat tour (Punta Baja, Alonso Tours, Mar y Aventuras)",
+  "Hotels Pescadero + La Paz + Loreto",
+  "Third traveller: Aguila/ABC bus ticket Loreto → SJD on 27 Jun + flight home",
+  "Wife's MEX → SJD domestic ticket on 19 Jun",
+  "Cabo Pulmo accommodation (Beach Resort or Bungalows)",
+  "Bahía Concepción — can usually be decided on the day",
 ];

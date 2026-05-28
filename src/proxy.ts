@@ -18,10 +18,10 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  return new NextResponse("Private family trip site", {
+  return new NextResponse("Private trip site", {
     status: 401,
     headers: {
-      "WWW-Authenticate": 'Basic realm="Germany 2026"',
+      "WWW-Authenticate": 'Basic realm="Mexico 2026"',
     },
   });
 }

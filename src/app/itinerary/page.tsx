@@ -2,18 +2,22 @@ import Link from "next/link";
 import {
   ArrowLeft,
   BedDouble,
+  Bus,
   CalendarDays,
+  Car,
   CheckCircle2,
   CircleDashed,
   Clock3,
+  Compass,
   CreditCard,
   MapPin,
+  Plane,
   ShieldCheck,
-  Train,
+  Sparkles,
 } from "lucide-react";
-import { itineraryItems } from "@/data/trip";
+import { itineraryItems, reservationPriority } from "@/data/trip";
 
-const statusCopy = {
+const statusCopy: Record<string, string> = {
   booked: "Booked",
   candidate: "Candidate",
   preferred: "Preferred",
@@ -22,19 +26,13 @@ const statusCopy = {
 };
 
 const typeIcons = {
-  train: Train,
+  flight: Plane,
+  drive: Car,
+  bus: Bus,
   hotel: BedDouble,
-  decision: CircleDashed,
-  "day trip": MapPin,
+  activity: Compass,
+  decision: Sparkles,
 };
-
-const nextActions = [
-  "Book or confirm Brussels to Koblenz.",
-  "Choose the Koblenz to Heidelberg departure.",
-  "Confirm Heidelberg to Freiburg transfer.",
-  "Book Freiburg to Cologne and Cologne to Brussels when ready.",
-  "Add homebound Eurostar details once booked.",
-];
 
 export default function ItineraryPage() {
   return (
@@ -47,31 +45,31 @@ export default function ItineraryPage() {
         <p className="eyebrow">Private trip operations</p>
         <h1>Itinerary</h1>
         <p>
-          The practical version: what is booked, what needs choosing, how it was booked and what it costs. Sensitive
-          booking details stay in email, apps or phone wallet only.
+          The practical view: what is booked, what needs choosing and how much each piece costs. Sensitive booking
+          details (PNRs, confirmation codes, room numbers) stay in email, the airline app or phone wallet only.
         </p>
       </section>
 
       <section className="ops-summary" aria-label="Itinerary summary">
         <div>
           <CalendarDays aria-hidden="true" size={20} />
-          <span>27 July to 6 August 2026</span>
+          <span>16 June to 4 July 2026 — 18 days total</span>
         </div>
         <div>
-          <Train aria-hidden="true" size={20} />
-          <span>London, Koblenz, Heidelberg, Freiburg, Cologne, London</span>
+          <MapPin aria-hidden="true" size={20} />
+          <span>Mexico City → Pescadero → La Paz → Loreto → Bahía Concepción → Cabo Pulmo</span>
         </div>
         <div>
           <ShieldCheck aria-hidden="true" size={20} />
-          <span>No sensitive booking details or access codes are stored here</span>
+          <span>No PNRs or access codes stored here. Password-protected via HOLIDAY_SITE_PASSWORD on Vercel.</span>
         </div>
       </section>
 
       <section className="ops-layout">
         <aside className="ops-actions">
-          <h2>Next checks</h2>
+          <h2>Book in this order</h2>
           <div className="ops-action-list">
-            {nextActions.map((action) => (
+            {reservationPriority.map((action) => (
               <div key={action}>
                 <CircleDashed aria-hidden="true" size={17} />
                 <span>{action}</span>
@@ -82,7 +80,7 @@ export default function ItineraryPage() {
 
         <div className="ops-list" aria-label="Chronological itinerary">
           {itineraryItems.map((item) => {
-            const Icon = typeIcons[item.type];
+            const Icon = typeIcons[item.type] ?? Sparkles;
 
             return (
               <article className="ops-card" key={`${item.date}-${item.title}`}>
