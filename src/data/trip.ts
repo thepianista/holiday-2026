@@ -89,6 +89,12 @@ export type DiveOperator = {
   links?: Link[];
 };
 
+export type BookingPriority = {
+  title: string;
+  detail: string;
+  status: "to book" | "planned" | "flexible";
+};
+
 export type ItineraryItem = {
   date: string;
   day: string;
@@ -402,6 +408,13 @@ export const groundLegs: GroundLeg[] = [
 export const diveOperators: DiveOperator[] = [
   {
     region: "La Paz",
+    name: "Fun Baja",
+    highlights:
+      "Friend tip for La Paz diving. Worth checking for Espíritu Santo / Balandra-style days and pickup logistics before choosing.",
+    links: [{ label: "Website", href: "https://www.funbaja.com/" }],
+  },
+  {
+    region: "La Paz",
     name: "Dive in La Paz (Alexia)",
     highlights: "Boutique operator. Fang Ming wreck, Swanee Reef, day trips to La Reina for mantas (Apr–Jul).",
     links: [{ label: "Website", href: "https://www.diveinlapaz.com/" }],
@@ -489,6 +502,39 @@ export const snorkelSpots: Activity[] = [
   },
 ];
 
+export const nextBookings: BookingPriority[] = [
+  {
+    title: "World Cup night in CDMX",
+    detail:
+      "18 Jun evening: Czechia/Denmark v Mexico at Mexico City Stadium. Decide stadium tickets vs Zócalo Fan Festival, then shape Casa Azul/Coyoacán around it.",
+    status: "to book",
+  },
+  {
+    title: "Manu's Loreto → SJD bridge",
+    detail:
+      "Aguila buses LTO → LAP and LAP → SJD on 26 Jun, plus one reliable SJD airport-area hotel before UA766.",
+    status: "to book",
+  },
+  {
+    title: "Cabo Pulmo base + dives",
+    detail:
+      "Book accommodation and the first operator slot together. Small village, small boats, not much backup inventory.",
+    status: "to book",
+  },
+  {
+    title: "CDMX timed entries",
+    detail:
+      "Teotihuacán balloon, Casa Azul and Palacio Nacional/Diego Rivera mural slot. Keep Day 2 afternoon light.",
+    status: "to book",
+  },
+  {
+    title: "La Paz water days",
+    detail:
+      "Espíritu Santo boat and one dive day. Fun Baja is a friend tip; Dive in La Paz stays the boutique fallback.",
+    status: "planned",
+  },
+];
+
 export const stays: Stay[] = [
   {
     id: "mexico-city",
@@ -546,13 +592,30 @@ export const stays: Stay[] = [
       },
       {
         title: "Day 2 — Coyoacán + Casa Azul (afternoon)",
-        note: "Pre-book Casa Azul online (slots sell out daily). Then Plaza Hidalgo, Coyoacán market for churros + tostadas, Café El Jarocho. Keep dinner light and early — Friday airport alarm is ~03:30.",
+        note: "Pre-book Casa Azul online (slots sell out daily). Then Plaza Hidalgo, Coyoacán market for churros + tostadas, Café El Jarocho. If you keep the World Cup match, choose an earlier Casa Azul slot and avoid squeezing in a big dinner.",
         pace: "half day",
         links: [{ label: "Casa Azul tickets", href: "https://www.museofridakahlo.org.mx/" }],
       },
       {
-        title: "If there's spare time — Roma + Condesa walking loop",
-        note: "Parque México → Parque España → Avenida Amsterdam → Plaza Río de Janeiro. Café stops every 30 min.",
+        title: "Day 2 evening — World Cup at Estadio Azteca",
+        note:
+          "Czechia/Denmark v Mexico is scheduled for Thu 18 Jun at Mexico City Stadium (Estadio Azteca/Banorte). From Coyoacán: easiest is Uber if roads are open; safer match-day public route is Uber/walk to Tasqueña, Tren Ligero to Estadio Azteca. Official Fan Festival/Fanmeile is the Zócalo, not by the stadium — good for pre-match atmosphere, awkward after Coyoacán because it is back north.",
+        pace: "half day",
+        links: [
+          {
+            label: "FIFA schedule",
+            href: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
+          },
+          {
+            label: "Fan Festival",
+            href: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/fifa-fan-festival/mexico-city",
+          },
+        ],
+      },
+      {
+        title: "Roma + Condesa evening route",
+        note:
+          "Simple breathing route after a heavy sightseeing block: Parque México → Avenida Amsterdam loop → Plaza Río de Janeiro → Roma Norte dinner. Use this as the low-effort night if the stadium plan feels too much after Teotihuacán.",
         pace: "easy",
       },
     ],
@@ -577,6 +640,26 @@ export const stays: Stay[] = [
       {
         title: "Lardo · Condesa",
         note: "Brunch and pizza from Elena Reygadas. Walk-in friendly mid-week.",
+        pace: "food",
+      },
+      {
+        title: "Taquería Orinoco",
+        note: "Friend tip for casual Roma/Condesa tacos. Easy late option after a walk, less formal than a reservation dinner.",
+        pace: "food",
+      },
+      {
+        title: "Blanco Colima",
+        note: "Roma Norte favourite from the screenshot tips. Better as a proper dinner or cocktail stop than a quick bite.",
+        pace: "food",
+      },
+      {
+        title: "Caimán",
+        note: "Pre-drinks / copas in Roma Norte. Works before Jardín Paraíso if you still have energy.",
+        pace: "food",
+      },
+      {
+        title: "Jardín Paraíso",
+        note: "Dancing + drinks option. Fun, but only if Friday's 03:30 airport alarm is not already painful.",
         pace: "food",
       },
       {
@@ -660,6 +743,12 @@ export const stays: Stay[] = [
     ],
     foodIdeas: [
       {
+        title: "Barracuda Cantina · Cerritos",
+        note: "Strong friend tip from the screenshot. Beach-bar tacos, tostadas and a good first Baja dinner right by Cerritos.",
+        pace: "food",
+        links: [{ label: "Barracuda", href: "https://www.barracudacantina.com/" }],
+      },
+      {
         title: "Las Tunas Villas & Grill",
         note: "Family-run, grilled fish, the real deal.",
         pace: "food",
@@ -705,6 +794,12 @@ export const stays: Stay[] = [
       {
         name: "Casa al Mar",
         detail: "Boutique directly on the Malecón. Loud on weekends.",
+        status: "candidate",
+      },
+      {
+        name: "Hotel Suites El Moro",
+        detail:
+          "Friend tip from a previous dive stay. Practical if the dive operator pickup is nearby; for a couple trip, Centro/Malecón hotels still feel nicer.",
         status: "candidate",
       },
       {
@@ -1095,14 +1190,15 @@ export const itineraryItems: ItineraryItem[] = [
   {
     date: "18 Jun 2026",
     day: "Thu",
-    title: "CDMX Day 2 — Teotihuacán balloon + Coyoacán + Casa Azul",
-    place: "Teotihuacán + Coyoacán",
+    title: "CDMX Day 2 — Teotihuacán + Coyoacán + World Cup option",
+    place: "Teotihuacán + Coyoacán + Estadio Azteca",
     type: "activity",
     status: "to book",
-    time: "Up ~04:00, Uber to launch field ~05:30, balloon ~07:00",
-    bookedWith: "Shared balloon (WeFly / Vuelos en Globo MX / Volare)",
-    cost: "Balloon ≈ MXN 1,990 + Uber RT + on-site guide MXN 600–900",
-    note: "Self-arranged Uber to the launch site (Manu/Anja's CDMX picks if relevant). Hire pyramid guide at entrance after the balloon. Back CDMX ~13:30. Coyoacán + pre-booked Casa Azul in the afternoon. Light early dinner — Friday airport alarm is 03:30.",
+    time: "Up ~04:00; balloon ~07:00; possible match evening",
+    bookedWith: "Shared balloon + Casa Azul + World Cup ticket/Fan Festival decision",
+    cost: "Balloon ≈ MXN 1,990 + Uber RT + guide MXN 600–900 + match ticket TBD",
+    note:
+      "Self-arranged Uber to the launch site, then pyramid guide at entrance. Back CDMX ~13:30. Keep Casa Azul early if you want the evening match at Estadio Azteca. From Coyoacán, use Uber if roads are open or Tasqueña → Tren Ligero → Estadio Azteca. Zócalo is the official Fan Festival/Fanmeile, better before Coyoacán than after.",
   },
   {
     date: "19 Jun 2026",
@@ -1350,6 +1446,7 @@ export const extraStays: ExtraStay[] = [
 ];
 
 export const reservationPriority = [
+  "World Cup night on 18 Jun: decide Estadio Azteca ticket vs Zócalo Fan Festival, then book around Coyoacán/Casa Azul",
   "Manu's Aguila buses LTO → LAP and LAP → SJD on 26 Jun + SJD airport hotel for that night",
   "Cabo Pulmo dive operator (Dive Cabo Pulmo) — small slots, fills fast",
   "Espíritu Santo boat tour (Punta Baja, Alonso Tours, Mar y Aventuras)",

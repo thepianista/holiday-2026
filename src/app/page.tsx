@@ -11,9 +11,12 @@ import {
   Compass,
   ExternalLink,
   Fish,
+  ListChecks,
   MapPin,
+  MapPinned,
   Plane,
   Sparkles,
+  Ticket,
   Waves,
 } from "lucide-react";
 import {
@@ -22,7 +25,9 @@ import {
   extraStays,
   flights,
   groundLegs,
+  heroStats,
   itineraryItems,
+  nextBookings,
   reservationPriority,
   snorkelSpots,
   stays,
@@ -43,6 +48,7 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 const TAB_STORAGE_KEY = "mexico-2026-tab";
+const SHARED_MAP_URL = "https://maps.app.goo.gl/YWHSjyy2dgK7EiS68";
 
 const statusLabels: Record<string, string> = {
   booked: "Booked",
@@ -141,6 +147,77 @@ function ActivityList({
   );
 }
 
+function TripMenu({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: TabId;
+  onTabChange: (tab: TabId) => void;
+}) {
+  return (
+    <nav className="trip-menu" aria-label="Trip sections">
+      {TABS.map((tab) => {
+        const Icon = tab.icon;
+        const isActive = tab.id === activeTab;
+        return (
+          <button
+            key={tab.id}
+            type="button"
+            className={isActive ? "active" : ""}
+            onClick={() => onTabChange(tab.id)}
+            aria-current={isActive ? "page" : undefined}
+          >
+            <Icon aria-hidden="true" size={17} />
+            <span>{tab.label}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+function NextBookings({ compact = false }: { compact?: boolean }) {
+  const items = compact ? nextBookings.slice(0, 3) : nextBookings;
+  return (
+    <div className={compact ? "booking-stack compact" : "booking-stack"}>
+      {items.map((booking, index) => (
+        <article className="booking-card" key={booking.title}>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h4>{booking.title}</h4>
+            <p>{booking.detail}</p>
+          </div>
+          <strong className={`status ${booking.status.replace(" ", "-")}`}>{statusLabels[booking.status]}</strong>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function PlanJumpMenu() {
+  const links = [
+    { href: "#next-bookings", label: "Next bookings", icon: ListChecks },
+    { href: "#daily-plan", label: "Daily plan", icon: CalendarDays },
+    { href: "#air-legs", label: "Flights", icon: Plane },
+    { href: "#ground-legs", label: "Ground", icon: Car },
+    { href: "#reservation-order", label: "Book order", icon: Ticket },
+  ];
+
+  return (
+    <nav className="plan-jump" aria-label="Plan table of contents">
+      {links.map((link) => {
+        const Icon = link.icon;
+        return (
+          <a href={link.href} key={link.href}>
+            <Icon aria-hidden="true" size={16} />
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+  );
+}
+
 function FlightCard({ leg }: { leg: FlightLeg }) {
   return (
     <article className="train-card" key={leg.id}>
@@ -187,6 +264,17 @@ function FlightCard({ leg }: { leg: FlightLeg }) {
 function PlanTab() {
   return (
     <section className="tab-section">
+      <PlanJumpMenu />
+      <div id="next-bookings">
+        <SectionTitle
+          kicker="Book first"
+          title="Next 5 bookings"
+          copy="This is the working queue. Lock these before polishing the long map list."
+        />
+        <NextBookings />
+      </div>
+
+      <div id="daily-plan">
       <SectionTitle
         kicker="Day by day"
         title="The trip in order"
@@ -227,14 +315,18 @@ function PlanTab() {
           );
         })}
       </div>
+      </div>
 
+      <div id="air-legs">
       <SectionTitle kicker="Flights" title="Air legs" copy="Placeholders below — fill in once flights are booked." />
       <div className="train-grid">
         {flights.map((leg) => (
           <FlightCard leg={leg} key={leg.id} />
         ))}
       </div>
+      </div>
 
+      <div id="ground-legs">
       <SectionTitle
         kicker="Rental car"
         title="SJD pickup & drop-off"
@@ -308,13 +400,16 @@ function PlanTab() {
           );
         })}
       </div>
+      </div>
 
+      <div id="reservation-order">
       <SectionTitle kicker="Book first" title="Reservation order" copy="What to lock in first — small operators fill up." />
       <ol className="priority-list">
         {reservationPriority.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ol>
+      </div>
     </section>
   );
 }
@@ -536,7 +631,7 @@ function MapTab() {
       <SectionTitle
         kicker="Saved places"
         title="Google Maps list"
-        copy="Synced from your Google My Maps export. Run `npm run import:kml` after dropping data/places.kml."
+        copy="Route overview plus the imported saved-place list. Run `npm run import:kml` after dropping data/places.kml."
       />
 
       {!hasPlaces ? (
@@ -552,39 +647,70 @@ function MapTab() {
           </ol>
         </div>
       ) : (
-        <div className="places-grid">
-          {folderNames.map((folder) => (
-            <section className="places-folder" key={folder}>
-              <h3>
-                {folder}
-                <span>{grouped[folder].length}</span>
-              </h3>
-              <ul>
-                {grouped[folder].map((place) => (
-                  <li key={place.id}>
-                    <h4>{place.name}</h4>
-                    {place.description ? <p>{place.description}</p> : null}
-                    {place.lat != null && place.lon != null ? (
-                      <a
-                        className="place-map"
-                        href={`https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        <MapPin aria-hidden="true" size={13} />
-                        Open in Maps
-                      </a>
-                    ) : place.url ? (
-                      <a className="place-map" href={place.url} rel="noreferrer" target="_blank">
-                        <MapPin aria-hidden="true" size={13} />
-                        Open in Maps
-                      </a>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+        <div className="map-layout">
+          <section className="map-preview" aria-label="Integrated Google map">
+            <iframe
+              title="Mexico 2026 route overview map"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-116.8%2C18.4%2C-98.4%2C28.9&layer=mapnik&marker=19.4326%2C-99.1332"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <div className="map-actions">
+              <a href={SHARED_MAP_URL} rel="noreferrer" target="_blank">
+                <MapPinned aria-hidden="true" size={15} />
+                Open shared list
+              </a>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Estadio+Azteca+Ciudad+de+Mexico"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <Ticket aria-hidden="true" size={15} />
+                Estadio Azteca
+              </a>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Zocalo+Ciudad+de+Mexico"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <MapPin aria-hidden="true" size={15} />
+                Fan Festival
+              </a>
+            </div>
+          </section>
+          <div className="places-grid">
+            {folderNames.map((folder) => (
+              <section className="places-folder" key={folder}>
+                <h3>
+                  {folder}
+                  <span>{grouped[folder].length}</span>
+                </h3>
+                <ul>
+                  {grouped[folder].map((place) => (
+                    <li key={place.id}>
+                      <h4>{place.name}</h4>
+                      {place.description ? <p>{place.description}</p> : null}
+                      {place.lat != null && place.lon != null ? (
+                        <a
+                          className="place-map"
+                          href={`https://www.google.com/maps/search/?api=1&query=${place.lat},${place.lon}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          <MapPin aria-hidden="true" size={13} />
+                          Open in Maps
+                        </a>
+                      ) : place.url ? (
+                        <a className="place-map" href={place.url} rel="noreferrer" target="_blank">
+                          <MapPin aria-hidden="true" size={13} />
+                          Open in Maps
+                        </a>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
         </div>
       )}
     </section>
@@ -653,7 +779,26 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <aside className="hero-side" aria-label="Quick trip facts">
+          <div className="hero-facts">
+            {heroStats.map((stat) => (
+              <div key={stat.label}>
+                <span>{stat.label}</span>
+                <strong>{stat.value}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="hero-bookings">
+            <div className="hero-bookings-title">
+              <ListChecks aria-hidden="true" size={18} />
+              <span>Next to lock</span>
+            </div>
+            <NextBookings compact />
+          </div>
+        </aside>
       </section>
+
+      <TripMenu activeTab={activeTab} onTabChange={handleTabChange} />
 
       <div className="tab-panel">
         {activeTab === "plan" ? <PlanTab /> : null}
