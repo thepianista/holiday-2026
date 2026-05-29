@@ -6,7 +6,7 @@ export type Link = {
 export type Activity = {
   title: string;
   note: string;
-  pace: "easy" | "half day" | "rainy day" | "food" | "snorkel" | "dive";
+  pace: "easy" | "half day" | "rainy day" | "food" | "snorkel" | "dive" | "beach" | "hike";
   links?: Link[];
 };
 
@@ -499,6 +499,67 @@ export const snorkelSpots: Activity[] = [
     title: "Playa el Burro inlet · Bahía Concepción (kayak)",
     note: "Kayak out to the small island and snorkel around it.",
     pace: "snorkel",
+  },
+];
+
+export const beachShortlist: Activity[] = [
+  {
+    title: "Playa Balandra · La Paz",
+    note: "Most photogenic bay of the trip. Go for the afternoon slot if the schedule allows; shallow water, mushroom rock and an easy viewpoint.",
+    pace: "beach",
+  },
+  {
+    title: "Los Arbolitos · Cabo Pulmo",
+    note: "Beach plus the best shore snorkel. Simple facilities, reef starts close to shore, better mid-morning than late afternoon.",
+    pace: "beach",
+  },
+  {
+    title: "Los Frailes · Cabo Pulmo",
+    note: "Wilder, quieter beach south of the village. Good fallback if Los Arbolitos is windy or too busy.",
+    pace: "beach",
+  },
+  {
+    title: "Playa el Coyote · Bahía Concepción",
+    note: "Classic turquoise Bahía Concepción stop: kayak, swim, snorkel rocky edges and keep it slow.",
+    pace: "beach",
+  },
+  {
+    title: "Playa Santispac · Bahía Concepción",
+    note: "Easy beach day with palapas, a small hot spring near the rocks and simple food close by.",
+    pace: "beach",
+  },
+  {
+    title: "Playa Cerritos · Todos Santos",
+    note: "Best first Baja sunset. Better as surf-beach atmosphere than a calm swimming beach because rip currents can be strong.",
+    pace: "beach",
+  },
+];
+
+export const hikeAndWalkIdeas: Activity[] = [
+  {
+    title: "Balandra viewpoint trail",
+    note: "Short sandy climb above the bay for the postcard view. Do it before the strongest midday heat.",
+    pace: "hike",
+  },
+  {
+    title: "Mirador Sierra de la Giganta · Loreto",
+    note: "Sunrise lookout outside Loreto. More viewpoint than hard hike, but worth an early alarm for the bay and mountain light.",
+    pace: "hike",
+  },
+  {
+    title: "Mulegé mission + river walk",
+    note: "Low-effort half-day when you need shade and a break from driving: mission, river, market and lunch in town.",
+    pace: "easy",
+  },
+  {
+    title: "Roma + Condesa evening loop",
+    note: "Parque México → Avenida Amsterdam → Plaza Río de Janeiro → Roma Norte dinner. The easy city walk after heavy sightseeing.",
+    pace: "easy",
+  },
+  {
+    title: "Los Frailes coastal walk",
+    note: "Simple beach walk south of Cabo Pulmo. Go early or around golden hour; bring water and keep it casual.",
+    pace: "hike",
   },
 ];
 

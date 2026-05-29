@@ -20,12 +20,14 @@ import {
   Waves,
 } from "lucide-react";
 import {
+  beachShortlist,
   carRental,
   diveOperators,
   extraStays,
   flights,
   groundLegs,
   heroStats,
+  hikeAndWalkIdeas,
   itineraryItems,
   nextBookings,
   reservationPriority,
@@ -40,7 +42,7 @@ import { places } from "@/data/places";
 const TABS = [
   { id: "plan", label: "Plan", icon: CalendarDays },
   { id: "stays", label: "Stays", icon: BedDouble },
-  { id: "do", label: "Do", icon: Compass },
+  { id: "activities", label: "Activities", icon: Waves },
   { id: "food", label: "Food", icon: Coffee },
   { id: "map", label: "Map", icon: MapPin },
 ] as const;
@@ -49,6 +51,8 @@ type TabId = (typeof TABS)[number]["id"];
 
 const TAB_STORAGE_KEY = "mexico-2026-tab";
 const SHARED_MAP_URL = "https://maps.app.goo.gl/YWHSjyy2dgK7EiS68";
+const GOOGLE_OVERVIEW_EMBED_URL =
+  "https://www.google.com/maps?q=Mexico%20City%2C%20La%20Paz%2C%20Todos%20Santos%2C%20Los%20Cabos%2C%20Baja%20California%20Sur&output=embed";
 
 const statusLabels: Record<string, string> = {
   booked: "Booked",
@@ -512,12 +516,70 @@ function StaysTab() {
   );
 }
 
-function DoTab() {
+function ActivityOverviewCard({
+  title,
+  meta,
+  copy,
+  icon,
+}: {
+  title: string;
+  meta: string;
+  copy: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <article className="activity-overview-card">
+      <div className="activity-overview-icon">{icon}</div>
+      <div>
+        <span>{meta}</span>
+        <h3>{title}</h3>
+        <p>{copy}</p>
+      </div>
+    </article>
+  );
+}
+
+function ActivitiesTab() {
   const diveStays = stays.filter((s) => s.diveSites?.length);
+  const diveSiteCount = diveStays.reduce((sum, stay) => sum + (stay.diveSites?.length ?? 0), 0);
+
   return (
     <section className="tab-section">
       <SectionTitle
-        kicker="Field guide"
+        kicker="Activities"
+        title="Baja field guide"
+        copy="Snorkel, dive, beach and walk ideas in one place. Use the stop cards below for timing and logistics."
+      />
+
+      <div className="activity-overview-grid">
+        <ActivityOverviewCard
+          title="Snorkelling"
+          meta={`${snorkelSpots.length} saved spots`}
+          copy="Shore-first shortlist, with boat-only days called out where they need planning."
+          icon={<Waves aria-hidden="true" size={18} />}
+        />
+        <ActivityOverviewCard
+          title="Diving"
+          meta={`${diveSiteCount} dive sites`}
+          copy="Four planned dive days across La Paz, Loreto and Cabo Pulmo, with operators grouped by region."
+          icon={<Fish aria-hidden="true" size={18} />}
+        />
+        <ActivityOverviewCard
+          title="Beaches"
+          meta={`${beachShortlist.length} beach picks`}
+          copy="The swimmable, scenic and sunset beaches worth keeping on the map."
+          icon={<MapPin aria-hidden="true" size={18} />}
+        />
+        <ActivityOverviewCard
+          title="Walks & hikes"
+          meta={`${hikeAndWalkIdeas.length} easy routes`}
+          copy="Low-friction viewpoints and evening loops, not hardcore hiking days."
+          icon={<Compass aria-hidden="true" size={18} />}
+        />
+      </div>
+
+      <SectionTitle
+        kicker="By stop"
         title="Things to do"
         copy="Shortlist per stop. Practical notes inline."
       />
@@ -549,6 +611,13 @@ function DoTab() {
           </article>
         ))}
       </div>
+
+      <SectionTitle
+        kicker="Snorkel"
+        title="Best snorkel spots"
+        copy="Shore-accessible spots first, then boat-only. Los Islotes is closed 1 Jun – 1 Sep."
+      />
+      <ActivityList items={snorkelSpots} icon={<Waves aria-hidden="true" size={16} />} />
 
       <SectionTitle
         kicker="Underwater"
@@ -586,11 +655,18 @@ function DoTab() {
       </div>
 
       <SectionTitle
-        kicker="Snorkel"
-        title="Best snorkel spots"
-        copy="Shore-accessible spots first, then boat-only. Los Islotes is closed 1 Jun – 1 Sep."
+        kicker="Beaches"
+        title="Schönste Strände"
+        copy="The beach shortlist for swimming, snorkelling, sunsets and slower days."
       />
-      <ActivityList items={snorkelSpots} icon={<Waves aria-hidden="true" size={16} />} />
+      <ActivityList items={beachShortlist} icon={<MapPin aria-hidden="true" size={16} />} />
+
+      <SectionTitle
+        kicker="Land"
+        title="Walks & hikes"
+        copy="Small routes and viewpoints that fit between driving, food and beach time."
+      />
+      <ActivityList items={hikeAndWalkIdeas} icon={<Compass aria-hidden="true" size={16} />} />
     </section>
   );
 }
@@ -625,13 +701,14 @@ function MapTab() {
 
   const folderNames = Object.keys(grouped).sort();
   const hasPlaces = places.length > 0;
+  const placesWithCoordinates = places.filter((place) => place.lat != null && place.lon != null).length;
 
   return (
     <section className="tab-section">
       <SectionTitle
         kicker="Saved places"
         title="Google Maps list"
-        copy="Route overview plus the imported saved-place list. Run `npm run import:kml` after dropping data/places.kml."
+        copy="Route overview plus the imported saved-place snapshot."
       />
 
       {!hasPlaces ? (
@@ -643,16 +720,31 @@ function MapTab() {
             <li>Open your list at <a href="https://www.google.com/maps/d/" rel="noreferrer" target="_blank">google.com/maps/d</a>.</li>
             <li>Three-dot menu → Export to KML → keep as KML.</li>
             <li>Save the file as <code>data/places.kml</code> in this repo.</li>
-            <li>Run <code>npm run import:kml</code>.</li>
+            <li>Run <code>npm run import:places</code>.</li>
           </ol>
         </div>
       ) : (
         <div className="map-layout">
           <section className="map-preview" aria-label="Integrated Google map">
+            <div className="map-summary">
+              <span>
+                <strong>{places.length}</strong>
+                saved places
+              </span>
+              <span>
+                <strong>{folderNames.length}</strong>
+                list
+              </span>
+              <span>
+                <strong>{placesWithCoordinates}</strong>
+                mapped pins
+              </span>
+            </div>
             <iframe
-              title="Mexico 2026 route overview map"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-116.8%2C18.4%2C-98.4%2C28.9&layer=mapnik&marker=19.4326%2C-99.1332"
+              title="Mexico 2026 Google Maps overview"
+              src={GOOGLE_OVERVIEW_EMBED_URL}
               referrerPolicy="no-referrer-when-downgrade"
+              loading="lazy"
             />
             <div className="map-actions">
               <a href={SHARED_MAP_URL} rel="noreferrer" target="_blank">
@@ -723,10 +815,15 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(TAB_STORAGE_KEY) as TabId | null;
+      const saved = localStorage.getItem(TAB_STORAGE_KEY);
+      if (saved === "do") {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- migrate the old tab id after renaming Do to Activities
+        setActiveTab("activities");
+        setHydrated(true);
+        return;
+      }
       if (saved && TABS.some((tab) => tab.id === saved)) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- reading client-only state on mount; SSR uses the default tab
-        setActiveTab(saved);
+        setActiveTab(saved as TabId);
       }
     } catch {
       // localStorage may be unavailable
@@ -803,7 +900,7 @@ export default function Home() {
       <div className="tab-panel">
         {activeTab === "plan" ? <PlanTab /> : null}
         {activeTab === "stays" ? <StaysTab /> : null}
-        {activeTab === "do" ? <DoTab /> : null}
+        {activeTab === "activities" ? <ActivitiesTab /> : null}
         {activeTab === "food" ? <FoodTab /> : null}
         {activeTab === "map" ? <MapTab /> : null}
       </div>

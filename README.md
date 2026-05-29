@@ -57,7 +57,7 @@ We do not call the Google Maps API — instead we import a snapshot of your save
 
 1. takeout.google.com → tick only **Saved** → download.
 2. Each list becomes `<List name>.csv` (German headers Titel / Notiz / URL / Tags / Kommentar are auto-detected).
-3. Drop the CSV(s) into `data/places/`. The importer keeps the place URL even though coordinates aren't included in this format.
+3. Drop the CSV(s) into `data/places/`. The importer keeps the place URL even though coordinates are not included in this format, so the Map tab can list entries but cannot draw individual pins.
 
 **Option C — Google My Maps KML (best for curated trip maps)**
 
@@ -72,6 +72,8 @@ npm run import:places
 ```
 
 The script writes `src/data/places.ts` with a typed `Place[]` array grouped by folder. The `/data` paths are gitignored so the export never leaves your machine. Re-run the script whenever you change a list.
+
+Google Maps saved-list URLs cannot be embedded directly because Google blocks them in iframes. The app embeds a Google Maps route overview and links out to the live shared list.
 
 ## Flights
 
