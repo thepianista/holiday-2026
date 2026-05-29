@@ -20,12 +20,14 @@ import {
   Waves,
 } from "lucide-react";
 import {
+  beachShortlist,
   carRental,
   diveOperators,
   extraStays,
   flights,
   groundLegs,
   heroStats,
+  hikeAndWalkIdeas,
   itineraryItems,
   nextBookings,
   reservationPriority,
@@ -40,7 +42,7 @@ import { places } from "@/data/places";
 const TABS = [
   { id: "plan", label: "Plan", icon: CalendarDays },
   { id: "stays", label: "Stays", icon: BedDouble },
-  { id: "do", label: "Do", icon: Compass },
+  { id: "activities", label: "Activities", icon: Waves },
   { id: "food", label: "Food", icon: Coffee },
   { id: "map", label: "Map", icon: MapPin },
 ] as const;
@@ -514,12 +516,70 @@ function StaysTab() {
   );
 }
 
-function DoTab() {
+function ActivityOverviewCard({
+  title,
+  meta,
+  copy,
+  icon,
+}: {
+  title: string;
+  meta: string;
+  copy: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <article className="activity-overview-card">
+      <div className="activity-overview-icon">{icon}</div>
+      <div>
+        <span>{meta}</span>
+        <h3>{title}</h3>
+        <p>{copy}</p>
+      </div>
+    </article>
+  );
+}
+
+function ActivitiesTab() {
   const diveStays = stays.filter((s) => s.diveSites?.length);
+  const diveSiteCount = diveStays.reduce((sum, stay) => sum + (stay.diveSites?.length ?? 0), 0);
+
   return (
     <section className="tab-section">
       <SectionTitle
-        kicker="Field guide"
+        kicker="Activities"
+        title="Baja field guide"
+        copy="Snorkel, dive, beach and walk ideas in one place. Use the stop cards below for timing and logistics."
+      />
+
+      <div className="activity-overview-grid">
+        <ActivityOverviewCard
+          title="Snorkelling"
+          meta={`${snorkelSpots.length} saved spots`}
+          copy="Shore-first shortlist, with boat-only days called out where they need planning."
+          icon={<Waves aria-hidden="true" size={18} />}
+        />
+        <ActivityOverviewCard
+          title="Diving"
+          meta={`${diveSiteCount} dive sites`}
+          copy="Four planned dive days across La Paz, Loreto and Cabo Pulmo, with operators grouped by region."
+          icon={<Fish aria-hidden="true" size={18} />}
+        />
+        <ActivityOverviewCard
+          title="Beaches"
+          meta={`${beachShortlist.length} beach picks`}
+          copy="The swimmable, scenic and sunset beaches worth keeping on the map."
+          icon={<MapPin aria-hidden="true" size={18} />}
+        />
+        <ActivityOverviewCard
+          title="Walks & hikes"
+          meta={`${hikeAndWalkIdeas.length} easy routes`}
+          copy="Low-friction viewpoints and evening loops, not hardcore hiking days."
+          icon={<Compass aria-hidden="true" size={18} />}
+        />
+      </div>
+
+      <SectionTitle
+        kicker="By stop"
         title="Things to do"
         copy="Shortlist per stop. Practical notes inline."
       />
@@ -551,6 +611,13 @@ function DoTab() {
           </article>
         ))}
       </div>
+
+      <SectionTitle
+        kicker="Snorkel"
+        title="Best snorkel spots"
+        copy="Shore-accessible spots first, then boat-only. Los Islotes is closed 1 Jun – 1 Sep."
+      />
+      <ActivityList items={snorkelSpots} icon={<Waves aria-hidden="true" size={16} />} />
 
       <SectionTitle
         kicker="Underwater"
@@ -588,11 +655,18 @@ function DoTab() {
       </div>
 
       <SectionTitle
-        kicker="Snorkel"
-        title="Best snorkel spots"
-        copy="Shore-accessible spots first, then boat-only. Los Islotes is closed 1 Jun – 1 Sep."
+        kicker="Beaches"
+        title="Schönste Strände"
+        copy="The beach shortlist for swimming, snorkelling, sunsets and slower days."
       />
-      <ActivityList items={snorkelSpots} icon={<Waves aria-hidden="true" size={16} />} />
+      <ActivityList items={beachShortlist} icon={<MapPin aria-hidden="true" size={16} />} />
+
+      <SectionTitle
+        kicker="Land"
+        title="Walks & hikes"
+        copy="Small routes and viewpoints that fit between driving, food and beach time."
+      />
+      <ActivityList items={hikeAndWalkIdeas} icon={<Compass aria-hidden="true" size={16} />} />
     </section>
   );
 }
@@ -741,10 +815,15 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(TAB_STORAGE_KEY) as TabId | null;
+      const saved = localStorage.getItem(TAB_STORAGE_KEY);
+      if (saved === "do") {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- migrate the old tab id after renaming Do to Activities
+        setActiveTab("activities");
+        setHydrated(true);
+        return;
+      }
       if (saved && TABS.some((tab) => tab.id === saved)) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- reading client-only state on mount; SSR uses the default tab
-        setActiveTab(saved);
+        setActiveTab(saved as TabId);
       }
     } catch {
       // localStorage may be unavailable
@@ -821,7 +900,7 @@ export default function Home() {
       <div className="tab-panel">
         {activeTab === "plan" ? <PlanTab /> : null}
         {activeTab === "stays" ? <StaysTab /> : null}
-        {activeTab === "do" ? <DoTab /> : null}
+        {activeTab === "activities" ? <ActivitiesTab /> : null}
         {activeTab === "food" ? <FoodTab /> : null}
         {activeTab === "map" ? <MapTab /> : null}
       </div>

@@ -471,6 +471,57 @@
   line-height: 1.45;
 }
 
+.activity-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.activity-overview-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  min-height: 9.5rem;
+  border: 1px solid rgba(23, 32, 24, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.9);
+  padding: 0.9rem;
+  box-shadow: 0 10px 30px rgba(82, 62, 33, 0.07);
+}
+
+.activity-overview-icon {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(44, 140, 153, 0.14);
+  color: #2c8c99;
+}
+
+.activity-overview-card span {
+  color: #8b442c;
+  font-family: var(--font-geist-mono);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.activity-overview-card h3 {
+  margin-top: 0.25rem;
+  font-size: 1.08rem;
+  font-weight: 900;
+}
+
+.activity-overview-card p {
+  margin-top: 0.35rem;
+  color: #4f5948;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .activity-list {
   display: grid;
   gap: 0.7rem;
