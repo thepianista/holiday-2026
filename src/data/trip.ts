@@ -63,7 +63,6 @@ export type FlightLeg = {
   flightNumber: string;
   departure: string;
   arrival: string;
-  pnr?: string;
   seat?: string;
   status: "booked" | "candidate" | "to book";
   note?: string;
@@ -95,6 +94,8 @@ export type BookingPriority = {
   status: "to book" | "planned" | "flexible";
 };
 
+export type Audience = "Everyone" | "Julian solo" | "Julian + Anja" | "Manuela";
+
 export type ItineraryItem = {
   date: string;
   day: string;
@@ -107,11 +108,39 @@ export type ItineraryItem = {
   cost?: string;
   cancellation?: string;
   note: string;
+  audience?: Audience;
+  /** Marks the pre-trip Mexico City block (Julian only) so the Days view can fold it away. */
+  group?: "cdmx";
+  /** One-line headline shown on the collapsed day card. */
+  summary?: string;
+};
+
+export type RouteLeg = {
+  from: string;
+  to: string;
+  distance: string;
+  duration: string;
+  note?: string;
+};
+
+export type RouteOption = {
+  id: string;
+  name: string;
+  tagline: string;
+  status: "preferred" | "alternative";
+  recommended?: boolean;
+  mapQuery: string;
+  summary: string;
+  sequence: string[];
+  legs: RouteLeg[];
+  manuExit: string;
+  pros: string[];
+  cons: string[];
 };
 
 export const heroStats = [
   { label: "Trip window", value: "16 June to 4 July 2026" },
-  { label: "Route", value: "Mexico City, Pescadero, La Paz, Loreto, Bahía Concepción, Cabo Pulmo" },
+  { label: "Route", value: "Mexico City, Todos Santos, La Paz, Loreto, Bahía Concepción, Cabo Pulmo" },
   { label: "Style", value: "City food crawl, Baja road trip, diving and snorkelling" },
 ];
 
@@ -328,18 +357,18 @@ export const groundLegs: GroundLeg[] = [
     date: "19 Jun",
     mode: "drive",
     from: "SJD airport",
-    to: "Pescadero",
+    to: "Todos Santos",
     duration: "1h30",
-    note: "Pick up the Payless VW Tiguan at SJD 07:30 — confirm Mexican mandatory insurance + glass/tyres cover at the counter.",
+    note: "Pick up the Payless VW Tiguan at SJD 07:30 — confirm Mexican mandatory insurance + glass/tyres cover at the counter. Lunch + first beach at Cerritos en route.",
     status: "planned",
   },
   {
     id: "pescadero-lapaz",
     date: "21 Jun",
     mode: "drive",
-    from: "Pescadero",
+    from: "Todos Santos",
     to: "La Paz",
-    duration: "1h30",
+    duration: "1h15",
     status: "planned",
   },
   {
@@ -567,7 +596,7 @@ export const nextBookings: BookingPriority[] = [
   {
     title: "World Cup night in CDMX",
     detail:
-      "18 Jun evening: Czechia/Denmark v Mexico at Mexico City Stadium. Decide stadium tickets vs Zócalo Fan Festival, then shape Casa Azul/Coyoacán around it.",
+      "18 Jun: Czechia/Denmark v Mexico at Mexico City Stadium. Day is built as Centro → Zócalo Fan Festival → stadium. Decide stadium ticket vs watching at the Fan Festival; Casa Azul/Coyoacán optional on the way south.",
     status: "to book",
   },
   {
@@ -585,7 +614,7 @@ export const nextBookings: BookingPriority[] = [
   {
     title: "CDMX timed entries",
     detail:
-      "Teotihuacán balloon, Casa Azul and Palacio Nacional/Diego Rivera mural slot. Keep Day 2 afternoon light.",
+      "Teotihuacán balloon (Day 1) and the Palacio Nacional/Diego Rivera mural slot (Day 2 morning). Casa Azul only if you want it — optional.",
     status: "to book",
   },
   {
@@ -626,23 +655,8 @@ export const stays: Stay[] = [
     ],
     thingsToDo: [
       {
-        title: "Day 1 — Centro Histórico morning",
-        note: "Zócalo, Catedral Metropolitana, Templo Mayor, then Diego Rivera murals at Palacio Nacional (book the slot online). Lunch at Café de Tacuba or El Cardenal.",
-        pace: "half day",
-        links: [
-          { label: "Templo Mayor", href: "https://www.templomayor.inah.gob.mx/" },
-          { label: "Palacio Nacional", href: "https://www.gob.mx/cultura/palacionacional" },
-        ],
-      },
-      {
-        title: "Day 1 — Museo Nacional de Antropología (afternoon)",
-        note: "The big one — easily 2.5–3 hours. Allow a quick stroll through Bosque de Chapultepec before/after. (Skipping Castillo de Chapultepec this trip — too tight to fit both.)",
-        pace: "half day",
-        links: [{ label: "Museum", href: "https://www.mna.inah.gob.mx/" }],
-      },
-      {
-        title: "Day 2 — Teotihuacán + hot-air balloon (early start)",
-        note: "Booked plan: shared balloon only (~MXN 1,990 weekday), self-Uber to the launch field for ~05:30, balloon ~07:00, on the ground ~08:30. Then hire an on-site guide at the pyramid entrance (MXN 600–900 private, less if you join a group). Back in CDMX by ~13:30.",
+        title: "Day 1 — Teotihuacán + hot-air balloon (early start)",
+        note: "The big excursion day, deliberately kept off the match day. Shared balloon (~MXN 1,990 weekday), self-Uber to the launch field for ~05:30, balloon ~07:00, on the ground ~08:30. Then hire an on-site guide at the pyramid entrance (MXN 600–900 private). Back in CDMX by ~13:30.",
         pace: "half day",
         links: [
           { label: "WeFly", href: "https://wefly.com.mx/en/teotihuacan/" },
@@ -652,15 +666,24 @@ export const stays: Stay[] = [
         ],
       },
       {
-        title: "Day 2 — Coyoacán + Casa Azul (afternoon)",
-        note: "Pre-book Casa Azul online (slots sell out daily). Then Plaza Hidalgo, Coyoacán market for churros + tostadas, Café El Jarocho. If you keep the World Cup match, choose an earlier Casa Azul slot and avoid squeezing in a big dinner.",
+        title: "Day 1 — Museo Nacional de Antropología (afternoon)",
+        note: "The big museum — easily 2.5–3 hours, perfect after the morning balloon. Allow a quick stroll through Bosque de Chapultepec before/after. (Skipping Castillo de Chapultepec this trip — too tight to fit both.) Dinner in Roma Norte / Condesa.",
         pace: "half day",
-        links: [{ label: "Casa Azul tickets", href: "https://www.museofridakahlo.org.mx/" }],
+        links: [{ label: "Museum", href: "https://www.mna.inah.gob.mx/" }],
       },
       {
-        title: "Day 2 evening — World Cup at Estadio Azteca",
+        title: "Day 2 (match day) — Centro Histórico + Zócalo morning",
+        note: "Built as one north→south arc so you never backtrack. Morning at the Zócalo: Catedral Metropolitana, Templo Mayor, then Diego Rivera murals at Palacio Nacional (book the slot online). Lunch at Café de Tacuba or El Cardenal — this puts you right where the Fan Festival is.",
+        pace: "half day",
+        links: [
+          { label: "Templo Mayor", href: "https://www.templomayor.inah.gob.mx/" },
+          { label: "Palacio Nacional", href: "https://www.gob.mx/cultura/palacionacional" },
+        ],
+      },
+      {
+        title: "Day 2 (match day) — Zócalo Fan Festival + World Cup at Estadio Azteca",
         note:
-          "Czechia/Denmark v Mexico is scheduled for Thu 18 Jun at Mexico City Stadium (Estadio Azteca/Banorte). From Coyoacán: easiest is Uber if roads are open; safer match-day public route is Uber/walk to Tasqueña, Tren Ligero to Estadio Azteca. Official Fan Festival/Fanmeile is the Zócalo, not by the stadium — good for pre-match atmosphere, awkward after Coyoacán because it is back north.",
+          "Czechia/Denmark v Mexico, Thu 18 Jun at Mexico City Stadium (Estadio Azteca/Banorte). The official FIFA Fan Festival/Fanmeile is on the Zócalo — soak up the midday atmosphere there straight after the Centro morning, then head south to the stadium (Tasqueña → Tren Ligero, or Uber if roads are open). Decide: stadium ticket vs watching the match at the Fan Festival big screen.",
         pace: "half day",
         links: [
           {
@@ -674,9 +697,15 @@ export const stays: Stay[] = [
         ],
       },
       {
+        title: "Day 2 (optional) — Coyoacán + Casa Azul",
+        note: "Optional, only if time allows on the way south to the stadium. Coyoacán is roughly on the route to Estadio Azteca, so it slots in without backtracking. Casa Azul needs a pre-booked timed slot (sells out daily) — skip it cleanly if the Fan Festival + match already fill the day.",
+        pace: "half day",
+        links: [{ label: "Casa Azul tickets", href: "https://www.museofridakahlo.org.mx/" }],
+      },
+      {
         title: "Roma + Condesa evening route",
         note:
-          "Simple breathing route after a heavy sightseeing block: Parque México → Avenida Amsterdam loop → Plaza Río de Janeiro → Roma Norte dinner. Use this as the low-effort night if the stadium plan feels too much after Teotihuacán.",
+          "Simple breathing route after a heavy sightseeing block: Parque México → Avenida Amsterdam loop → Plaza Río de Janeiro → Roma Norte dinner. Use this as the low-effort night if the match plan feels too much.",
         pace: "easy",
       },
     ],
@@ -747,7 +776,7 @@ export const stays: Stay[] = [
   },
   {
     id: "pescadero",
-    city: "Pescadero / Todos Santos",
+    city: "Todos Santos",
     chapter: "Chapter 2",
     dates: "19 to 21 June",
     nights: 2,
@@ -756,31 +785,31 @@ export const stays: Stay[] = [
     stamp: "Pacific · Sunsets",
     hotels: [
       {
-        name: "Cerritos Beach Inn",
-        detail: "Small boutique right on Playa Cerritos. Good food, casual.",
-        status: "candidate",
-      },
-      {
         name: "Hotel San Cristóbal",
-        detail: "Quieter, adults-only, design-led. Higher price point.",
+        detail: "Todos Santos design-led beach hotel, adults-only. The standout splurge.",
         status: "candidate",
         links: [{ label: "San Cristóbal", href: "https://sancristobalbaja.com/" }],
       },
       {
         name: "Todos Santos Boutique Hotel",
-        detail: "Central Todos Santos pueblo, walkable to cafés and galleries.",
+        detail: "Central Todos Santos pueblo, walkable to cafés, galleries and the mission.",
         status: "candidate",
       },
       {
         name: "La Poza Boutique",
-        detail: "Isolated on the lagoon beach, very quiet. Car needed.",
+        detail: "Quiet, on the Todos Santos lagoon beach. Car needed; very calm.",
+        status: "candidate",
+      },
+      {
+        name: "Cerritos Beach Inn",
+        detail: "Pescadero/Cerritos fallback right on the surf beach — only if you'd rather sleep by Cerritos than in the pueblo.",
         status: "candidate",
       },
     ],
     summary:
-      "Two nights to land after the flight. Pacific-side surf beaches, the Todos Santos pueblo and a first proper Baja sunset.",
-    travelIn: "Drive SJD → Pescadero (~1h30) after the morning flight from MEX.",
-    travelOut: "Drive Pescadero → La Paz (~1h30) on 21 June.",
+      "Two nights based in Todos Santos. Day 1 is airport → Barracuda Cantina at Cerritos for lunch → afternoon on Cerritos beach → check in at Todos Santos. Then the pueblo, galleries and a first proper Baja sunset.",
+    travelIn: "Drive SJD → Cerritos (~1h) for lunch + beach, then on to the Todos Santos hotel.",
+    travelOut: "Drive Todos Santos → La Paz (~1h15) on 21 June.",
     links: [
       { label: "Todos Santos guide", href: "https://www.todossantos.cc/" },
       { label: "Playa Cerritos info", href: "https://www.discoverbaja.com/cerritos-beach/" },
@@ -1224,6 +1253,9 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Berlin → Mexico City",
     type: "flight",
     status: "booked",
+    audience: "Julian solo",
+    group: "cdmx",
+    summary: "Fly out — lands Mexico City ~02:00",
     time: "BER 19:15 → MEX 01:55 (+1)",
     bookedWith: "KLM (KL1782 + KL8990)",
     note: "Lands MEX ~02:00 local on 17 Jun. Taxi/Uber straight to the Roma Norte Airbnb.",
@@ -1235,61 +1267,79 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Mexico City",
     type: "hotel",
     status: "booked",
+    audience: "Julian solo",
+    group: "cdmx",
+    summary: "Base for 3 nights in Roma Norte",
     bookedWith: "Airbnb (Lorenza & Mercedes)",
     note: "Independent Small Rooftop Studio, 39 Calle Cuernavaca. 3 nights.",
   },
   {
     date: "17 Jun 2026",
     day: "Wed",
-    title: "CDMX Day 1 — Centro morning + Antropología afternoon",
-    place: "Mexico City",
+    title: "CDMX Day 1 — Teotihuacán + Antropología",
+    place: "Teotihuacán + Chapultepec",
     type: "activity",
-    status: "planned",
-    time: "Wake ~09:00 after the late landing",
-    note: "Centro Histórico (Zócalo, Templo Mayor, Palacio Nacional Diego Rivera murals — book online), lunch in Centro, Uber to Antropología for 2.5–3h, dinner in Roma Norte / Condesa.",
+    status: "to book",
+    audience: "Julian solo",
+    group: "cdmx",
+    summary: "Pyramids + balloon, then the big museum",
+    time: "Up ~04:00; balloon ~07:00; back CDMX ~13:30",
+    bookedWith: "Shared balloon (book 1–2 weeks ahead)",
+    cost: "Balloon ≈ MXN 1,990 + Uber RT + guide MXN 600–900",
+    note:
+      "Early Uber to the launch field, balloon ~07:00, then hire a guide at the pyramid entrance. Back in CDMX ~13:30. Afternoon at Museo Nacional de Antropología (2.5–3h), dinner in Roma Norte / Condesa. This is the big excursion day, kept off the match day.",
   },
   {
     date: "18 Jun 2026",
     day: "Thu",
-    title: "CDMX Day 2 — Teotihuacán + Coyoacán + World Cup option",
-    place: "Teotihuacán + Coyoacán + Estadio Azteca",
+    title: "CDMX Day 2 — Centro, Zócalo Fan Festival + World Cup match",
+    place: "Centro Histórico → Coyoacán → Estadio Azteca",
     type: "activity",
     status: "to book",
-    time: "Up ~04:00; balloon ~07:00; possible match evening",
-    bookedWith: "Shared balloon + Casa Azul + World Cup ticket/Fan Festival decision",
-    cost: "Balloon ≈ MXN 1,990 + Uber RT + guide MXN 600–900 + match ticket TBD",
+    audience: "Julian solo",
+    group: "cdmx",
+    summary: "Zócalo Fan Festival then the match",
+    time: "Centro morning; Fan Festival midday; match evening",
+    bookedWith: "World Cup ticket vs Fan Festival decision",
+    cost: "Match ticket TBD",
     note:
-      "Self-arranged Uber to the launch site, then pyramid guide at entrance. Back CDMX ~13:30. Keep Casa Azul early if you want the evening match at Estadio Azteca. From Coyoacán, use Uber if roads are open or Tasqueña → Tren Ligero → Estadio Azteca. Zócalo is the official Fan Festival/Fanmeile, better before Coyoacán than after.",
+      "Match day, built as one north→south arc to avoid backtracking. Morning Centro Histórico (Zócalo, Templo Mayor, Palacio Nacional Diego Rivera murals — book online), then the Zócalo FIFA Fan Festival at midday. Head south afterwards — Casa Azul + Coyoacán optional in the afternoon — then on to Czechia/Denmark v Mexico at Estadio Azteca in the evening (Tasqueña → Tren Ligero, or Uber if roads are open).",
   },
   {
     date: "19 Jun 2026",
     day: "Fri",
-    title: "Group meets at SJD + drive to Pescadero",
-    place: "Mexico City + Chicago → SJD → Pescadero",
+    title: "Group meets at SJD → Cerritos lunch → Todos Santos",
+    place: "SJD → Cerritos → Todos Santos",
     type: "flight",
     status: "booked",
-    time: "Julian VB1212 06:10→07:15; Anja & Manu Volaris Y4 703 + Y4 302 ORD 01:40 → MEX → SJD 10:09",
+    audience: "Everyone",
+    summary: "Everyone lands, then beach + Todos Santos",
+    time: "Julian SJD 07:15; Anja & Manu SJD 10:09 (via MEX)",
     bookedWith: "VivaAerobus (Julian) + Volaris (Anja & Manu)",
-    note: "Pick up Payless rental at SJD 07:30 (Julian solo), wait for the 10:09 ORD arrival, then drive ~1h30 to Pescadero together.",
+    note: "Julian picks up the Payless rental at SJD 07:30 and waits for the 10:09 ORD arrival. Then drive ~1h to Barracuda Cantina · Cerritos for a first-Baja lunch, spend the afternoon on Cerritos beach, and check into the Todos Santos hotel for 2 nights.",
   },
   {
     date: "19–21 Jun 2026",
     day: "Fri–Sun",
-    title: "Pescadero — Pacific arrival",
-    place: "Pescadero / Todos Santos",
+    title: "Todos Santos — Pacific arrival",
+    place: "Todos Santos",
     type: "hotel",
     status: "to book",
+    audience: "Everyone",
+    summary: "2 nights — surf town + sunsets",
     cancellation: "Hold a refundable option until 7 days out.",
-    note: "2 nights. Strand and pueblo only — keep this slow.",
+    note: "2 nights based in Todos Santos. Cerritos beach, the pueblo (galleries, cafés, the mission) and the first proper Baja sunset. Keep it slow after the travel day.",
   },
   {
     date: "21 Jun 2026",
     day: "Sun",
-    title: "Drive Pescadero → La Paz",
+    title: "Drive Todos Santos → La Paz",
     place: "La Paz",
     type: "drive",
     status: "planned",
-    time: "~1h30",
+    audience: "Everyone",
+    summary: "Short hop over to the Sea of Cortez",
+    time: "~1h15",
     note: "Arrive midday so the afternoon Balandra slot is possible.",
   },
   {
@@ -1299,6 +1349,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "La Paz",
     type: "hotel",
     status: "to book",
+    audience: "Everyone",
+    summary: "3 nights — boat day, Balandra, first dive",
     note: "3 nights. Espíritu Santo boat, Balandra slot, first dive day (Fang Ming + Swanee).",
   },
   {
@@ -1308,6 +1360,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "La Paz",
     type: "activity",
     status: "to book",
+    audience: "Everyone",
+    summary: "Island boat day — Ensenada Grande + Bonanza",
     note: "Book Punta Baja or Mar y Aventuras. Los Islotes is closed for the season — Ensenada Grande and Bonanza instead.",
   },
   {
@@ -1317,6 +1371,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "La Paz",
     type: "activity",
     status: "to book",
+    audience: "Everyone",
+    summary: "Fang Ming wreck + Swanee Reef",
     note: "Fang Ming wreck + Swanee Reef. La Reina mantas if a third tank is doable.",
   },
   {
@@ -1326,6 +1382,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Loreto",
     type: "drive",
     status: "planned",
+    audience: "Everyone",
+    summary: "Scenic Sierra de la Giganta drive",
     time: "~4h30",
     note: "Sierra de la Giganta scenic drive. Lunch in Ciudad Constitución or Ligüí.",
   },
@@ -1336,6 +1394,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Loreto",
     type: "hotel",
     status: "to book",
+    audience: "Everyone",
+    summary: "3 nights — mission town + Marine Park",
     note: "Likely Loreto Playa Boutique — only 5 rooms, book ASAP.",
   },
   {
@@ -1345,6 +1405,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Loreto",
     type: "activity",
     status: "to book",
+    audience: "Everyone",
+    summary: "Coronado + Danzante snorkel circuit",
     note: "Coronado + Danzante snorkel circuit.",
   },
   {
@@ -1354,7 +1416,9 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Loreto",
     type: "activity",
     status: "to book",
-    note: "Coronado wall or Punta Lobos depending on conditions.",
+    audience: "Julian + Anja",
+    summary: "Coronado wall / Punta Lobos (Manu travels)",
+    note: "Coronado wall or Punta Lobos depending on conditions. Manu skips this — she's on the bus south (see Routes for the alternative where she leaves from La Paz instead).",
   },
   {
     date: "26 Jun 2026",
@@ -1363,10 +1427,12 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Loreto → La Paz → SJD",
     type: "bus",
     status: "to book",
+    audience: "Manuela",
+    summary: "Long bus south — overnight near SJD airport",
     time: "~06:30 → ~17:00 via La Paz",
     bookedWith: "Aguila (aguila.com.mx)",
     cost: "≈USD 55 total",
-    note: "Manu skips dive day 2 and takes two Aguila buses south. Lunch break in La Paz, evening check-in at a SJD airport hotel.",
+    note: "Manu skips dive day 2 and takes two Aguila buses south. Lunch break in La Paz, evening check-in at a SJD airport hotel. (Option B in Routes makes this a single short La Paz → SJD bus instead.)",
   },
   {
     date: "27 Jun 2026",
@@ -1375,6 +1441,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "SJD → ORD",
     type: "flight",
     status: "booked",
+    audience: "Manuela",
+    summary: "Flies home from SJD",
     time: "SJD 11:52 → ORD 18:09",
     bookedWith: "United Airlines (UA766)",
     note: "Direct nonstop, ~4h14. Manu walks from the airport hotel to the terminal.",
@@ -1386,6 +1454,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Bahía Concepción",
     type: "drive",
     status: "planned",
+    audience: "Julian + Anja",
+    summary: "Continue north to the turquoise bays",
     time: "~1h30",
     note: "Continue north after Manu has caught her connector.",
   },
@@ -1396,6 +1466,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Bahía Concepción",
     type: "hotel",
     status: "flexible",
+    audience: "Julian + Anja",
+    summary: "3 nights — kayak, snorkel, slow beach days",
     note: "3 nights. Can decide between glamping and palapas on arrival.",
   },
   {
@@ -1405,6 +1477,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "La Paz",
     type: "drive",
     status: "planned",
+    audience: "Julian + Anja",
+    summary: "Longest drive of the trip — dawn start",
     time: "~6h",
     note: "Long drive — dawn start, fuel break in Loreto.",
   },
@@ -1415,6 +1489,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Cabo Pulmo",
     type: "drive",
     status: "planned",
+    audience: "Julian + Anja",
+    summary: "Down to the reef village (last 10 km unpaved)",
     time: "~3h",
     note: "Top up cash and food before leaving La Paz.",
   },
@@ -1425,6 +1501,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Cabo Pulmo",
     type: "hotel",
     status: "to book",
+    audience: "Julian + Anja",
+    summary: "3 nights — the diving grand finale",
     note: "3 nights. Cabo Pulmo Beach Resort is the obvious choice for divers.",
   },
   {
@@ -1434,6 +1512,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Cabo Pulmo",
     type: "activity",
     status: "to book",
+    audience: "Julian + Anja",
+    summary: "El Bajo + Cantil del Tiburón",
     note: "El Bajo + Cantil del Tiburón. Bull shark aggregation possible in summer.",
   },
   {
@@ -1443,6 +1523,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Cabo Pulmo",
     type: "activity",
     status: "to book",
+    audience: "Julian + Anja",
+    summary: "Wreck dive, then the best shore snorkel",
     note: "El Vencedor wreck in the morning, Los Arbolitos in the afternoon.",
   },
   {
@@ -1452,6 +1534,8 @@ export const itineraryItems: ItineraryItem[] = [
     place: "Cabo Pulmo → BER",
     type: "flight",
     status: "booked",
+    audience: "Julian + Anja",
+    summary: "Drive to SJD and fly home",
     time: "Drive ~2h30, return car 11:00, fly SJD 13:30",
     bookedWith: "KLM (KL5375 ATL + KL0622 AMS + KL1779 BER)",
     note: "Leave Cabo Pulmo by 07:30. Lands BER Sun 5 Jul 16:30.",
@@ -1506,14 +1590,93 @@ export const extraStays: ExtraStay[] = [
   },
 ];
 
+export const routeOptions: RouteOption[] = [
+  {
+    id: "option-a",
+    name: "Option A — South loop (current plan)",
+    tagline: "La Paz and Loreto early, Manu exits from Loreto",
+    status: "preferred",
+    recommended: true,
+    mapQuery:
+      "Todos Santos, La Paz, Loreto, Mulege, Cabo Pulmo, Baja California Sur",
+    summary:
+      "The route as currently planned: drive north as far as Loreto in the first week, then loop back south through Bahía Concepción, La Paz and Cabo Pulmo. The catch is Manu's exit — she has to backtrack the whole way from Loreto to SJD by bus on 26 Jun.",
+    sequence: [
+      "Todos Santos",
+      "La Paz",
+      "Loreto",
+      "Bahía Concepción",
+      "La Paz",
+      "Cabo Pulmo",
+    ],
+    legs: [
+      { from: "SJD airport", to: "Todos Santos", distance: "~75 km", duration: "1h30", note: "Via Cerritos for lunch + first beach." },
+      { from: "Todos Santos", to: "La Paz", distance: "~80 km", duration: "1h15" },
+      { from: "La Paz", to: "Loreto", distance: "~360 km", duration: "4h30", note: "Sierra de la Giganta scenic drive." },
+      { from: "Loreto", to: "Bahía Concepción", distance: "~135 km", duration: "1h45" },
+      { from: "Bahía Concepción", to: "La Paz", distance: "~500 km", duration: "6h", note: "Longest single day — dawn start." },
+      { from: "La Paz", to: "Cabo Pulmo", distance: "~120 km", duration: "3h", note: "Last 10 km unpaved." },
+      { from: "Cabo Pulmo", to: "SJD airport", distance: "~100 km", duration: "2h30" },
+    ],
+    manuExit:
+      "Manu leaves from Loreto on 26 Jun: two Aguila buses LTO → La Paz → SJD, ~10h door-to-door, overnight at a SJD airport hotel, then UA766 at 11:52 on 27 Jun.",
+    pros: [
+      "Dive days in La Paz and Loreto land in the first week while everyone is fresh.",
+      "Cabo Pulmo stays as the grand finale right before the flight home.",
+      "Bahía Concepción slow days come after the diving, not before.",
+    ],
+    cons: [
+      "Manu's exit is a long ~10h, two-bus backtrack from Loreto.",
+      "The Bahía → La Paz leg (~6h) is a hard driving day for Julian + Anja.",
+    ],
+  },
+  {
+    id: "option-b",
+    name: "Option B — North first, La Paz finale for Manu",
+    tagline: "Manu leaves from La Paz on one short bus",
+    status: "alternative",
+    mapQuery:
+      "Todos Santos, Loreto, Mulege, La Paz, Cabo Pulmo, Baja California Sur",
+    summary:
+      "Draft alternative to make Manu's exit easy: push north to Bahía Concepción / Loreto first, then come back down so the group is in La Paz around 26 Jun. Manu then leaves on a single short La Paz → SJD bus (~3h) instead of the 10h Loreto backtrack. Stop order and overnights still to confirm together.",
+    sequence: [
+      "Todos Santos",
+      "Bahía Concepción",
+      "Loreto",
+      "La Paz",
+      "Cabo Pulmo",
+    ],
+    legs: [
+      { from: "SJD airport", to: "Todos Santos", distance: "~75 km", duration: "1h30", note: "Via Cerritos for lunch + first beach." },
+      { from: "Todos Santos", to: "Bahía Concepción", distance: "~635 km", duration: "8h+", note: "Too long in one go — break it with a night in La Paz or Loreto on the way up." },
+      { from: "Bahía Concepción", to: "Loreto", distance: "~135 km", duration: "1h45" },
+      { from: "Loreto", to: "La Paz", distance: "~360 km", duration: "4h30", note: "Arrive La Paz around 26 Jun." },
+      { from: "La Paz", to: "SJD (Manu only)", distance: "~210 km", duration: "~3h bus", note: "Single Aguila/Ruta del Cabo leg for Manu's exit." },
+      { from: "La Paz", to: "Cabo Pulmo", distance: "~120 km", duration: "3h" },
+      { from: "Cabo Pulmo", to: "SJD airport", distance: "~100 km", duration: "2h30" },
+    ],
+    manuExit:
+      "Manu leaves from La Paz on ~26 Jun: one short bus La Paz → SJD (~3h), overnight at a SJD airport hotel, then UA766 at 11:52 on 27 Jun. Much easier than the Loreto backtrack.",
+    pros: [
+      "Manu's exit is one short bus from La Paz instead of a 10h, two-bus day.",
+      "Avoids the brutal ~6h Bahía → La Paz return leg.",
+    ],
+    cons: [
+      "The northbound Todos Santos → Bahía run needs a break night (La Paz or Loreto).",
+      "Dive-day sequencing in La Paz / Loreto has to be re-planned around the new order.",
+      "Cabo Pulmo still sits at the end, so the far-north days come earlier when legs are longest.",
+    ],
+  },
+];
+
 export const reservationPriority = [
   "World Cup night on 18 Jun: decide Estadio Azteca ticket vs Zócalo Fan Festival, then book around Coyoacán/Casa Azul",
   "Manu's Aguila buses LTO → LAP and LAP → SJD on 26 Jun + SJD airport hotel for that night",
   "Cabo Pulmo dive operator (Dive Cabo Pulmo) — small slots, fills fast",
   "Espíritu Santo boat tour (Punta Baja, Alonso Tours, Mar y Aventuras)",
   "Airalo Mexico eSIM (buy + install before flying — avoids the 02:00 MEX SIM scramble)",
-  "Teotihuacán balloon for 18 Jun (shared seat, ~MXN 1,990 — book 1–2 weeks ahead)",
-  "Casa Azul Frida Kahlo timed-entry tickets for 18 Jun afternoon",
+  "Teotihuacán balloon for 17 Jun (shared seat, ~MXN 1,990 — book 1–2 weeks ahead)",
+  "Casa Azul Frida Kahlo timed-entry tickets — optional, only if you want it on 18 Jun",
   "Hotels Pescadero + La Paz + Loreto",
   "Cabo Pulmo accommodation (Beach Resort or Bungalows)",
   "Bahía Concepción — can usually be decided on the day",

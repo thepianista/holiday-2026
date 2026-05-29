@@ -69,13 +69,6 @@
   text-transform: uppercase;
 }
 
-.day-card-body {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.75rem;
-  margin-top: 0.65rem;
-}
-
 .day-card-icon {
   display: grid;
   width: 2.4rem;
@@ -85,12 +78,6 @@
   border-radius: 999px;
   background: rgba(245, 236, 216, 0.6);
   color: #bd6d42;
-}
-
-.day-card-body h3 {
-  font-size: 1.05rem;
-  font-weight: 880;
-  line-height: 1.25;
 }
 
 .day-card-place {
@@ -104,12 +91,6 @@
   font-weight: 800;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-}
-
-.day-card-body p {
-  margin-top: 0.4rem;
-  color: #4f5948;
-  line-height: 1.5;
 }
 
 .day-card-facts {
@@ -739,10 +720,6 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .day-card-body {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .day-card-icon {
     width: 2.1rem;
     height: 2.1rem;
@@ -818,8 +795,9 @@ main {
 
 .passport-mark {
   position: absolute;
-  top: clamp(1.4rem, 4vw, 2.2rem);
-  right: clamp(1.4rem, 5vw, 3rem);
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) rotate(10deg);
   display: grid;
   width: clamp(3.6rem, 14vw, 5.5rem);
   aspect-ratio: 1;
@@ -831,17 +809,25 @@ main {
   font-size: clamp(1.3rem, 5vw, 2.1rem);
   font-weight: 800;
   letter-spacing: 0;
-  transform: rotate(10deg);
 }
 
 .hero-content {
+  display: grid;
+  gap: 0.85rem;
+  align-content: center;
   max-width: 58rem;
   min-width: 0;
-  padding: clamp(1.1rem, 3vw, 2rem) clamp(0.6rem, 4vw, 2rem) clamp(0.6rem, 2vw, 1.25rem);
+  padding: clamp(0.9rem, 3vw, 1.6rem) clamp(0.6rem, 4vw, 2rem);
+}
+
+.hero-headline {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding-right: clamp(4.2rem, 16vw, 6.5rem);
 }
 
 .hero-strip {
-  margin-top: 0.9rem;
   display: grid;
   gap: 0.4rem;
 }
@@ -934,8 +920,8 @@ main {
 
 .trip-menu {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.45rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.4rem;
   margin: 0 auto;
   max-width: 74rem;
   padding: 0.1rem 1rem 0;
@@ -949,17 +935,21 @@ main {
   min-height: 2.55rem;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   border: 1px solid rgba(23, 32, 24, 0.16);
   border-radius: 8px;
   background: rgba(255, 249, 237, 0.82);
   color: #343d2f;
   font-family: var(--font-geist-mono);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   font-weight: 850;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.trip-menu button svg {
+  flex: 0 0 auto;
 }
 
 .trip-menu button span,
@@ -1763,6 +1753,11 @@ main {
   color: #33415c;
 }
 
+.ops-status.planned {
+  background: rgba(57, 120, 79, 0.13);
+  color: #275d39;
+}
+
 .ops-card-body {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -2080,7 +2075,7 @@ main {
   right: 0;
   z-index: 50;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   background: rgba(255, 249, 237, 0.94);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
   backdrop-filter: saturate(160%) blur(14px);
@@ -2096,15 +2091,15 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.28rem;
-  padding: 0.6rem 0.3rem 0.55rem;
+  gap: 0.26rem;
+  padding: 0.6rem 0.15rem 0.55rem;
   border: 0;
   background: transparent;
   color: var(--ink-soft);
   font-family: var(--font-geist-mono);
-  font-size: 0.66rem;
+  font-size: 0.6rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   cursor: pointer;
   transition: color 180ms ease;
@@ -2208,7 +2203,544 @@ main {
   }
 
   .tab-bar-btn {
-    font-size: 0.6rem;
-    padding: 0.55rem 0.2rem 0.5rem;
+    font-size: 0.53rem;
+    padding: 0.55rem 0.1rem 0.5rem;
+    letter-spacing: 0;
+  }
+
+  .tab-bar-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ---------- Collapsibles ---------- */
+.collapsible > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.collapsible > summary:focus-visible {
+  outline: 2px solid #2c8c99;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.collapsible-chevron {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--ink-soft);
+  transition: transform 200ms ease;
+}
+
+.collapsible[open] > summary .collapsible-chevron {
+  transform: rotate(180deg);
+}
+
+.collapsible-body {
+  margin-top: 0.85rem;
+}
+
+/* ---------- Audience badges ---------- */
+.audience-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+  font-family: var(--font-geist-mono);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.audience-badge svg {
+  flex: 0 0 auto;
+}
+
+.audience-everyone {
+  background: rgba(57, 120, 79, 0.14);
+  color: #275d39;
+}
+
+.audience-julian {
+  background: rgba(51, 65, 92, 0.15);
+  color: #33415c;
+}
+
+.audience-pair {
+  background: rgba(44, 140, 153, 0.15);
+  color: #1d6b76;
+}
+
+.audience-manu {
+  background: rgba(189, 109, 66, 0.18);
+  color: #8b442c;
+}
+
+/* ---------- Day cards (collapsible) ---------- */
+.day-card.collapsible {
+  padding: 0;
+  overflow: hidden;
+}
+
+.day-card.collapsible > summary {
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+}
+
+.day-card-summary {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.day-card-headline {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+  align-items: start;
+}
+
+.day-card-headline h3 {
+  font-size: 1.02rem;
+  font-weight: 880;
+  line-height: 1.25;
+}
+
+.day-card-tagline {
+  margin-top: 0.25rem;
+  color: #4f5948;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.day-card.collapsible > summary .collapsible-chevron {
+  margin-top: 0.15rem;
+}
+
+.day-card-detail {
+  padding: 0.85rem 1rem 1rem;
+  margin: 0 1rem 0;
+  border-top: 1px dashed rgba(23, 32, 24, 0.16);
+}
+
+.day-card-detail > p {
+  margin-top: 0.4rem;
+  color: #4f5948;
+  line-height: 1.5;
+}
+
+/* ---------- Day group (CDMX fold) ---------- */
+.day-group.collapsible {
+  border: 1px dashed rgba(51, 65, 92, 0.35);
+  border-radius: 10px;
+  background: rgba(245, 236, 216, 0.5);
+  margin-bottom: 0.9rem;
+  padding: 0;
+  overflow: hidden;
+}
+
+.day-group > summary {
+  padding: 0.85rem 1rem;
+}
+
+.day-group-summary {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+}
+
+.day-group-icon {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(23, 32, 24, 0.15);
+  border-radius: 999px;
+  background: rgba(255, 249, 237, 0.7);
+  color: #33415c;
+}
+
+.day-group-summary h3 {
+  font-size: 1.02rem;
+  font-weight: 880;
+  line-height: 1.2;
+}
+
+.day-group-summary p {
+  margin-top: 0.15rem;
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.day-list.nested {
+  margin: 0;
+  padding: 0 0.6rem 0.8rem;
+}
+
+/* ---------- Theme groups (collapsible sections) ---------- */
+.theme-group.collapsible {
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 249, 237, 0.9);
+  box-shadow: 0 14px 40px rgba(82, 62, 33, 0.08);
+  margin-bottom: 1rem;
+  padding: 0;
+  overflow: hidden;
+}
+
+.theme-group > summary {
+  padding: 1rem 1.1rem;
+}
+
+.theme-group-summary {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-group-summary svg {
+  flex: 0 0 auto;
+  color: #bd6d42;
+}
+
+.theme-group-summary h3 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.theme-group-summary p {
+  margin-top: 0.2rem;
+  color: #4f5948;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.theme-group .collapsible-body {
+  margin-top: 0;
+  padding: 0 1.1rem 1.1rem;
+}
+
+.theme-group .map-summary {
+  margin-bottom: 0.85rem;
+  border: 1px solid rgba(23, 32, 24, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.theme-group .map-actions {
+  padding: 0 0 0.85rem;
+}
+
+/* ---------- Stay blocks (collapsible) ---------- */
+.stay-block.collapsible {
+  padding: 0;
+}
+
+.stay-block.collapsible > summary {
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: clamp(1rem, 3.5vw, 1.5rem);
+  padding-left: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+.stay-block.collapsible > summary .stay-header {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.stay-block.collapsible > summary .collapsible-chevron {
+  margin-top: 0.35rem;
+}
+
+.stay-block .collapsible-body {
+  margin-top: 0;
+  padding: 0 clamp(1rem, 3.5vw, 1.5rem) clamp(1rem, 3.5vw, 1.5rem);
+  padding-left: clamp(1.25rem, 4vw, 1.75rem);
+}
+
+/* ---------- Flights (collapsible) ---------- */
+.flight-list {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+}
+
+.flight-collapsible.collapsible {
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.9);
+  padding: 0;
+  overflow: hidden;
+}
+
+.flight-collapsible > summary {
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+}
+
+.flight-summary {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.flight-summary-date {
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.flight-summary-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  color: #2c8c99;
+}
+
+.flight-summary-line strong {
+  font-size: 0.98rem;
+  font-weight: 880;
+}
+
+.flight-summary-line span {
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.flight-collapsible .status {
+  flex: 0 0 auto;
+}
+
+.flight-collapsible .collapsible-body {
+  margin-top: 0;
+  padding: 0 1rem 1rem;
+}
+
+.flight-route {
+  font-size: 1.2rem;
+  font-weight: 880;
+  line-height: 1.1;
+}
+
+.flight-route span {
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.flight-note {
+  margin-top: 0.6rem;
+  color: #4f5948;
+  line-height: 1.5;
+}
+
+/* ---------- Routes tab ---------- */
+.route-options {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.route-option {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 24, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 249, 237, 0.92);
+  box-shadow: 0 18px 50px rgba(82, 62, 33, 0.1);
+  padding: 1.1rem 1.2rem;
+}
+
+.route-option.preferred {
+  border-color: rgba(57, 120, 79, 0.42);
+}
+
+.route-option-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.route-option-tag {
+  color: #8b442c;
+  font-family: var(--font-geist-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.route-option-head h3 {
+  margin-top: 0.25rem;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.route-option-head .status {
+  flex: 0 0 auto;
+}
+
+.route-sequence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.route-stop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #172018;
+  font-family: var(--font-geist-mono);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.route-stop > span {
+  color: #bd6d42;
+}
+
+.route-summary {
+  margin-top: 0.85rem;
+  color: #343d2f;
+  line-height: 1.55;
+}
+
+.route-map {
+  display: block;
+  width: 100%;
+  height: clamp(14rem, 38vw, 20rem);
+  margin-top: 1rem;
+  border: 1px solid rgba(23, 32, 24, 0.14);
+  border-radius: 8px;
+  background: #ead7b7;
+}
+
+.route-legs {
+  margin-top: 1rem;
+}
+
+.route-legs h4,
+.route-manu h4,
+.route-pros h4,
+.route-cons h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #8b442c;
+  font-family: var(--font-geist-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.route-leg {
+  border-top: 1px dashed rgba(23, 32, 24, 0.16);
+  padding: 0.55rem 0;
+}
+
+.route-leg-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.3rem 1rem;
+}
+
+.route-leg-line strong {
+  font-weight: 820;
+}
+
+.route-leg-line span {
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.route-leg p {
+  margin-top: 0.25rem;
+  color: #4f5948;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.route-manu {
+  margin-top: 1rem;
+  border: 1px dashed rgba(23, 32, 24, 0.2);
+  border-radius: 8px;
+  background: rgba(245, 236, 216, 0.55);
+  padding: 0.85rem 1rem;
+}
+
+.route-manu p {
+  margin-top: 0.4rem;
+  color: #343d2f;
+  line-height: 1.5;
+}
+
+.route-proscons {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.route-proscons ul {
+  margin-top: 0.4rem;
+  padding-left: 1.15rem;
+  color: #343d2f;
+  line-height: 1.45;
+}
+
+.route-proscons li {
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 720px) {
+  .route-proscons {
+    grid-template-columns: 1fr 1fr;
   }
 }

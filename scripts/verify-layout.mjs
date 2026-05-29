@@ -18,12 +18,12 @@ const pages = [
   {
     path: "/",
     name: "home",
-    checks: ["Mexico", "2026", "Next 5 bookings", "World Cup"],
+    checks: ["Mexico", "2026", "day by day", "Todos Santos"],
   },
   {
     path: "/itinerary",
     name: "itinerary",
-    checks: ["Itinerary", "Mexico City", "World Cup option", "No PNRs"],
+    checks: ["Itinerary", "Mexico City", "World Cup", "No PNRs"],
   },
 ];
 

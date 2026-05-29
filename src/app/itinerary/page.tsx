@@ -23,6 +23,7 @@ const statusCopy: Record<string, string> = {
   preferred: "Preferred",
   "to book": "To book",
   flexible: "Flexible",
+  planned: "Planned",
 };
 
 const typeIcons = {
@@ -57,7 +58,7 @@ export default function ItineraryPage() {
         </div>
         <div>
           <MapPin aria-hidden="true" size={20} />
-          <span>Mexico City → Pescadero → La Paz → Loreto → Bahía Concepción → Cabo Pulmo</span>
+          <span>Mexico City → Todos Santos → La Paz → Loreto → Bahía Concepción → Cabo Pulmo</span>
         </div>
         <div>
           <ShieldCheck aria-hidden="true" size={20} />
