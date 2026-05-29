@@ -792,7 +792,10 @@ function LogisticsTab() {
 }
 
 function RouteOptionCard({ option }: { option: RouteOption }) {
-  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(option.mapQuery)}&output=embed`;
+  // Keyless Google Maps can only embed a place search, not a directions line, so the
+  // iframe shows the peninsula for context and the link below opens the full drawn route.
+  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent("Baja California Sur, Mexico")}&z=6&output=embed`;
+  const directionsUrl = `https://www.google.com/maps/dir/${option.waypoints.map((point) => encodeURIComponent(point)).join("/")}`;
   return (
     <article className={`route-option ${option.status}`}>
       <header className="route-option-head">
@@ -823,6 +826,11 @@ function RouteOptionCard({ option }: { option: RouteOption }) {
         referrerPolicy="no-referrer-when-downgrade"
         loading="lazy"
       />
+      <a className="route-map-link" href={directionsUrl} rel="noreferrer" target="_blank">
+        <RouteIcon aria-hidden="true" size={16} />
+        See this route drawn on Google Maps
+        <ExternalLink aria-hidden="true" size={14} />
+      </a>
 
       <div className="route-legs">
         <h4>Legs</h4>
@@ -904,6 +912,7 @@ function RoutesTab() {
         icon={<MapPinned aria-hidden="true" size={18} />}
         title="Saved Google Maps places"
         description={placesSummary}
+        defaultOpen
       >
         {!hasPlaces ? (
           <div className="empty-state">

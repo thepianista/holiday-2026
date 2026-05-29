@@ -2658,6 +2658,33 @@ main {
   background: #ead7b7;
 }
 
+.route-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  border: 1px solid rgba(23, 32, 24, 0.18);
+  border-radius: 999px;
+  background: #172018;
+  color: #fff9ed;
+  font-family: var(--font-geist-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  min-height: 2.6rem;
+  padding: 0 1rem;
+  transition: transform 180ms ease;
+}
+
+.route-map-link:hover {
+  transform: translateY(-2px);
+}
+
+.route-map-link svg {
+  color: #d6a33f;
+}
+
 .route-legs {
   margin-top: 1rem;
 }

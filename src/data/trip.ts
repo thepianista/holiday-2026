@@ -129,7 +129,8 @@ export type RouteOption = {
   tagline: string;
   status: "preferred" | "alternative";
   recommended?: boolean;
-  mapQuery: string;
+  /** Ordered, geocodable place names used to draw the driving route on the embedded map. */
+  waypoints: string[];
   summary: string;
   sequence: string[];
   legs: RouteLeg[];
@@ -647,7 +648,7 @@ export const stays: Stay[] = [
     summary:
       "Three nights to land softly: altitude, language, big lunches and walking neighbourhoods. Roma Norte and Condesa are the calmest, food-densest bases.",
     travelIn: "Arrive into MEX on the evening of 16 June. Uber/Cabify into Roma Norte — about 45 min depending on traffic.",
-    travelOut: "Short flight MEX → SJD on the morning of 19 June, then 1h30 drive to Pescadero.",
+    travelOut: "Short flight MEX → SJD on the morning of 19 June, then drive to Todos Santos (lunch + beach at Cerritos en route).",
     links: [
       { label: "CDMX tourism", href: "https://www.cdmx.gob.mx/turismo" },
       { label: "Roma Norte guide", href: "https://eatingaround.com.mx/" },
@@ -905,7 +906,7 @@ export const stays: Stay[] = [
     ],
     summary:
       "Three nights with a boat day to Espíritu Santo, the first dive day with Mantas possible at La Reina, and Balandra for an afternoon.",
-    travelIn: "Drive from Pescadero on 21 June (~1h30).",
+    travelIn: "Drive from Todos Santos on 21 June (~1h15).",
     travelOut: "Drive to Loreto on 24 June (~4h30) via the Sierra de la Giganta.",
     links: [
       { label: "La Paz tourism", href: "https://www.golapaz.com/" },
@@ -1597,8 +1598,14 @@ export const routeOptions: RouteOption[] = [
     tagline: "La Paz and Loreto early, Manu exits from Loreto",
     status: "preferred",
     recommended: true,
-    mapQuery:
-      "Todos Santos, La Paz, Loreto, Mulege, Cabo Pulmo, Baja California Sur",
+    waypoints: [
+      "San Jose del Cabo Airport",
+      "Todos Santos, BCS",
+      "La Paz, BCS",
+      "Loreto, BCS",
+      "Mulege, BCS",
+      "Cabo Pulmo, BCS",
+    ],
     summary:
       "The route as currently planned: drive north as far as Loreto in the first week, then loop back south through Bahía Concepción, La Paz and Cabo Pulmo. The catch is Manu's exit — she has to backtrack the whole way from Loreto to SJD by bus on 26 Jun.",
     sequence: [
@@ -1635,8 +1642,14 @@ export const routeOptions: RouteOption[] = [
     name: "Option B — North first, La Paz finale for Manu",
     tagline: "Manu leaves from La Paz on one short bus",
     status: "alternative",
-    mapQuery:
-      "Todos Santos, Loreto, Mulege, La Paz, Cabo Pulmo, Baja California Sur",
+    waypoints: [
+      "San Jose del Cabo Airport",
+      "Todos Santos, BCS",
+      "Mulege, BCS",
+      "Loreto, BCS",
+      "La Paz, BCS",
+      "Cabo Pulmo, BCS",
+    ],
     summary:
       "Draft alternative to make Manu's exit easy: push north to Bahía Concepción / Loreto first, then come back down so the group is in La Paz around 26 Jun. Manu then leaves on a single short La Paz → SJD bus (~3h) instead of the 10h Loreto backtrack. Stop order and overnights still to confirm together.",
     sequence: [
@@ -1677,7 +1690,7 @@ export const reservationPriority = [
   "Airalo Mexico eSIM (buy + install before flying — avoids the 02:00 MEX SIM scramble)",
   "Teotihuacán balloon for 17 Jun (shared seat, ~MXN 1,990 — book 1–2 weeks ahead)",
   "Casa Azul Frida Kahlo timed-entry tickets — optional, only if you want it on 18 Jun",
-  "Hotels Pescadero + La Paz + Loreto",
+  "Hotels Todos Santos + La Paz + Loreto",
   "Cabo Pulmo accommodation (Beach Resort or Bungalows)",
   "Bahía Concepción — can usually be decided on the day",
 ];
