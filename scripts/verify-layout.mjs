@@ -2,8 +2,12 @@ import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright-core";
 
 const url = process.env.VERIFY_URL ?? "http://localhost:3000";
-const chromePath =
-  process.env.CHROME_PATH ?? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const defaultChromePaths = {
+  darwin: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  linux: "/usr/bin/google-chrome",
+  win32: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+};
+const chromePath = process.env.CHROME_PATH ?? defaultChromePaths[process.platform];
 
 const viewports = [
   { name: "desktop", width: 1440, height: 1200 },
@@ -14,12 +18,12 @@ const pages = [
   {
     path: "/",
     name: "home",
-    checks: ["Germany", "2026", "Koblenz", "Photo diary"],
+    checks: ["Mexico", "2026", "Next 5 bookings", "World Cup"],
   },
   {
     path: "/itinerary",
     name: "itinerary",
-    checks: ["Itinerary", "Hotel Trierer Hof", "EUR 115.98", "No sensitive booking details"],
+    checks: ["Itinerary", "Mexico City", "World Cup option", "No PNRs"],
   },
 ];
 
