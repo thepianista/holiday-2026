@@ -49,6 +49,8 @@ type TabId = (typeof TABS)[number]["id"];
 
 const TAB_STORAGE_KEY = "mexico-2026-tab";
 const SHARED_MAP_URL = "https://maps.app.goo.gl/YWHSjyy2dgK7EiS68";
+const GOOGLE_OVERVIEW_EMBED_URL =
+  "https://www.google.com/maps?q=Mexico%20City%2C%20La%20Paz%2C%20Todos%20Santos%2C%20Los%20Cabos%2C%20Baja%20California%20Sur&output=embed";
 
 const statusLabels: Record<string, string> = {
   booked: "Booked",
@@ -625,13 +627,14 @@ function MapTab() {
 
   const folderNames = Object.keys(grouped).sort();
   const hasPlaces = places.length > 0;
+  const placesWithCoordinates = places.filter((place) => place.lat != null && place.lon != null).length;
 
   return (
     <section className="tab-section">
       <SectionTitle
         kicker="Saved places"
         title="Google Maps list"
-        copy="Route overview plus the imported saved-place list. Run `npm run import:kml` after dropping data/places.kml."
+        copy="Route overview plus the imported saved-place snapshot."
       />
 
       {!hasPlaces ? (
@@ -643,16 +646,31 @@ function MapTab() {
             <li>Open your list at <a href="https://www.google.com/maps/d/" rel="noreferrer" target="_blank">google.com/maps/d</a>.</li>
             <li>Three-dot menu → Export to KML → keep as KML.</li>
             <li>Save the file as <code>data/places.kml</code> in this repo.</li>
-            <li>Run <code>npm run import:kml</code>.</li>
+            <li>Run <code>npm run import:places</code>.</li>
           </ol>
         </div>
       ) : (
         <div className="map-layout">
           <section className="map-preview" aria-label="Integrated Google map">
+            <div className="map-summary">
+              <span>
+                <strong>{places.length}</strong>
+                saved places
+              </span>
+              <span>
+                <strong>{folderNames.length}</strong>
+                list
+              </span>
+              <span>
+                <strong>{placesWithCoordinates}</strong>
+                mapped pins
+              </span>
+            </div>
             <iframe
-              title="Mexico 2026 route overview map"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-116.8%2C18.4%2C-98.4%2C28.9&layer=mapnik&marker=19.4326%2C-99.1332"
+              title="Mexico 2026 Google Maps overview"
+              src={GOOGLE_OVERVIEW_EMBED_URL}
               referrerPolicy="no-referrer-when-downgrade"
+              loading="lazy"
             />
             <div className="map-actions">
               <a href={SHARED_MAP_URL} rel="noreferrer" target="_blank">

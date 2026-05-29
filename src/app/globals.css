@@ -558,6 +558,38 @@
   box-shadow: 0 14px 40px rgba(82, 62, 33, 0.1);
 }
 
+.map-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border-bottom: 1px solid rgba(23, 32, 24, 0.12);
+  background: rgba(23, 32, 24, 0.12);
+}
+
+.map-summary span {
+  display: grid;
+  min-height: 4.25rem;
+  place-items: center;
+  background: rgba(255, 249, 237, 0.94);
+  color: #4f5948;
+  font-family: var(--font-geist-mono);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.map-summary strong {
+  display: block;
+  color: #172018;
+  font-family: var(--font-alegreya);
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.9;
+}
+
 .map-preview iframe {
   display: block;
   width: 100%;
