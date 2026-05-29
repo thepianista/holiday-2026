@@ -2142,6 +2142,11 @@ main {
 }
 
 @media (max-width: 720px) {
+  /* The fixed bottom tab bar is the only nav needed on mobile. */
+  .trip-menu {
+    display: none;
+  }
+
   .hero {
     min-height: auto;
     padding: 0.65rem;

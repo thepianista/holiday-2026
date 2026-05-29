@@ -791,10 +791,29 @@ function LogisticsTab() {
   );
 }
 
+const MAPS_EMBED_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+
+function routeEmbedUrl(waypoints: string[]): string {
+  // With an Embed API key we can draw the actual driving line; without one, Google
+  // blocks keyless directions embeds, so fall back to a peninsula context map.
+  if (!MAPS_EMBED_KEY) {
+    return `https://www.google.com/maps?q=${encodeURIComponent("Baja California Sur, Mexico")}&z=6&output=embed`;
+  }
+  const origin = waypoints[0];
+  const destination = waypoints[waypoints.length - 1];
+  const between = waypoints.slice(1, -1);
+  const params = new URLSearchParams({
+    key: MAPS_EMBED_KEY,
+    origin,
+    destination,
+    mode: "driving",
+  });
+  if (between.length) params.set("waypoints", between.join("|"));
+  return `https://www.google.com/maps/embed/v1/directions?${params.toString()}`;
+}
+
 function RouteOptionCard({ option }: { option: RouteOption }) {
-  // Keyless Google Maps can only embed a place search, not a directions line, so the
-  // iframe shows the peninsula for context and the link below opens the full drawn route.
-  const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent("Baja California Sur, Mexico")}&z=6&output=embed`;
+  const embedUrl = routeEmbedUrl(option.waypoints);
   const directionsUrl = `https://www.google.com/maps/dir/${option.waypoints.map((point) => encodeURIComponent(point)).join("/")}`;
   return (
     <article className={`route-option ${option.status}`}>
@@ -828,7 +847,7 @@ function RouteOptionCard({ option }: { option: RouteOption }) {
       />
       <a className="route-map-link" href={directionsUrl} rel="noreferrer" target="_blank">
         <RouteIcon aria-hidden="true" size={16} />
-        See this route drawn on Google Maps
+        Open route in Google Maps
         <ExternalLink aria-hidden="true" size={14} />
       </a>
 
