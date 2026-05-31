@@ -386,8 +386,8 @@
 
 .hotel-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+  gap: 0.85rem;
 }
 
 .stay-rules,
@@ -812,7 +812,7 @@ main {
 }
 
 .app-shell {
-  padding-bottom: 0;
+  padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
 }
 
 .tab-panel {
@@ -968,7 +968,7 @@ main {
 }
 
 .trip-menu {
-  display: grid;
+  display: none;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.4rem;
   margin: 0 auto;
@@ -1482,6 +1482,7 @@ main {
 
 .hotel-card {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   margin-top: 1rem;
   border: 1px solid rgba(23, 32, 24, 0.16);
@@ -1494,6 +1495,8 @@ main {
   margin-top: 0.2rem;
   font-size: 1.35rem;
   font-weight: 870;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .hotel-card span {
@@ -1503,9 +1506,14 @@ main {
   line-height: 1.45;
 }
 
+.hotel-card .status {
+  display: inline-flex;
+  width: fit-content;
+}
+
 .hotel-facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
   gap: 0.55rem;
 }
 
@@ -1529,6 +1537,15 @@ main {
   color: #4f5948;
   font-size: 0.9rem;
   line-height: 1.45;
+}
+
+.hotel-fit p {
+  color: #4f5948;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .hotel-fit strong {
@@ -1980,7 +1997,6 @@ main {
   }
 
   .chapter-top,
-  .hotel-card,
   .future-section {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
@@ -2210,14 +2226,18 @@ main {
   left: 0;
   right: 0;
   z-index: 50;
-  display: none;
+  display: grid;
+  width: auto;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   background: rgba(255, 249, 237, 0.94);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
   backdrop-filter: saturate(160%) blur(14px);
   border-top: 1px solid rgba(23, 32, 24, 0.14);
+  border-radius: 0;
   box-shadow: 0 -10px 30px rgba(82, 62, 33, 0.12);
+  overflow: hidden;
   padding-bottom: env(safe-area-inset-bottom);
+  transform: none;
 }
 
 .tab-bar-btn {
@@ -2288,7 +2308,17 @@ main {
   }
 
   .tab-bar {
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: grid;
+    width: auto;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: none;
   }
 
   .hero {
