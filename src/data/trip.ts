@@ -20,9 +20,23 @@ export type HotelOption = {
   name: string;
   detail: string;
   status?: "booked" | "preferred" | "candidate" | "to book";
+  price?: string;
+  location?: string;
+  parking?: string;
+  breakfast?: string;
   map?: string;
   cancellation?: string;
+  fit?: string;
+  tradeoff?: string;
   links?: Link[];
+};
+
+export type StayBooking = {
+  status: "booked" | "preferred" | "to book" | "flexible";
+  recommendation: string;
+  budget: string;
+  cancellation: string;
+  nextAction: string;
 };
 
 export type Stay = {
@@ -34,6 +48,7 @@ export type Stay = {
   mood: string;
   colour: string;
   stamp: string;
+  booking: StayBooking;
   hotels?: HotelOption[];
   summary: string;
   travelIn?: string;
@@ -92,6 +107,15 @@ export type BookingPriority = {
   title: string;
   detail: string;
   status: "to book" | "planned" | "flexible";
+};
+
+export type BookingTask = {
+  title: string;
+  category: "Hotels" | "Transport" | "Activities" | "World Cup" | "Travel ops";
+  owner: "Julian" | "Julian + Anja" | "Manuela" | "Everyone";
+  deadline: string;
+  status: "booked" | "to book" | "planned" | "flexible";
+  detail: string;
 };
 
 export type Audience = "Everyone" | "Julian solo" | "Julian + Anja" | "Manuela";
@@ -593,6 +617,78 @@ export const hikeAndWalkIdeas: Activity[] = [
   },
 ];
 
+export const bookingChecklist: BookingTask[] = [
+  {
+    title: "World Cup night in CDMX",
+    category: "World Cup",
+    owner: "Julian",
+    deadline: "When ticket window opens",
+    status: "to book",
+    detail:
+      "Decide Estadio Azteca ticket vs Zócalo Fan Festival, then lock any Casa Azul / Coyoacán timing around it.",
+  },
+  {
+    title: "Todos Santos stay",
+    category: "Hotels",
+    owner: "Everyone",
+    deadline: "Book after route choice",
+    status: "to book",
+    detail:
+      "Double room under USD 100/night if possible. Prefer authentic and practical over chic beach-hotel energy.",
+  },
+  {
+    title: "La Paz stay",
+    category: "Hotels",
+    owner: "Everyone",
+    deadline: "Book after Todos Santos",
+    status: "to book",
+    detail:
+      "Check Hotel Catedral first, then El Moro/HBlue if price, parking or dive pickup logistics are better.",
+  },
+  {
+    title: "Loreto stay",
+    category: "Hotels",
+    owner: "Everyone",
+    deadline: "Soon — small inventory",
+    status: "to book",
+    detail: "Loreto Playa Boutique is preferred, but only five rooms. Book refundable if the price is acceptable.",
+  },
+  {
+    title: "Manu's Loreto → SJD bridge",
+    category: "Transport",
+    owner: "Manuela",
+    deadline: "After route decision",
+    status: "to book",
+    detail:
+      "Aguila LTO → LAP + LAP → SJD on 26 Jun, plus a reliable SJD airport-area hotel for the overnight.",
+  },
+  {
+    title: "Espíritu Santo boat",
+    category: "Activities",
+    owner: "Everyone",
+    deadline: "1–2 weeks ahead",
+    status: "to book",
+    detail: "Book a non-Los-Islotes route because sea lion zone is closed 1 Jun to 1 Sep.",
+  },
+  {
+    title: "Cabo Pulmo sleep + dives",
+    category: "Activities",
+    owner: "Julian + Anja",
+    deadline: "High priority",
+    status: "to book",
+    detail:
+      "Reserve accommodation and dive operator together. Small village, limited rooms and boat seats.",
+  },
+  {
+    title: "Travel basics",
+    category: "Travel ops",
+    owner: "Everyone",
+    deadline: "Before departure",
+    status: "planned",
+    detail: "Airalo eSIM, offline maps, cash plan for Bahía/Cabo Pulmo and rental-car counter checklist.",
+  },
+];
+
 export const nextBookings: BookingPriority[] = [
   {
     title: "World Cup night in CDMX",
@@ -636,12 +732,23 @@ export const stays: Stay[] = [
     mood: "Tacos, Roma walks and a slow start to the trip",
     colour: "var(--chapter-ink)",
     stamp: "CDMX · Roma + Condesa",
+    booking: {
+      status: "booked",
+      recommendation: "Keep the Roma Norte Airbnb as the fixed city base.",
+      budget: "Booked",
+      cancellation: "Check Airbnb cancellation in the app, not in this repo.",
+      nextAction: "Add check-in instructions to Wallet/Notes, not here.",
+    },
     hotels: [
       {
         name: "Independent Small Rooftop Studio (Airbnb)",
         detail:
           "Roma Norte — 39 Calle Cuernavaca, 06140. Hosts: Lorenza & Mercedes. Check-in from 11:00 on 16 Jun, check-out by 11:00 on 19 Jun.",
         status: "booked",
+        location: "Roma Norte, walkable to food and evening routes.",
+        parking: "Not needed in CDMX.",
+        breakfast: "Self-cater / cafes nearby.",
+        fit: "Already solved; low-friction solo base after late arrival.",
         map: "https://maps.google.com/?q=39+Calle+Cuernavaca,+06140+Ciudad+de+M%C3%A9xico",
       },
     ],
@@ -784,27 +891,55 @@ export const stays: Stay[] = [
     mood: "Pacific surf beach + a slow Baja arrival",
     colour: "var(--chapter-gold)",
     stamp: "Pacific · Sunsets",
+    booking: {
+      status: "to book",
+      recommendation: "Prefer a small, authentic Todos Santos base over a fancy design hotel.",
+      budget: "Target under USD 100/night for a double if realistic.",
+      cancellation: "Hold a refundable option until 7 days out.",
+      nextAction: "Compare pueblo vs Cerritos: walkability and value beat beach-chic.",
+    },
     hotels: [
       {
         name: "Hotel San Cristóbal",
         detail: "Todos Santos design-led beach hotel, adults-only. The standout splurge.",
         status: "candidate",
+        price: "Likely well above target",
+        location: "Beachfront, south of Todos Santos; car needed.",
+        parking: "Likely easy.",
+        breakfast: "Check included rate.",
+        fit: "Beautiful but too chic/fancy for the stated vibe.",
+        tradeoff: "Great view, poor value for this trip.",
         links: [{ label: "San Cristóbal", href: "https://sancristobalbaja.com/" }],
       },
       {
         name: "Todos Santos Boutique Hotel",
         detail: "Central Todos Santos pueblo, walkable to cafés, galleries and the mission.",
         status: "candidate",
+        price: "Check against USD 100 target",
+        location: "Best walkable pueblo option.",
+        parking: "Confirm parking before booking.",
+        breakfast: "Check included rate.",
+        fit: "Good if the price does not drift into boutique-splurge territory.",
       },
       {
         name: "La Poza Boutique",
         detail: "Quiet, on the Todos Santos lagoon beach. Car needed; very calm.",
         status: "candidate",
+        price: "Check",
+        location: "Quiet lagoon/beach edge; less walkable.",
+        parking: "Likely easy.",
+        breakfast: "Check.",
+        fit: "Calm and authentic-feeling if the room price works.",
       },
       {
         name: "Cerritos Beach Inn",
         detail: "Pescadero/Cerritos fallback right on the surf beach — only if you'd rather sleep by Cerritos than in the pueblo.",
         status: "candidate",
+        price: "Usually closer to target",
+        location: "Surf-beach base, less Todos Santos evening life.",
+        parking: "Likely easy.",
+        breakfast: "Check.",
+        fit: "Practical fallback, especially if first-day beach matters more than pueblo.",
       },
     ],
     summary:
@@ -875,33 +1010,65 @@ export const stays: Stay[] = [
     mood: "Bay city, Espíritu Santo and the first dive day",
     colour: "var(--chapter-rhine)",
     stamp: "La Paz · Sea of Cortez",
+    booking: {
+      status: "to book",
+      recommendation: "Hotel Catedral is the current best fit: pool, central, useful without feeling flashy.",
+      budget: "Target under USD 100/night; stretch only for clear pool/location value.",
+      cancellation: "Prefer refundable until 7 days out.",
+      nextAction: "Check Catedral vs El Moro pricing and dive pickup logistics.",
+    },
     hotels: [
       {
         name: "Hotel Catedral La Paz",
         detail: "Best mid-range bet. Rooftop pool, quieter than the Malecón hotels.",
         status: "candidate",
+        price: "Check; likely near/stretch target",
+        location: "Centro, quieter than Malecón but still walkable.",
+        parking: "Confirm parking.",
+        breakfast: "Often included; verify rate.",
+        fit: "Best balance: pool plus practical city base.",
         links: [{ label: "Hotel Catedral", href: "https://hotelcatedrallapaz.com/" }],
       },
       {
         name: "Casa al Mar",
         detail: "Boutique directly on the Malecón. Loud on weekends.",
         status: "candidate",
+        price: "Likely above target",
+        location: "Malecón-front; lively/noisy.",
+        parking: "Confirm.",
+        breakfast: "Check.",
+        fit: "Good view, but probably too boutique and loud.",
       },
       {
         name: "Hotel Suites El Moro",
         detail:
           "Friend tip from a previous dive stay. Practical if the dive operator pickup is nearby; for a couple trip, Centro/Malecón hotels still feel nicer.",
         status: "candidate",
+        price: "Often value-friendly",
+        location: "Practical if operator pickup is nearby.",
+        parking: "Likely easier than Centro.",
+        breakfast: "Check.",
+        fit: "Most functional friend-tip option; less charming.",
       },
       {
         name: "Malecón 1680",
         detail: "Modern apartments with kitchens. Useful for longer stays.",
         status: "candidate",
+        price: "Check",
+        location: "Malecón side.",
+        parking: "Confirm.",
+        breakfast: "Apartment setup; likely none.",
+        fit: "Useful if kitchen/space beats hotel services.",
       },
       {
         name: "HBlue Malecón",
         detail: "Rooftop bar, eastern Malecón end, slightly quieter.",
         status: "candidate",
+        price: "Check",
+        location: "Eastern Malecón, slightly calmer.",
+        parking: "Confirm.",
+        breakfast: "Check.",
+        fit: "Pool/rooftop value if Catedral is too expensive.",
       },
     ],
     summary:
@@ -990,11 +1157,23 @@ export const stays: Stay[] = [
     mood: "Marine Park, mission town and dive day two",
     colour: "var(--chapter-forest)",
     stamp: "Loreto · Marine Park",
+    booking: {
+      status: "preferred",
+      recommendation: "Loreto Playa Boutique is the preferred small-base option.",
+      budget: "Check against USD 100 target; inventory is only 5 rooms.",
+      cancellation: "Book refundable if available.",
+      nextAction: "Check exact room availability before it disappears.",
+    },
     hotels: [
       {
         name: "Loreto Playa Boutique Hotel",
         detail: "Five rooms, very personal service, on the Malecón, small pool.",
         status: "preferred",
+        price: "Check; may stretch target",
+        location: "Malecón, easy town access.",
+        parking: "Confirm.",
+        breakfast: "Check.",
+        fit: "Small, personal, pool: closest to the preferred stay vibe.",
       },
     ],
     summary:
@@ -1072,26 +1251,53 @@ export const stays: Stay[] = [
     mood: "Empty turquoise bays + kayak days (Julian + Anja only)",
     colour: "var(--chapter-sandstone)",
     stamp: "Bahía · Kayak + Palapa",
+    booking: {
+      status: "flexible",
+      recommendation: "Keep this flexible unless a simple beach house appears.",
+      budget: "Cheap/simple is fine here; cash palapas are acceptable.",
+      cancellation: "No hard booking needed unless choosing glamping.",
+      nextAction: "Decide closer to the date based on weather, energy and road timing.",
+    },
     hotels: [
       {
         name: "Mulege Beach Glamping (Playa La Escondida)",
         detail: "Simple, pit toilets, direct beach access.",
         status: "candidate",
+        price: "Check",
+        location: "Beach-first, rustic.",
+        parking: "Likely simple.",
+        breakfast: "No; self-cater/nearby basics.",
+        fit: "Good if you want planned rustic without committing to palapas.",
       },
       {
         name: "Beach palapas · Playa el Burro",
         detail: "~$12/night, very basic huts. Cash only.",
         status: "candidate",
+        price: "~USD 12/night cash",
+        location: "Directly on the bay.",
+        parking: "Simple beach parking.",
+        breakfast: "No.",
+        fit: "Maximum Baja/simple; comfort tradeoff is real.",
       },
       {
         name: "Beach palapas · Playa Santispac",
         detail: "Same vibe — choose between Burro and Santispac on arrival.",
         status: "candidate",
+        price: "Cheap cash stay",
+        location: "Easy bay access and food nearby.",
+        parking: "Simple beach parking.",
+        breakfast: "No.",
+        fit: "Best if you want flexibility and do not need comfort.",
       },
       {
         name: "Hotel Las Casitas · Mulegé",
         detail: "Hotel fallback in Mulegé pueblo, garden setting.",
         status: "candidate",
+        price: "Check",
+        location: "Mulegé pueblo, not directly on the bay.",
+        parking: "Likely easier.",
+        breakfast: "Restaurant/garden setting.",
+        fit: "Comfort fallback if beach basics feel too rough.",
       },
     ],
     summary:
@@ -1156,22 +1362,44 @@ export const stays: Stay[] = [
     mood: "Reef village, two dive days, the trip's grand finale",
     colour: "var(--chapter-coral)",
     stamp: "Pulmo · Reef + Bull sharks",
+    booking: {
+      status: "preferred",
+      recommendation: "Book accommodation and dive operator together; Cabo Pulmo inventory is tiny.",
+      budget: "Stretch is acceptable if it secures dives + sleep in the village.",
+      cancellation: "Ask directly; small operators may have stricter policies.",
+      nextAction: "Message Beach Resort / Dive Cabo Pulmo first, then Bungalows as backup.",
+    },
     hotels: [
       {
         name: "Cabo Pulmo Beach Resort",
         detail: "Bungalows with attached dive shop. The obvious diver pick.",
         status: "preferred",
+        price: "Likely above normal target",
+        location: "In village, easiest for dive mornings.",
+        parking: "Likely easy.",
+        breakfast: "Check.",
+        fit: "Best operational fit because accommodation and dive logistics align.",
         links: [{ label: "Resort", href: "https://www.cabopulmobeachresort.com/" }],
       },
       {
         name: "Bungalows Cabo Pulmo",
         detail: "Well-equipped bungalows ~50 m from the beach.",
         status: "candidate",
+        price: "Check",
+        location: "Village/beach-adjacent.",
+        parking: "Likely easy.",
+        breakfast: "Self-cater / village food.",
+        fit: "Good backup if resort is expensive or full.",
       },
       {
         name: "Costa Coral Cabo Pulmo",
         detail: "Newer apartments slightly outside the village. Dive packages available.",
         status: "candidate",
+        price: "Check",
+        location: "Slightly outside the village.",
+        parking: "Likely easy.",
+        breakfast: "Apartment setup; likely none.",
+        fit: "Useful if dive package/value beats walkability.",
       },
     ],
     summary:

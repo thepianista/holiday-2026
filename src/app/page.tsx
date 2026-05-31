@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import {
   beachShortlist,
+  bookingChecklist,
   carRental,
   diveOperators,
   extraStays,
@@ -39,6 +40,7 @@ import {
   type Activity,
   type Audience,
   type FlightLeg,
+  type HotelOption,
   type ItineraryItem,
   type RouteOption,
   type Stay,
@@ -359,7 +361,43 @@ function DaysTab() {
   );
 }
 
-function HotelOptionCard({ hotel }: { hotel: { name: string; detail: string; status?: string; cancellation?: string; map?: string; links?: { label: string; href: string }[] } }) {
+function StayOpsCard({ stay }: { stay: Stay }) {
+  return (
+    <div className="stay-ops">
+      <div>
+        <span>Booking status</span>
+        <strong className={`status ${stay.booking.status.replace(" ", "-")}`}>
+          {statusLabels[stay.booking.status]}
+        </strong>
+      </div>
+      <div>
+        <span>Recommendation</span>
+        <p>{stay.booking.recommendation}</p>
+      </div>
+      <div>
+        <span>Budget</span>
+        <p>{stay.booking.budget}</p>
+      </div>
+      <div>
+        <span>Cancellation</span>
+        <p>{stay.booking.cancellation}</p>
+      </div>
+      <div className="stay-ops-next">
+        <span>Next action</span>
+        <p>{stay.booking.nextAction}</p>
+      </div>
+    </div>
+  );
+}
+
+function HotelOptionCard({ hotel }: { hotel: HotelOption }) {
+  const comparison = [
+    ["Price", hotel.price],
+    ["Location", hotel.location],
+    ["Parking", hotel.parking],
+    ["Breakfast", hotel.breakfast],
+  ].filter(([, value]) => Boolean(value));
+
   return (
     <div className="hotel-card">
       <div>
@@ -373,6 +411,22 @@ function HotelOptionCard({ hotel }: { hotel: { name: string; detail: string; sta
           </span>
         ) : null}
       </div>
+      {comparison.length ? (
+        <dl className="hotel-facts">
+          {comparison.map(([label, value]) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      {hotel.fit || hotel.tradeoff ? (
+        <div className="hotel-fit">
+          {hotel.fit ? <p><strong>Why good:</strong> {hotel.fit}</p> : null}
+          {hotel.tradeoff ? <p><strong>Tradeoff:</strong> {hotel.tradeoff}</p> : null}
+        </div>
+      ) : null}
       <div className="hotel-actions">
         {hotel.map ? (
           <a href={hotel.map} rel="noreferrer" target="_blank" title={`Map for ${hotel.name}`}>
@@ -397,11 +451,22 @@ function StaysTab() {
       <SectionTitle
         kicker="Base camps"
         title="Where we are sleeping"
-        copy="One card per stop — tap to see hotel options. The Mexico City Airbnb is booked; the rest are still to pick."
+        copy="One card per stop with the booking decision data upfront: status, budget, cancellation and next action."
       />
+      <div className="stay-rules">
+        <div>
+          <span>Hotel brief</span>
+          <p>Double room under USD 100/night where possible, pool is a plus, authentic beats chic, no hostels.</p>
+        </div>
+        <div>
+          <span>Manuela note</span>
+          <p>While Manuela is with the group, a small house or apartment for three people is a good option if it fits the route.</p>
+        </div>
+      </div>
       <div className="stays-list">
         {stays.map((stay) => (
           <StayCollapsible stay={stay} key={stay.id}>
+            <StayOpsCard stay={stay} />
             <p className="stay-summary">{stay.summary}</p>
             {stay.hotels?.length ? (
               <div className="hotel-grid">
@@ -693,6 +758,34 @@ function LogisticsTab() {
         copy="The working list of what to lock in — small operators fill up fast."
       />
       <NextBookings />
+
+      <SectionTitle
+        kicker="Checklist"
+        title="Booking checklist"
+        copy="Operational tracker for hotels, transport, operators, World Cup decisions and travel basics."
+      />
+      <div className="checklist-grid">
+        {bookingChecklist.map((task) => (
+          <article className="checklist-card" key={task.title}>
+            <div className="checklist-card-top">
+              <span>{task.category}</span>
+              <strong className={`status ${task.status.replace(" ", "-")}`}>{statusLabels[task.status]}</strong>
+            </div>
+            <h3>{task.title}</h3>
+            <p>{task.detail}</p>
+            <div className="checklist-meta">
+              <span>
+                <Users aria-hidden="true" size={14} />
+                {task.owner}
+              </span>
+              <span>
+                <CalendarDays aria-hidden="true" size={14} />
+                {task.deadline}
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
 
       <ThemeGroup
         icon={<Ticket aria-hidden="true" size={18} />}

@@ -390,6 +390,55 @@
   gap: 0.75rem;
 }
 
+.stay-rules,
+.stay-ops {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.stay-rules {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  margin-bottom: 1rem;
+}
+
+.stay-rules > div,
+.stay-ops > div {
+  border: 1px dashed rgba(23, 32, 24, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.78);
+  padding: 0.8rem 0.9rem;
+}
+
+.stay-rules span,
+.stay-ops span,
+.hotel-facts dt,
+.checklist-card-top span {
+  display: block;
+  color: #8b442c;
+  font-family: var(--font-geist-mono);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.stay-rules p,
+.stay-ops p {
+  margin-top: 0.25rem;
+  color: #343d2f;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.stay-ops {
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  margin-bottom: 0.9rem;
+}
+
+.stay-ops-next {
+  grid-column: 1 / -1;
+}
+
 .practical-list {
   margin-top: 1rem;
   border: 1px dashed rgba(23, 32, 24, 0.2);
@@ -763,7 +812,7 @@ main {
 }
 
 .app-shell {
-  padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+  padding-bottom: 0;
 }
 
 .tab-panel {
@@ -1032,6 +1081,60 @@ main {
 
 .booking-stack.compact .booking-card .status {
   display: none;
+}
+
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.checklist-card {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid rgba(23, 32, 24, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.9);
+  padding: 0.9rem 1rem;
+  box-shadow: 0 14px 36px rgba(82, 62, 33, 0.08);
+}
+
+.checklist-card-top,
+.checklist-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.checklist-card h3 {
+  font-size: 1.08rem;
+  font-weight: 880;
+  line-height: 1.2;
+}
+
+.checklist-card p {
+  color: #4f5948;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.checklist-meta {
+  justify-content: flex-start;
+  color: var(--ink-soft);
+  font-family: var(--font-geist-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.checklist-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .eyebrow,
@@ -1398,6 +1501,39 @@ main {
   margin-top: 0.25rem;
   color: #4f5948;
   line-height: 1.45;
+}
+
+.hotel-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 0.55rem;
+}
+
+.hotel-facts div {
+  border: 1px dashed rgba(23, 32, 24, 0.16);
+  border-radius: 8px;
+  background: rgba(245, 236, 216, 0.55);
+  padding: 0.55rem 0.65rem;
+}
+
+.hotel-facts dd {
+  margin-top: 0.2rem;
+  color: #343d2f;
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.hotel-fit {
+  display: grid;
+  gap: 0.35rem;
+  color: #4f5948;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.hotel-fit strong {
+  color: #172018;
+  font-weight: 850;
 }
 
 .hotel-actions {
@@ -2074,7 +2210,7 @@ main {
   left: 0;
   right: 0;
   z-index: 50;
-  display: grid;
+  display: none;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   background: rgba(255, 249, 237, 0.94);
   -webkit-backdrop-filter: saturate(160%) blur(14px);
@@ -2143,8 +2279,16 @@ main {
 
 @media (max-width: 720px) {
   /* The fixed bottom tab bar is the only nav needed on mobile. */
+  .app-shell {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom));
+  }
+
   .trip-menu {
     display: none;
+  }
+
+  .tab-bar {
+    display: grid;
   }
 
   .hero {
