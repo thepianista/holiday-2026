@@ -910,7 +910,7 @@ export const stays: Stay[] = [
         cancellation: "Free until 11 Jun 2026 23:59 MST; 50% fee from 12 Jun; full price/no-show from arrival day.",
         fit: "Practical pueblo base for the first Baja arrival days.",
         tradeoff: "Door code is sent shortly before arrival; arrival time should be shared in advance.",
-        links: [{ label: "Booking confirmation", href: "https://www.booking.com/" }],
+        links: [{ label: "Booking page", href: "https://www.booking.com/hotel/mx/suite-en-el-centro-de-todos-santos.es.html" }],
       },
     ],
     summary:
