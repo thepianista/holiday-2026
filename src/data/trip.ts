@@ -10,6 +10,13 @@ export type Activity = {
   links?: Link[];
 };
 
+export type MapSite = {
+  name: string;
+  note: string;
+  /** Geocodable Google Maps query used both for the embedded map and the per-site links. */
+  query: string;
+};
+
 export type DiarySlot = {
   day: string;
   prompt: string;
@@ -617,15 +624,54 @@ export const hikeAndWalkIdeas: Activity[] = [
   },
 ];
 
+/** The most important sites to visit around the Zócalo, ordered as a walkable circuit. */
+export const zocaloSites: MapSite[] = [
+  {
+    name: "Plaza de la Constitución (Zócalo)",
+    note: "The vast main square at the heart of the Centro Histórico — and the FIFA Fan Festival (Fanmeile) site.",
+    query: "Plaza de la Constitución, Centro Histórico, Ciudad de México",
+  },
+  {
+    name: "Catedral Metropolitana",
+    note: "The largest cathedral in the Americas, filling the north side of the Zócalo.",
+    query: "Catedral Metropolitana, Centro Histórico, Ciudad de México",
+  },
+  {
+    name: "Templo Mayor",
+    note: "Excavated Aztec great temple and its museum, just behind the cathedral.",
+    query: "Templo Mayor, Centro Histórico, Ciudad de México",
+  },
+  {
+    name: "Palacio Nacional",
+    note: "Diego Rivera's epic history murals line the main staircase — free entry, bring photo ID.",
+    query: "Palacio Nacional, Centro Histórico, Ciudad de México",
+  },
+  {
+    name: "Casa de los Azulejos",
+    note: "The blue-and-white tiled palace (now a Sanborns) — an easy coffee or lunch stop on the walk west.",
+    query: "Casa de los Azulejos, Centro Histórico, Ciudad de México",
+  },
+  {
+    name: "Palacio de Bellas Artes",
+    note: "The marble art-nouveau concert hall and mural museum, a few blocks west of the square.",
+    query: "Palacio de Bellas Artes, Ciudad de México",
+  },
+  {
+    name: "Torre Latinoamericana",
+    note: "1950s tower with the best open-air view over the Centro from the 44th-floor mirador.",
+    query: "Torre Latinoamericana, Ciudad de México",
+  },
+];
+
 export const bookingChecklist: BookingTask[] = [
   {
-    title: "World Cup night in CDMX",
+    title: "World Cup nights in CDMX",
     category: "World Cup",
     owner: "Julian",
-    deadline: "When ticket window opens",
-    status: "to book",
+    deadline: "No ticket needed (fan zones)",
+    status: "planned",
     detail:
-      "Decide Estadio Azteca ticket vs Zócalo Fan Festival, then lock any Casa Azul / Coyoacán timing around it.",
+      "Match-watching is at the fan zones: England v Croatia at the Zócalo Fan Festival on 17 Jun, then Colombia on Paseo de la Reforma the same night, and the crowd at the Ángel de la Independencia on 18 Jun. Only Casa Azul (Coyoacán, 18 Jun) needs a pre-booked slot.",
   },
   {
     title: "Todos Santos stay",
@@ -691,10 +737,10 @@ export const bookingChecklist: BookingTask[] = [
 
 export const nextBookings: BookingPriority[] = [
   {
-    title: "World Cup night in CDMX",
+    title: "World Cup nights in CDMX",
     detail:
-      "18 Jun: Czechia/Denmark v Mexico at Mexico City Stadium. Day is built as Centro → Zócalo Fan Festival → stadium. Decide stadium ticket vs watching at the Fan Festival; Casa Azul/Coyoacán optional on the way south.",
-    status: "to book",
+      "17 Jun: England v Croatia at the Zócalo FIFA Fan Festival (Fanmeile), then the Colombia match on Paseo de la Reforma. 18 Jun: evening with the crowd at the Ángel de la Independencia. Fan-zone days — no stadium ticket needed.",
+    status: "planned",
   },
   {
     title: "Manu's Loreto → SJD bridge",
@@ -711,7 +757,7 @@ export const nextBookings: BookingPriority[] = [
   {
     title: "CDMX timed entries",
     detail:
-      "Teotihuacán balloon (Day 1) and the Palacio Nacional/Diego Rivera mural slot (Day 2 morning). Casa Azul only if you want it — optional.",
+      "Optional Teotihuacán balloon (18 Jun) and, if you want it, the Casa Azul timed slot for the Coyoacán afternoon (18 Jun). Palacio Nacional Diego Rivera murals are free walk-in on 17 Jun.",
     status: "to book",
   },
   {
@@ -763,25 +809,23 @@ export const stays: Stay[] = [
     ],
     thingsToDo: [
       {
-        title: "Day 1 — Teotihuacán + hot-air balloon (early start)",
-        note: "The big excursion day, deliberately kept off the match day. Shared balloon (~MXN 1,990 weekday), self-Uber to the launch field for ~05:30, balloon ~07:00, on the ground ~08:30. Then hire an on-site guide at the pyramid entrance (MXN 600–900 private). Back in CDMX by ~13:30.",
-        pace: "half day",
+        title: "Today — Breakfast at Lardo, then up to Castillo de Chapultepec",
+        note: "Start at 07:00 with breakfast at Lardo in Condesa, then walk up through Bosque de Chapultepec to the Castillo de Chapultepec — the only royal castle in the Americas, with hilltop views over Reforma and the Museo Nacional de Historia inside.",
+        pace: "easy",
         links: [
-          { label: "WeFly", href: "https://wefly.com.mx/en/teotihuacan/" },
-          { label: "Vuelos en Globo MX", href: "https://vuelosenglobo.mx/en/" },
-          { label: "Volare", href: "https://volare.com.mx/" },
-          { label: "INAH info", href: "https://www.inah.gob.mx/zonas/82-zona-arqueologica-de-teotihuacan" },
+          { label: "Lardo (map)", href: "https://www.google.com/maps/search/?api=1&query=Lardo+Condesa+Ciudad+de+M%C3%A9xico" },
+          { label: "Castillo de Chapultepec (map)", href: "https://www.google.com/maps/search/?api=1&query=Castillo+de+Chapultepec" },
         ],
       },
       {
-        title: "Day 1 — Museo Nacional de Antropología (afternoon)",
-        note: "The big museum — easily 2.5–3 hours, perfect after the morning balloon. Allow a quick stroll through Bosque de Chapultepec before/after. (Skipping Castillo de Chapultepec this trip — too tight to fit both.) Dinner in Roma Norte / Condesa.",
+        title: "Today — Museo Nacional de Antropología",
+        note: "From the castle, cross Bosque de Chapultepec to the Museo Nacional de Antropología — the country's flagship museum, easily 2.5–3 hours (the Sala Mexica and the Sun Stone are the must-sees). Then head east to the Centro for the afternoon.",
         pace: "half day",
         links: [{ label: "Museum", href: "https://www.mna.inah.gob.mx/" }],
       },
       {
-        title: "Day 2 (match day) — Centro Histórico + Zócalo morning",
-        note: "Built as one north→south arc so you never backtrack. Morning at the Zócalo: Catedral Metropolitana, Templo Mayor, then Diego Rivera murals at Palacio Nacional (book the slot online). Lunch at Café de Tacuba or El Cardenal — this puts you right where the Fan Festival is.",
+        title: "Today — Zócalo & Centro Histórico sites + lunch",
+        note: "Walk the most important sites around the Zócalo: Catedral Metropolitana, Templo Mayor and the Diego Rivera murals at Palacio Nacional (free, bring photo ID), with Casa de los Azulejos, Bellas Artes and the Torre Latinoamericana mirador a few blocks west. See the map below for the walking circuit. Lunch on the square at Café de Tacuba or El Cardenal — right where the Fan Festival is.",
         pace: "half day",
         links: [
           { label: "Templo Mayor", href: "https://www.templomayor.inah.gob.mx/" },
@@ -789,15 +833,11 @@ export const stays: Stay[] = [
         ],
       },
       {
-        title: "Day 2 (match day) — Zócalo Fan Festival + World Cup at Estadio Azteca",
+        title: "Today — Zócalo Fan Festival: England v Croatia",
         note:
-          "Czechia/Denmark v Mexico, Thu 18 Jun at Mexico City Stadium (Estadio Azteca/Banorte). The official FIFA Fan Festival/Fanmeile is on the Zócalo — soak up the midday atmosphere there straight after the Centro morning, then head south to the stadium (Tasqueña → Tren Ligero, or Uber if roads are open). Decide: stadium ticket vs watching the match at the Fan Festival big screen.",
+          "Straight after lunch, into the FIFA Fan Festival (the Fanmeile) on the Zócalo to watch England v Croatia on the big screen with the crowd. The official festival sits on the main square, a few steps from the Centro sights.",
         pace: "half day",
         links: [
-          {
-            label: "FIFA schedule",
-            href: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/match-schedule-fixtures-results-teams-stadiums",
-          },
           {
             label: "Fan Festival",
             href: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/fifa-fan-festival/mexico-city",
@@ -805,15 +845,30 @@ export const stays: Stay[] = [
         ],
       },
       {
-        title: "Day 2 (optional) — Coyoacán + Casa Azul",
-        note: "Optional, only if time allows on the way south to the stadium. Coyoacán is roughly on the route to Estadio Azteca, so it slots in without backtracking. Casa Azul needs a pre-booked timed slot (sells out daily) — skip it cleanly if the Fan Festival + match already fill the day.",
+        title: "Tonight — Roma/Condesa wander + Colombia match on Reforma",
+        note:
+          "Back to Roma/Condesa for a neighbourhood loop: Parque México → Avenida Amsterdam → Plaza Río de Janeiro and a Roma Norte bite. Then out to Paseo de la Reforma to watch the Colombia match with the street crowd.",
+        pace: "easy",
+      },
+      {
+        title: "Tomorrow — Early ride to Teotihuacán",
+        note: "Early ride out to Teotihuacán to walk the Avenue of the Dead and the Sun and Moon pyramids before the heat and crowds (optional sunrise hot-air balloon ~MXN 1,990, book 1–2 weeks ahead). Hire a guide at the entrance, then back in the city by early afternoon.",
+        pace: "half day",
+        links: [
+          { label: "INAH info", href: "https://www.inah.gob.mx/zonas/82-zona-arqueologica-de-teotihuacan" },
+          { label: "WeFly balloon", href: "https://wefly.com.mx/en/teotihuacan/" },
+        ],
+      },
+      {
+        title: "Tomorrow — Afternoon in Coyoacán",
+        note: "Afternoon in Coyoacán: cobbled streets, Jardín Centenario and Plaza Hidalgo, the Mercado de Coyoacán for tostadas, and Casa Azul (Frida Kahlo) if you pre-book the timed slot — it sells out daily.",
         pace: "half day",
         links: [{ label: "Casa Azul tickets", href: "https://www.museofridakahlo.org.mx/" }],
       },
       {
-        title: "Roma + Condesa evening route",
+        title: "Tomorrow night — Ángel de la Independencia, Reforma",
         note:
-          "Simple breathing route after a heavy sightseeing block: Parque México → Avenida Amsterdam loop → Plaza Río de Janeiro → Roma Norte dinner. Use this as the low-effort night if the match plan feels too much.",
+          "Evening football with the crowd at the Ángel de la Independencia on Paseo de la Reforma — the city's celebration gathering point when the big teams play.",
         pace: "easy",
       },
     ],
@@ -1476,34 +1531,32 @@ export const itineraryItems: ItineraryItem[] = [
   {
     date: "17 Jun 2026",
     day: "Wed",
-    title: "CDMX Day 1 — Teotihuacán + Antropología",
-    place: "Teotihuacán + Chapultepec",
+    title: "CDMX Day 1 — Chapultepec, Antropología + Zócalo Fan Festival",
+    place: "Condesa → Chapultepec → Zócalo → Reforma",
     type: "activity",
     status: "to book",
     audience: "Julian solo",
     group: "cdmx",
-    summary: "Pyramids + balloon, then the big museum",
-    time: "Up ~04:00; balloon ~07:00; back CDMX ~13:30",
-    bookedWith: "Shared balloon (book 1–2 weeks ahead)",
-    cost: "Balloon ≈ MXN 1,990 + Uber RT + guide MXN 600–900",
+    summary: "Castle + big museum, then England v Croatia on the Zócalo",
+    time: "Lardo 07:00; museum late morning; Fan Festival from ~13:00",
     note:
-      "Early Uber to the launch field, balloon ~07:00, then hire a guide at the pyramid entrance. Back in CDMX ~13:30. Afternoon at Museo Nacional de Antropología (2.5–3h), dinner in Roma Norte / Condesa. This is the big excursion day, kept off the match day.",
+      "Breakfast at Lardo (Condesa) at 07:00, then walk up to the Castillo de Chapultepec and across to the Museo Nacional de Antropología (2.5–3h). East to the Zócalo for the Centro sites — Catedral Metropolitana, Templo Mayor, Diego Rivera murals at Palacio Nacional — lunch on the square, then the FIFA Fan Festival (Fanmeile) on the Zócalo for England v Croatia. Back to Roma/Condesa for a neighbourhood wander, then the Colombia match with the crowd on Paseo de la Reforma.",
   },
   {
     date: "18 Jun 2026",
     day: "Thu",
-    title: "CDMX Day 2 — Centro, Zócalo Fan Festival + World Cup match",
-    place: "Centro Histórico → Coyoacán → Estadio Azteca",
+    title: "CDMX Day 2 — Teotihuacán, Coyoacán + Ángel de la Independencia",
+    place: "Teotihuacán → Coyoacán → Reforma",
     type: "activity",
     status: "to book",
     audience: "Julian solo",
     group: "cdmx",
-    summary: "Zócalo Fan Festival then the match",
-    time: "Centro morning; Fan Festival midday; match evening",
-    bookedWith: "World Cup ticket vs Fan Festival decision",
-    cost: "Match ticket TBD",
+    summary: "Pyramids early, Coyoacán afternoon, football on Reforma",
+    time: "Early ride out; back early afternoon; Reforma in the evening",
+    bookedWith: "Optional balloon (book 1–2 weeks ahead)",
+    cost: "Balloon ≈ MXN 1,990 + Uber RT + guide MXN 600–900 (optional)",
     note:
-      "Match day, built as one north→south arc to avoid backtracking. Morning Centro Histórico (Zócalo, Templo Mayor, Palacio Nacional Diego Rivera murals — book online), then the Zócalo FIFA Fan Festival at midday. Head south afterwards — Casa Azul + Coyoacán optional in the afternoon — then on to Czechia/Denmark v Mexico at Estadio Azteca in the evening (Tasqueña → Tren Ligero, or Uber if roads are open).",
+      "Early ride to Teotihuacán for the Avenue of the Dead and the Sun and Moon pyramids before the heat (optional sunrise balloon). Back in the city by early afternoon, then Coyoacán — Jardín Centenario, Mercado de Coyoacán and Casa Azul if you pre-booked the slot. In the evening, watch the match with the crowd at the Ángel de la Independencia on Paseo de la Reforma.",
   },
   {
     date: "19 Jun 2026",
@@ -1884,12 +1937,12 @@ export const routeOptions: RouteOption[] = [
 ];
 
 export const reservationPriority = [
-  "World Cup night on 18 Jun: decide Estadio Azteca ticket vs Zócalo Fan Festival, then book around Coyoacán/Casa Azul",
+  "World Cup fan zones: England v Croatia at the Zócalo Fan Festival + Colombia on Reforma (17 Jun), then the Ángel de la Independencia (18 Jun) — no ticket needed",
   "Manu's Aguila buses LTO → LAP and LAP → SJD on 26 Jun + SJD airport hotel for that night",
   "Cabo Pulmo dive operator (Dive Cabo Pulmo) — small slots, fills fast",
   "Espíritu Santo boat tour (Punta Baja, Alonso Tours, Mar y Aventuras)",
   "Airalo Mexico eSIM (buy + install before flying — avoids the 02:00 MEX SIM scramble)",
-  "Teotihuacán balloon for 17 Jun (shared seat, ~MXN 1,990 — book 1–2 weeks ahead)",
+  "Teotihuacán balloon for 18 Jun (optional shared seat, ~MXN 1,990 — book 1–2 weeks ahead)",
   "Casa Azul Frida Kahlo timed-entry tickets — optional, only if you want it on 18 Jun",
   "Hotels La Paz + Loreto",
   "Cabo Pulmo accommodation (Beach Resort or Bungalows)",

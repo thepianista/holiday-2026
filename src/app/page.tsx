@@ -37,6 +37,7 @@ import {
   routeOptions,
   snorkelSpots,
   stays,
+  zocaloSites,
   type Activity,
   type Audience,
   type FlightLeg,
@@ -607,6 +608,7 @@ function ActivitiesTab() {
               </div>
             ) : null}
             <ActivityList items={stay.thingsToDo} icon={<Compass aria-hidden="true" size={16} />} />
+            {stay.id === "mexico-city" ? <ZocaloSitesMap /> : null}
             {stay.practical?.length ? (
               <div className="practical-list">
                 <h4>Practical notes</h4>
@@ -903,6 +905,69 @@ function routeEmbedUrl(waypoints: string[]): string {
   });
   if (between.length) params.set("waypoints", between.join("|"));
   return `https://www.google.com/maps/embed/v1/directions?${params.toString()}`;
+}
+
+function sitesMapEmbedUrl(queries: string[]): string {
+  // With an Embed API key we draw the walking line linking the sites; without one Google
+  // blocks keyless directions embeds, so fall back to a map centred on the first site.
+  if (!MAPS_EMBED_KEY || queries.length < 2) {
+    return `https://www.google.com/maps?q=${encodeURIComponent(queries[0] ?? "Zócalo, CDMX")}&z=16&output=embed`;
+  }
+  const params = new URLSearchParams({
+    key: MAPS_EMBED_KEY,
+    origin: queries[0],
+    destination: queries[queries.length - 1],
+    mode: "walking",
+  });
+  const between = queries.slice(1, -1);
+  if (between.length) params.set("waypoints", between.join("|"));
+  return `https://www.google.com/maps/embed/v1/directions?${params.toString()}`;
+}
+
+function ZocaloSitesMap() {
+  const queries = zocaloSites.map((site) => site.query);
+  const embedUrl = sitesMapEmbedUrl(queries);
+  const directionsUrl = `https://www.google.com/maps/dir/${queries.map((q) => encodeURIComponent(q)).join("/")}`;
+
+  return (
+    <div className="zocalo-map">
+      <div className="zocalo-map-head">
+        <MapPinned aria-hidden="true" size={18} />
+        <div>
+          <h4>Zócalo &amp; Centro Histórico — most important sites</h4>
+          <p>A walkable circuit around the main square. Lunch on the Zócalo, then into the Fan Festival.</p>
+        </div>
+      </div>
+      <iframe
+        title="Zócalo sites map"
+        className="route-map"
+        src={embedUrl}
+        referrerPolicy="no-referrer-when-downgrade"
+        loading="lazy"
+      />
+      <a className="route-map-link" href={directionsUrl} rel="noreferrer" target="_blank">
+        <RouteIcon aria-hidden="true" size={16} />
+        Open the Zócalo walking circuit in Google Maps
+        <ExternalLink aria-hidden="true" size={14} />
+      </a>
+      <ol className="zocalo-site-list">
+        {zocaloSites.map((site) => (
+          <li key={site.name}>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.query)}`}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <MapPin aria-hidden="true" size={14} />
+              <strong>{site.name}</strong>
+              <ExternalLink aria-hidden="true" size={12} />
+            </a>
+            <p>{site.note}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
 }
 
 function RouteOptionCard({ option }: { option: RouteOption }) {

@@ -2864,6 +2864,78 @@ main {
   color: #d6a33f;
 }
 
+.zocalo-map {
+  margin-top: 1.1rem;
+  border: 1px solid rgba(23, 32, 24, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 249, 237, 0.92);
+  padding: 1rem 1.1rem 1.1rem;
+  box-shadow: 0 12px 36px rgba(82, 62, 33, 0.08);
+}
+
+.zocalo-map-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+}
+
+.zocalo-map-head svg {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #b3471f;
+}
+
+.zocalo-map-head h4 {
+  font-size: 1.08rem;
+  font-weight: 880;
+  line-height: 1.15;
+}
+
+.zocalo-map-head p {
+  margin-top: 0.2rem;
+  color: #4f5948;
+  font-size: 0.9rem;
+}
+
+.zocalo-map .route-map {
+  margin-top: 0.4rem;
+}
+
+.zocalo-site-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.zocalo-site-list li {
+  padding-left: 0.85rem;
+  border-left: 2px solid rgba(179, 71, 31, 0.35);
+}
+
+.zocalo-site-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #172018;
+}
+
+.zocalo-site-list a svg {
+  color: #b3471f;
+}
+
+.zocalo-site-list strong {
+  font-weight: 850;
+}
+
+.zocalo-site-list p {
+  margin-top: 0.15rem;
+  color: #4f5948;
+  font-size: 0.88rem;
+}
+
 .route-legs {
   margin-top: 1rem;
 }
