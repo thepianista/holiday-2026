@@ -37,13 +37,13 @@ import {
   routeOptions,
   snorkelSpots,
   stays,
-  zocaloSites,
   type Activity,
   type Audience,
   type FlightLeg,
   type HotelOption,
   type ItineraryItem,
   type RouteOption,
+  type SiteMap,
   type Stay,
 } from "@/data/trip";
 import { places } from "@/data/places";
@@ -315,6 +315,7 @@ function DayCard({ item, defaultOpen }: { item: ItineraryItem; defaultOpen?: boo
             {item.cost ? <span>$ {item.cost}</span> : null}
           </div>
         ) : null}
+        {item.siteMap ? <SitesMap map={item.siteMap} /> : null}
       </div>
     </details>
   );
@@ -608,7 +609,6 @@ function ActivitiesTab() {
               </div>
             ) : null}
             <ActivityList items={stay.thingsToDo} icon={<Compass aria-hidden="true" size={16} />} />
-            {stay.id === "mexico-city" ? <ZocaloSitesMap /> : null}
             {stay.practical?.length ? (
               <div className="practical-list">
                 <h4>Practical notes</h4>
@@ -907,12 +907,15 @@ function routeEmbedUrl(waypoints: string[]): string {
   return `https://www.google.com/maps/embed/v1/directions?${params.toString()}`;
 }
 
-function sitesMapEmbedUrl(queries: string[]): string {
-  // With an Embed API key we draw the walking line linking the sites; without one Google
-  // blocks keyless directions embeds, so fall back to a map centred on the first site.
-  if (!MAPS_EMBED_KEY || queries.length < 2) {
-    return `https://www.google.com/maps?q=${encodeURIComponent(queries[0] ?? "Zócalo, CDMX")}&z=16&output=embed`;
+function sitesMapEmbedUrl(map: SiteMap): string {
+  // Without an Embed API key Google blocks keyless directions embeds, so we centre a normal
+  // keyless map on the area — the same fallback the Routes tab uses. The main sights here are
+  // all Google-labelled POIs clustered around the Zócalo, so they show without custom pins.
+  if (!MAPS_EMBED_KEY || map.sites.length < 2) {
+    return `https://www.google.com/maps?q=${encodeURIComponent(map.center)}&z=${map.zoom}&output=embed`;
   }
+  // With a key, upgrade to a drawn walking route through the sights.
+  const queries = map.sites.map((site) => site.query);
   const params = new URLSearchParams({
     key: MAPS_EMBED_KEY,
     origin: queries[0],
@@ -924,22 +927,23 @@ function sitesMapEmbedUrl(queries: string[]): string {
   return `https://www.google.com/maps/embed/v1/directions?${params.toString()}`;
 }
 
-function ZocaloSitesMap() {
-  const queries = zocaloSites.map((site) => site.query);
-  const embedUrl = sitesMapEmbedUrl(queries);
-  const directionsUrl = `https://www.google.com/maps/dir/${queries.map((q) => encodeURIComponent(q)).join("/")}`;
+function SitesMap({ map }: { map: SiteMap }) {
+  const embedUrl = sitesMapEmbedUrl(map);
+  const directionsUrl = `https://www.google.com/maps/dir/${map.sites
+    .map((site) => encodeURIComponent(site.query))
+    .join("/")}`;
 
   return (
-    <div className="zocalo-map">
-      <div className="zocalo-map-head">
+    <div className="site-map">
+      <div className="site-map-head">
         <MapPinned aria-hidden="true" size={18} />
         <div>
-          <h4>Zócalo &amp; Centro Histórico — most important sites</h4>
-          <p>A walkable circuit around the main square. Lunch on the Zócalo, then into the Fan Festival.</p>
+          <h4>{map.title}</h4>
+          <p>{map.caption}</p>
         </div>
       </div>
       <iframe
-        title="Zócalo sites map"
+        title={map.title}
         className="route-map"
         src={embedUrl}
         referrerPolicy="no-referrer-when-downgrade"
@@ -947,11 +951,11 @@ function ZocaloSitesMap() {
       />
       <a className="route-map-link" href={directionsUrl} rel="noreferrer" target="_blank">
         <RouteIcon aria-hidden="true" size={16} />
-        Open the Zócalo walking circuit in Google Maps
+        Open the walking circuit in Google Maps
         <ExternalLink aria-hidden="true" size={14} />
       </a>
-      <ol className="zocalo-site-list">
-        {zocaloSites.map((site) => (
+      <ol className="site-list">
+        {map.sites.map((site) => (
           <li key={site.name}>
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.query)}`}

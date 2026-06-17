@@ -17,6 +17,16 @@ export type MapSite = {
   query: string;
 };
 
+export type SiteMap = {
+  title: string;
+  caption: string;
+  /** Geocodable query the keyless embed is centred on (no API key needed). */
+  center: string;
+  /** Zoom for the keyless centred map. */
+  zoom: number;
+  sites: MapSite[];
+};
+
 export type DiarySlot = {
   day: string;
   prompt: string;
@@ -144,6 +154,8 @@ export type ItineraryItem = {
   group?: "cdmx";
   /** One-line headline shown on the collapsed day card. */
   summary?: string;
+  /** Optional embedded sights map shown inside the expanded day card. */
+  siteMap?: SiteMap;
 };
 
 export type RouteLeg = {
@@ -1541,6 +1553,13 @@ export const itineraryItems: ItineraryItem[] = [
     time: "Lardo 07:00; museum late morning; Fan Festival from ~13:00",
     note:
       "Breakfast at Lardo (Condesa) at 07:00, then walk up to the Castillo de Chapultepec and across to the Museo Nacional de Antropología (2.5–3h). East to the Zócalo for the Centro sites — Catedral Metropolitana, Templo Mayor, Diego Rivera murals at Palacio Nacional — lunch on the square, then the FIFA Fan Festival (Fanmeile) on the Zócalo for England v Croatia. Back to Roma/Condesa for a neighbourhood wander, then the Colombia match with the crowd on Paseo de la Reforma.",
+    siteMap: {
+      title: "Zócalo & Centro Histórico — most important sights",
+      caption: "The walkable cluster around the main square. Lunch on the Zócalo, then into the Fan Festival.",
+      center: "Zócalo, Centro Histórico, Ciudad de México",
+      zoom: 15,
+      sites: zocaloSites,
+    },
   },
   {
     date: "18 Jun 2026",
