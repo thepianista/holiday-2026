@@ -573,7 +573,7 @@ function ActivitiesTab() {
         <ActivityOverviewCard
           title="Diving"
           meta={`${diveSiteCount} dive sites`}
-          copy="Four planned dive days across La Paz, Loreto and Cabo Pulmo, with operators grouped by region."
+          copy="The diving grand finale is at Cabo Pulmo — two dive days on the reef, with operators grouped by region."
           icon={<Fish aria-hidden="true" size={18} />}
         />
         <ActivityOverviewCard
@@ -1230,11 +1230,15 @@ export default function Home() {
               <span aria-hidden="true">→</span>
               <span>Todos Santos</span>
               <span aria-hidden="true">→</span>
-              <span>La Paz</span>
+              <span>Magdalena Bay</span>
               <span aria-hidden="true">→</span>
               <span>Loreto</span>
               <span aria-hidden="true">→</span>
               <span>Bahía</span>
+              <span aria-hidden="true">→</span>
+              <span>La Paz</span>
+              <span aria-hidden="true">→</span>
+              <span>Los Barriles</span>
               <span aria-hidden="true">→</span>
               <span>Cabo Pulmo</span>
             </p>
