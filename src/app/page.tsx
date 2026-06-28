@@ -634,7 +634,7 @@ function ActivitiesTab() {
       <ThemeGroup
         icon={<Fish aria-hidden="true" size={18} />}
         title="Dive sites & operators"
-        description="Four dive days. Water 24–27 °C, 3 mm suit. Book 1–2 weeks ahead by WhatsApp."
+        description="Two dive days at Cabo Pulmo. Water 24–27 °C, 3 mm suit. Book 1–2 weeks ahead by WhatsApp."
       >
         <div className="stays-list">
           {diveStays.map((stay) => (
@@ -1078,9 +1078,9 @@ function RoutesTab() {
   return (
     <section className="tab-section">
       <SectionTitle
-        kicker="Still deciding"
-        title="Two ways to run the loop"
-        copy="The order is open because Manu leaves early. Compare the routes, then we lock one. Distances and drive times are rough."
+        kicker="The route"
+        title="The Baja loop we drove"
+        copy="The full driving loop from SJD up to Magdalena Bay and Bahía Concepción and back down to Cabo Pulmo. Distances and drive times are rough."
       />
 
       <div className="route-options">
