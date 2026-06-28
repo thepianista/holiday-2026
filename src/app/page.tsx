@@ -485,6 +485,8 @@ function StaysTab() {
         ))}
       </div>
 
+      {extraStays.length ? (
+        <>
       <SectionTitle
         kicker="One-off overnights"
         title="Solo stays outside the main loop"
@@ -524,6 +526,8 @@ function StaysTab() {
           </details>
         ))}
       </div>
+        </>
+      ) : null}
     </section>
   );
 }
