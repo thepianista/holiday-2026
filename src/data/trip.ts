@@ -808,18 +808,17 @@ export const stays: Stay[] = [
         ],
       },
       {
-        title: "Tonight — Roma/Condesa wander + Colombia match on Reforma",
+        title: "Tonight — Roma/Condesa wander + Colombia match on Calle Génova",
         note:
-          "Back to Roma/Condesa for a neighbourhood loop: Parque México → Avenida Amsterdam → Plaza Río de Janeiro and a Roma Norte bite. Then out to Paseo de la Reforma to watch the Colombia match with the street crowd.",
+          "Back to Roma/Condesa for a neighbourhood loop: Parque México → Avenida Amsterdam → Plaza Río de Janeiro and a Roma Norte bite. Then over to one of the pubs/sports bars on Calle Génova (Zona Rosa) to watch the Colombia match.",
         pace: "easy",
       },
       {
-        title: "Tomorrow — Early ride to Teotihuacán",
-        note: "Early ride out to Teotihuacán to walk the Avenue of the Dead and the Sun and Moon pyramids before the heat and crowds (optional sunrise hot-air balloon ~MXN 1,990, book 1–2 weeks ahead). Hire a guide at the entrance, then back in the city by early afternoon.",
+        title: "Tomorrow — Early bus to Teotihuacán",
+        note: "Early Uber at 06:45 to Terminal del Norte (Central de Autobuses del Norte), then the direct bus to Teotihuacán at 07:00 — walk the Avenue of the Dead and the Sun and Moon pyramids before the heat. Catch the 11:30 return bus, get off at Indios Verdes and take the Metro straight down to Coyoacán.",
         pace: "half day",
         links: [
           { label: "INAH info", href: "https://www.inah.gob.mx/zonas/82-zona-arqueologica-de-teotihuacan" },
-          { label: "WeFly balloon", href: "https://wefly.com.mx/en/teotihuacan/" },
         ],
       },
       {
@@ -1475,7 +1474,7 @@ export const itineraryItems: ItineraryItem[] = [
     date: "17 Jun 2026",
     day: "Wed",
     title: "CDMX Day 1 — Chapultepec, Antropología + Zócalo Fan Festival",
-    place: "Condesa → Chapultepec → Zócalo → Reforma",
+    place: "Condesa → Chapultepec → Zócalo → Génova",
     type: "activity",
     status: "to book",
     audience: "Julian solo",
@@ -1483,7 +1482,7 @@ export const itineraryItems: ItineraryItem[] = [
     summary: "Castle + big museum, then England v Croatia on the Zócalo",
     time: "Lardo 07:00; museum late morning; Fan Festival from ~13:00",
     note:
-      "Breakfast at Lardo (Condesa) at 07:00, then walk up to the Castillo de Chapultepec and across to the Museo Nacional de Antropología (2.5–3h). East to the Zócalo for the Centro sites — Catedral Metropolitana, Templo Mayor, Diego Rivera murals at Palacio Nacional — lunch on the square, then the FIFA Fan Festival (Fanmeile) on the Zócalo for England v Croatia. Back to Roma/Condesa for a neighbourhood wander, then the Colombia match with the crowd on Paseo de la Reforma.",
+      "Breakfast at Lardo (Condesa) at 07:00, then walk up to the Castillo de Chapultepec and across to the Museo Nacional de Antropología (2.5–3h). East to the Zócalo for the Centro sites — Catedral Metropolitana, Templo Mayor, Diego Rivera murals at Palacio Nacional — lunch on the square, then the FIFA Fan Festival (Fanmeile) on the Zócalo for England v Croatia. Back to Roma/Condesa for a neighbourhood wander, then the Colombia match at a pub/sports bar on Calle Génova (Zona Rosa).",
     siteMap: {
       title: "Zócalo & Centro Histórico — most important sights",
       caption: "The walkable cluster around the main square. Lunch on the Zócalo, then into the Fan Festival.",
@@ -1501,12 +1500,12 @@ export const itineraryItems: ItineraryItem[] = [
     status: "to book",
     audience: "Julian solo",
     group: "cdmx",
-    summary: "Pyramids early, Coyoacán afternoon, football on Reforma",
-    time: "Early ride out; back early afternoon; Reforma in the evening",
-    bookedWith: "Optional balloon (book 1–2 weeks ahead)",
-    cost: "Balloon ≈ MXN 1,990 + Uber RT + guide MXN 600–900 (optional)",
+    summary: "Pyramids by bus, Coyoacán afternoon, football on Reforma",
+    time: "Uber 06:45; bus 07:00; return 11:30; Reforma in the evening",
+    bookedWith: "Direct bus from Terminal del Norte (07:00)",
+    cost: "Bus ~MXN 60 each way + entry ~MXN 100 + Ubers",
     note:
-      "Early ride to Teotihuacán for the Avenue of the Dead and the Sun and Moon pyramids before the heat (optional sunrise balloon). Back in the city by early afternoon, then Coyoacán — Jardín Centenario, Mercado de Coyoacán and Casa Azul if you pre-booked the slot. In the evening, watch the match with the crowd at the Ángel de la Independencia on Paseo de la Reforma.",
+      "Early Uber at 06:45 to Terminal del Norte, then the direct bus to Teotihuacán at 07:00 to walk the Avenue of the Dead and the Sun and Moon pyramids before the heat. Catch the 11:30 return bus, get off at Indios Verdes and take the Metro straight to Coyoacán for the afternoon — Jardín Centenario, Mercado de Coyoacán and Casa Azul if you pre-booked the slot. In the evening, watch the match with the crowd at the Ángel de la Independencia on Paseo de la Reforma.",
   },
   {
     date: "19 Jun 2026",
